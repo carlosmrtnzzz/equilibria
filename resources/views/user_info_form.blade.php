@@ -53,7 +53,7 @@
             </form>
         </div>
         <div class="w-full md:w-1/2">
-            <img src="{{ asset('assets/images/user-form.png') }}" alt="Imagen deporte" class="w-full rounded-xl shadow-md">
+            <img src="{{ asset('images/user-form.png') }}" alt="Imagen deporte" class="w-full rounded-xl shadow-md">
         </div>
     </div>
 @endsection

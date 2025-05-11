@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Equilibria</title>
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
 
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
@@ -18,7 +18,7 @@
     <header class="w-full shadow bg-white dark:bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Equilibria" class="h-16">
+                <img src="{{ asset('images/logo.png') }}" alt="Equilibria" class="h-16">
             </a>
 
             <nav class="flex items-center space-x-6 text-gray-800 dark:text-gray-900 font-medium">

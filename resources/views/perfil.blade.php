@@ -4,9 +4,9 @@
     <div class="w-full">
 
         <div class="relative w-full h-64 bg-cover bg-center"
-            style="background-image: url('{{ asset('assets/images/profile-banner.jpg') }}');">
+            style="background-image: url('{{ asset('images/profile-banner.jpg') }}');">
             <div class="absolute bottom-[-48px] left-8">
-                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="Avatar"
+                <img src="{{ asset('images/default-avatar.jpg') }}" alt="Avatar"
                     class="w-24 h-24 rounded-full border-4 border-white shadow-lg">
             </div>
         </div>
