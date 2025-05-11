@@ -30,8 +30,8 @@ body {
 
 .mask h2 {
     font-family: "Abril Fatface", serif;
-    font-size: clamp(40px, 8vw, 80px); 
-    transform-origin: 51% center;
+    font-size: clamp(60px, 12vw, 160px);
+    transform-origin: 52.3% center;
     letter-spacing: -1px;
     text-align: center;
     width: 100%;
@@ -53,10 +53,15 @@ body {
 }
 
 ::selection {
-    background-color: rgb(139, 197, 116);
+    background-color: rgb(213, 252, 197);
 }
 
 header {
-    position: relative;
-    z-index: 10;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px); 
 }

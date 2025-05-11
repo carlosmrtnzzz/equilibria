@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('age')->nullable();
             $table->unsignedSmallInteger('height_cm')->nullable();
             $table->decimal('weight_kg', 5, 2)->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();            
+            $table->enum('gender', ['male', 'female'])->nullable();            
             $table->timestamps();
         });
 

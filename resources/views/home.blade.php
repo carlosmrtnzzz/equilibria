@@ -8,18 +8,15 @@
         <div class="mask">
             <h2>EQUILIBRIA</h2>
         </div>
+
     </div>
 
     <main>
         @yield('content')
         <h1 class="text-center text-2xl mb-150">Hola hola</h1>
     </main>
-    
-@endsection
 
-@push('styles')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-@endpush
+@endsection
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
