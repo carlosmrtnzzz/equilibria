@@ -17,14 +17,30 @@ class UserDataController extends Controller
             'height' => 'required|numeric|min:30',
         ]);
     
-        $user = Auth::user();
-        $user->age = Carbon::parse($request->birth_date)->age;
-        $user->gender = $request->gender;
-        $user->weight_kg = $request->weight;
-        $user->height_cm = $request->height;
-        $user->save();
+        $name = session('register_name');
+        $email = session('register_email');
+        $password = session('register_password');
     
-        return redirect('/')->with('success', 'Datos guardados correctamente.');
+        if (!$name || !$email || !$password) {
+            return redirect()->route('register')->with('message', 'Sesión expirada. Regístrate de nuevo.');
+        }
+    
+        $user = \App\Models\User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'age' => Carbon::parse($request->birth_date)->age,
+            'height_cm' => $request->height,
+            'weight_kg' => $request->weight,
+            'gender' => $request->gender,
+        ]);
+    
+        session()->forget(['register_name', 'register_email', 'register_password']);
+    
+        Auth::login($user);
+    
+        return redirect('/')->with('success', 'Cuenta creada correctamente.');
     }
+    
     
 }

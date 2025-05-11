@@ -51,19 +51,15 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
-
-        $user = \App\Models\User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'age' => 0,
-            'height_cm' => 0,
-            'weight_kg' => 0,
-            'gender' => 'other'
+    
+        session([
+            'register_name' => $request->name,
+            'register_email' => $request->email,
+            'register_password' => bcrypt($request->password),
         ]);
-
-        Auth::login($user);
-        return redirect('/datos');
+    
+        return redirect()->route('datos.usuario');
     }
+    
 
 }
