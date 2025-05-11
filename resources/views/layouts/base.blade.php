@@ -13,7 +13,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="min-h-screen flex flex-col">
     <header class="w-full shadow bg-white dark:bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/">
@@ -24,6 +24,7 @@
                 <a href="{{ route('/') }}" class="hover:text-emerald-600">Inicio</a>
                 <a href="{{ route('chat') }}" class="hover:text-emerald-600">Chat</a>
                 <a href="{{ route('planes') }}" class="hover:text-emerald-600">Planes Semanales</a>
+                <a href="{{ route('logros') }}" class="hover:text-emerald-600">Logros</a>
             </nav>
 
             <div class="flex items-center space-x-4">
@@ -56,11 +57,14 @@
         </div>
     </header>
 
-    @yield('content')
+    <main class="flex-grow pt-20">
+        @yield('content')
+    </main>
 
-    <footer class="bg-emerald-700 text-center text-sm py-4 border-t dark:border-gray-700">
+    <footer class="bg-emerald-600 text-center text-sm py-4 border-t dark:border-gray-700">
         &copy; {{ date('Y') }} Equilibria. All rights reserved.
     </footer>
+
 
     @stack('scripts')
 </body>

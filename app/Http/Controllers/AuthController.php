@@ -43,7 +43,6 @@ class AuthController extends Controller
     {
         return view('login.register');
     }
-
     public function register(Request $request)
     {
         $request->validate([
@@ -52,6 +51,7 @@ class AuthController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
     
+        // Guardamos los datos en sesión (no en DB)
         session([
             'register_name' => $request->name,
             'register_email' => $request->email,
@@ -61,5 +61,4 @@ class AuthController extends Controller
         return redirect()->route('datos.usuario');
     }
     
-
 }

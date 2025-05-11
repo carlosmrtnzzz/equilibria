@@ -21,7 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'age',
+        'gender',
+        'weight_kg',
+        'height_cm',
     ];
+    
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,4 +50,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function preference()
+{
+    return $this->hasOne(Preference::class);
+}
+
 }

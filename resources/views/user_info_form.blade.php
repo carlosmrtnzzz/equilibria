@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="flex flex-col md:flex-row justify-between items-center gap-8 px-8 py-12">
- 
+
         <div class="w-full md:w-1/2 bg-green-50 p-8 rounded-2xl shadow-md">
             <h2 class="text-2xl font-semibold text-center text-emerald-700 mb-6">Rellena tus datos</h2>
 
