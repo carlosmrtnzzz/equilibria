@@ -5,6 +5,8 @@ use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PlanController;
 
+
+
 // Home
 Route::get('/', function () {
     return view('home');
@@ -36,13 +38,6 @@ Route::get('/chat', function () {
     return view('pages.chat');
 })->name('chat');
 
-Route::get('/planes', function () {
-    if (!auth()->check() && !session()->has('register_email')) {
-        return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los planes.');
-    }
-    return view('pages.planes');
-})->name('planes');
-
 Route::get('/logros', function () {
     if (!auth()->check() && !session()->has('register_email')) {
         return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los logros.');
@@ -59,4 +54,6 @@ Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->middlewar
 
 Route::post('/plan/generar', [PlanController::class, 'generar'])->middleware('auth')->name('plan.generar');
 
-Route::get('/planes', [PlanController::class, 'index'])->middleware('auth')->name('planes');
+Route::get('/planes', [PlanController::class, 'index'])->name('planes');
+
+Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware('auth');

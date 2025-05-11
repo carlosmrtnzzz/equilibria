@@ -6,12 +6,19 @@
 
         <div id="chat-box" class="border p-4 h-96 overflow-y-auto bg-white shadow rounded mb-4"></div>
 
+        <form method="POST" action="{{ route('plan.generar') }}" class="mb-4">
+            @csrf
+            <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+                Generar Plan Semanal
+            </button>
+        </form>
         <form id="chat-form" class="flex gap-2">
             @csrf
             <input type="text" name="mensaje" id="mensaje" placeholder="Escribe tu mensaje..."
                 class="flex-grow border rounded px-4 py-2">
             <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">Enviar</button>
         </form>
+
     </div>
     @if (session('respuesta_chat'))
         <script>
@@ -28,13 +35,6 @@
         </script>
     @endif
 
-    <form method="POST" action="{{ route('plan.generar') }}" class="mb-4">
-        @csrf
-        <button type="submit" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
-            Generar Plan Semanal
-        </button>
-    </form>
-
 @endsection
 
 @push('scripts')
@@ -43,14 +43,25 @@
         const mensajeInput = document.getElementById('mensaje');
         const chatBox = document.getElementById('chat-box');
 
-        form.addEventListener('submit', async function (e) {
+        document.addEventListener('DOMContentLoaded', async function () {
+            const res = await fetch('/chat/historial');
+            const mensajes = await res.json();
+
+            mensajes.forEach(msg => {
+                const clase = msg.role === 'user' ? 'Tú' : 'Equilibria';
+                const color = msg.role === 'user' ? '' : 'text-emerald-700';
+                chatBox.innerHTML += `<div class="mb-2 ${color}"><strong>${clase}:</strong> ${msg.content}</div>`;
+            });
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        document.getElementById('generarBtn').addEventListener('click', async function (e) {
             e.preventDefault();
 
-            const mensaje = mensajeInput.value.trim();
-            if (!mensaje) return;
-
-            chatBox.innerHTML += `<div class="mb-2"><strong>Tú:</strong> ${mensaje}</div>`;
-            mensajeInput.value = '';
+            const texto = 'Genera mi plan semanal';
+            chatBox.innerHTML += `<div class="mb-2"><strong>Tú:</strong> ${texto}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
 
             const res = await fetch('/chat/enviar', {
                 method: 'POST',
@@ -58,13 +69,14 @@
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                body: JSON.stringify({ mensaje })
+                body: JSON.stringify({ mensaje: texto })
             });
 
             const data = await res.json();
             chatBox.innerHTML += `<div class="mb-2 text-emerald-700"><strong>Equilibria:</strong> ${data.respuesta}</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
         });
+
     </script>
 
 @endpush

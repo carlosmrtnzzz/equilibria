@@ -11,7 +11,7 @@ use App\Models\Preference;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\ChatMessage;
 class PlanController extends Controller
 {
     public function generar(Request $request)
@@ -102,6 +102,24 @@ class PlanController extends Controller
             $plan->pdf_url = 'storage/' . $path;
             $plan->save();
 
+            // Guardar el mensaje en la base de datos para el historial del chat
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'role' => 'user',
+                'content' => 'Generar un plan semanal personalizado',
+            ]);
+
+            $mensajeIA = "Aquí tienes tu plan semanal.<br>" .
+                "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
+                "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
+
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'role' => 'assistant',
+                'content' => $mensajeIA,
+            ]);
+
+
             return redirect()->route('chat')->with([
                 'respuesta_chat' => "Aquí tienes tu plan semanal. Puedes descargarlo directamente o verlo en la sección de Planes.",
                 'pdf_url' => asset('storage/' . $path),
@@ -115,6 +133,16 @@ class PlanController extends Controller
     }
     public function index()
     {
+        // Si no ha completado el registro aún (no está logueado pero tiene datos en sesión)
+        if (!Auth::check()) {
+            if (session()->has('register_email')) {
+                return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los planes.');
+            }
+            // Si no hay sesión ni login, simplemente mándalo al registro
+            return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los planes.');
+        }
+
+        // Si está autenticado, carga sus planes
         $user = Auth::user();
         $planes = WeeklyPlan::where('user_id', $user->id)->latest()->get();
 

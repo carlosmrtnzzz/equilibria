@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Equilibria</title>
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
 
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
@@ -40,7 +41,7 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                            class="px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700">
+                            class="px-4 py-2 rounded-md bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer">
                             Logout
                         </button>
                     </form>
