@@ -57,3 +57,7 @@ Route::post('/plan/generar', [PlanController::class, 'generar'])->middleware('au
 Route::get('/planes', [PlanController::class, 'index'])->name('planes');
 
 Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware('auth');
+
+Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware('auth');
+
+Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware('auth');

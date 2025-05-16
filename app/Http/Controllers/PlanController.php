@@ -120,10 +120,11 @@ class PlanController extends Controller
             ]);
 
 
-            return redirect()->route('chat')->with([
-                'respuesta_chat' => "Aquí tienes tu plan semanal. Puedes descargarlo directamente o verlo en la sección de Planes.",
+            return response()->json([
+                'mensaje' => "Aquí tienes tu plan semanal.",
                 'pdf_url' => asset('storage/' . $path),
             ]);
+
 
 
         } catch (\Exception $e) {
@@ -147,6 +148,142 @@ class PlanController extends Controller
         $planes = WeeklyPlan::where('user_id', $user->id)->latest()->get();
 
         return view('pages.planes', compact('planes'));
+    }
+
+    public function planActual()
+    {
+        $plan = WeeklyPlan::where('user_id', Auth::id())->latest()->first();
+
+        if (!$plan) {
+            return response()->json(['error' => 'No tienes un plan aún.'], 404);
+        }
+
+        return response()->json([
+            'meals' => json_decode($plan->meals_json, true),
+            'changes_left' => $plan->changes_left,
+        ]);
+    }
+
+    public function reemplazarPlatos(Request $request)
+    {
+        $request->validate([
+            'platos' => 'required|array|max:3',
+            'platos.*.dia' => 'required|string',
+            'platos.*.tipo' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $plan = WeeklyPlan::where('user_id', $user->id)->latest()->first();
+
+
+
+        if (!$plan) {
+            return response()->json(['error' => 'No tienes un plan activo.'], 404);
+        }
+
+        if ($plan->changes_left <= 0) {
+            return response()->json(['error' => 'Ya has usado todos tus intentos.'], 403);
+        }
+
+
+        if (count($request->platos) > $plan->changes_left) {
+            return response()->json([
+                'error' => "Solo te quedan {$plan->changes_left} intento(s), pero intentas cambiar " . count($request->platos) . " plato(s)."
+            ], 403);
+        }
+
+        $originalPlan = json_decode($plan->meals_json, true);
+        $platosAReemplazar = $request->input('platos');
+
+        // Crear prompt personalizado para reemplazar solo esos platos
+        $prompt = "Eres un nutricionista. Reemplaza únicamente los siguientes platos por otros equivalentes y saludables:\n";
+
+        foreach ($platosAReemplazar as $p) {
+            $prompt .= ucfirst($p['dia']) . " - " . ucfirst($p['tipo']) . ": " . $originalPlan[$p['dia']][$p['tipo']] . "\n";
+        }
+
+        $prompt .= "\nDevuelve ÚNICAMENTE un JSON con esta estructura exacta (respetando el número y formato de llaves):\n{\n";
+
+        $estructuraEsperada = [];
+        foreach ($platosAReemplazar as $p) {
+            if (!isset($estructuraEsperada[$p['dia']])) {
+                $estructuraEsperada[$p['dia']] = [];
+            }
+            $estructuraEsperada[$p['dia']][] = $p['tipo'];
+        }
+
+        foreach ($estructuraEsperada as $dia => $tipos) {
+            $prompt .= "  \"$dia\": {\n";
+            foreach ($tipos as $i => $tipo) {
+                $coma = $i < count($tipos) - 1 ? ',' : '';
+                $prompt .= "    \"$tipo\": \"...\"$coma\n";
+            }
+            $prompt .= "  },\n";
+        }
+
+        $prompt .= "}\n\n";
+        $prompt .= "No incluyas ninguna explicación ni comentario adicional. Solo el JSON exacto con los nuevos platos reemplazados. No dejes ninguno fuera.";
+
+        try {
+            $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-3.5-turbo',
+                'messages' => [
+                    ['role' => 'system', 'content' => 'Eres un asistente nutricional llamado Equilibria.'],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+            ]);
+
+            $data = $response->json();
+            $planNuevo = $data['choices'][0]['message']['content'] ?? '';
+
+            if (!preg_match('/\{.*\}/s', $planNuevo, $match)) {
+                return response()->json(['error' => 'La IA no devolvió un JSON válido.'], 500);
+            }
+
+            $nuevoJson = json_decode($match[0], true);
+            if (!$nuevoJson) {
+                return response()->json(['error' => 'Error al parsear el JSON devuelto.'], 500);
+            }
+
+            // Reemplazar solo los platos seleccionados en el plan original
+            foreach ($platosAReemplazar as $p) {
+                if (isset($nuevoJson[$p['dia']][$p['tipo']])) {
+                    $originalPlan[$p['dia']][$p['tipo']] = $nuevoJson[$p['dia']][$p['tipo']];
+                }
+            }
+
+            $plan->meals_json = json_encode($originalPlan);
+            $plan->changes_left -= count($platosAReemplazar);
+
+            // Regenerar el PDF con los nuevos datos
+            $pdf = Pdf::loadView('pages.plan_pdf', [
+                'meals' => $originalPlan,
+                'start_date' => Carbon::parse($plan->start_date)->format('d/m/Y'),
+                'end_date' => Carbon::parse($plan->end_date)->format('d/m/Y'),
+            ]);
+
+            $nombrePdf = 'plan_' . $plan->id . '.pdf';
+            $path = 'planes/' . $nombrePdf;
+
+            // Guardar el nuevo PDF
+            Storage::disk('public')->put($path, $pdf->output());
+
+            // Actualizar la ruta
+            $plan->pdf_url = 'storage/' . $path;
+
+            $plan->save(); // guardar todo junto
+
+            return response()->json([
+                'success' => true,
+                'nuevo_plan' => $originalPlan,
+                'changes_left' => $plan->changes_left,
+                'pdf_url' => asset('storage/' . $path),
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error reemplazando platos: ' . $e->getMessage());
+            return response()->json(['error' => 'Ocurrió un error al contactar con la IA.'], 500);
+        }
     }
 
 }
