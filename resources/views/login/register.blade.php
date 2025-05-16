@@ -27,7 +27,7 @@
     @endif
 
     <div class="relative min-h-screen flex items-center justify-center bg-white dark:bg-white overflow-hidden">
-        <img src="{{ asset('assets/images/register-foto.png') }}" alt="Decoración"
+        <img src="{{ asset('images/register-foto.png') }}" alt="Decoración"
             class="absolute right-[-560px] top-1/2 transform -translate-y-1/2 w-[1500px] hidden md:block pointer-events-none z-0" />
 
         <div class="relative z-10 w-full max-w-md bg-gray-100 dark:bg-gray-800 p-8 rounded-xl shadow-lg">
