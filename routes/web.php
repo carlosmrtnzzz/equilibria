@@ -6,7 +6,6 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PlanController;
 
 
-
 // Home
 Route::get('/', function () {
     return view('home');
@@ -61,3 +60,5 @@ Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware(
 Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware('auth');
 
 Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware('auth');
+
+Route::put('/perfil/actualizar', [UserDataController::class, 'actualizar'])->name('perfil.actualizar');

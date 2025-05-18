@@ -49,7 +49,10 @@
                 mensajes.forEach(msg => {
                     const clase = msg.role === 'user' ? 'text-right' : 'text-left text-emerald-700';
                     const nombre = msg.role === 'user' ? 'Tú' : 'Equilibria';
-                    chatBox.innerHTML += `<div class="mb-2 ${clase}"><strong>${nombre}:</strong> ${msg.content}</div>`;
+                    const contenedor = document.createElement('div');
+                    contenedor.className = `mb-2 ${clase}`;
+                    contenedor.innerHTML = `<strong>${nombre}:</strong> ${msg.content}`;
+                    chatBox.appendChild(contenedor);
                 });
 
                 chatBox.scrollTop = chatBox.scrollHeight;
@@ -77,15 +80,15 @@
 
             const tempId = 'temp-msg';
             chatBox.innerHTML += `
-                        <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
-                            <div class="dot-spinner">
-                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                            </div>
-                            Generando tu plan semanal...
-                        </div>`;
+                                <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
+                                    <div class="dot-spinner">
+                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                    </div>
+                                    Generando tu plan semanal...
+                                </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -100,11 +103,11 @@
                 document.getElementById(tempId)?.remove();
 
                 chatBox.innerHTML += `
-                            <div class="mb-2 text-left text-emerald-700">
-                                <strong>Equilibria:</strong> ${data.mensaje}
-                                <br><a href="${data.pdf_url}" target="_blank" class="underline text-sm text-emerald-800 hover:text-emerald-900">📄 Descargar Plan en PDF</a>
-                                <br><span class="text-sm text-gray-600">También puedes verlo en <a href="{{ route('planes') }}" class="underline">Planes</a>.</span>
-                            </div>`;
+                                    <div class="mb-2 text-left text-emerald-700">
+                                        <strong>Equilibria:</strong> ${data.mensaje}
+                                        <br><a href="${data.pdf_url}" target="_blank" class="underline text-sm text-emerald-800 hover:text-emerald-900">📄 Descargar Plan en PDF</a>
+                                        <br><span class="text-sm text-gray-600">También puedes verlo en <a href="{{ route('planes') }}" class="underline">Planes</a>.</span>
+                                    </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             } catch (e) {
                 document.getElementById(tempId)?.remove();
@@ -187,15 +190,15 @@
 
             const tempId = 'cambio-spinner';
             chatBox.innerHTML += `
-            <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
-                <div class="dot-spinner">
-                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                </div>
-                Actualizando platos seleccionados...
-            </div>`;
+                    <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
+                        <div class="dot-spinner">
+                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                        </div>
+                        Actualizando platos seleccionados...
+                    </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -213,9 +216,9 @@
 
                 if (data.success) {
                     chatBox.innerHTML += `
-                    <div class="mb-2 text-left text-emerald-700">
-                        <strong>Equilibria:</strong> He actualizado los platos seleccionados. Te quedan <strong>${data.changes_left}</strong> intento(s).
-                    </div>`;
+                            <div class="mb-2 text-left text-emerald-700">
+                                <strong>Equilibria:</strong> He actualizado los platos seleccionados. Te quedan <strong>${data.changes_left}</strong> intento(s).
+                            </div>`;
                     chatBox.scrollTop = chatBox.scrollHeight;
 
                     // Si aún quedan intentos, recargar el modal
@@ -230,9 +233,9 @@
                 } else {
                     modal.classList.add('hidden');
                     chatBox.innerHTML += `
-                    <div class="mb-2 text-left text-red-600">
-                        <strong>Equilibria:</strong> Hubo un error actualizando los platos.
-                    </div>`;
+                            <div class="mb-2 text-left text-red-600">
+                                <strong>Equilibria:</strong> Hubo un error actualizando los platos.
+                            </div>`;
                 }
 
             } catch (e) {
@@ -240,9 +243,9 @@
                 document.getElementById(tempId)?.remove();
                 modal.classList.add('hidden');
                 chatBox.innerHTML += `
-                <div class="mb-2 text-left text-red-600">
-                    <strong>Equilibria:</strong> Error al contactar con el servidor.
-                </div>`;
+                        <div class="mb-2 text-left text-red-600">
+                            <strong>Equilibria:</strong> Error al contactar con el servidor.
+                        </div>`;
             }
         });
 

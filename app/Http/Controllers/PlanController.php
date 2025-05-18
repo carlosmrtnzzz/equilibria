@@ -74,12 +74,31 @@ class PlanController extends Controller
                 return back()->with('error', 'El plan generado no tiene el formato esperado.');
             }
 
+            // Verificar si alguna comida está vacía o en blanco
+            $hayVacio = false;
+            foreach ($planJson as $dia => $comidas) {
+                foreach (['desayuno', 'comida', 'cena'] as $tipo) {
+                    if (!isset($comidas[$tipo]) || trim($comidas[$tipo]) === '') {
+                        $hayVacio = true;
+                        break 2;
+                    }
+                }
+            }
+
+            if ($hayVacio) {
+                Log::warning('El plan contiene campos vacíos, se va a regenerar automáticamente.');
+                return $this->generar($request); // Vuelve a intentarlo recursivamente
+            }
+
+
+            $inicioSemana = Carbon::now()->startOfWeek(Carbon::MONDAY);
+            $finSemana = $inicioSemana->copy()->addDays(6);
 
             // Guardar en base de datos
             $plan = WeeklyPlan::create([
                 'user_id' => $user->id,
-                'start_date' => Carbon::today(),
-                'end_date' => Carbon::today()->addDays(6),
+                'start_date' => $inicioSemana,
+                'end_date' => $finSemana,
                 'meals_json' => json_encode($planJson),
                 'pdf_url' => null,
                 'changes_left' => 3,
@@ -88,9 +107,10 @@ class PlanController extends Controller
             // Crear PDF
             $pdf = Pdf::loadView('pages.plan_pdf', [
                 'meals' => $planJson,
-                'start_date' => Carbon::today()->format('d/m/Y'),
-                'end_date' => Carbon::today()->addDays(6)->format('d/m/Y'),
+                'start_date' => $inicioSemana->format('d/m/Y'),
+                'end_date' => $finSemana->format('d/m/Y'),
             ]);
+
 
             $nombrePdf = 'plan_' . $plan->id . '.pdf';
             $path = 'planes/' . $nombrePdf;
@@ -272,6 +292,18 @@ class PlanController extends Controller
             $plan->pdf_url = 'storage/' . $path;
 
             $plan->save(); // guardar todo junto
+
+            // Guardar en historial del chat
+            $mensajeIA = "He actualizado los platos seleccionados. Te quedan {$plan->changes_left} intento(s).";
+            "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
+                "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
+
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'role' => 'assistant',
+                'content' => $mensajeIA,
+            ]);
+
 
             return response()->json([
                 'success' => true,

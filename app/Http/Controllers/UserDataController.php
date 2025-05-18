@@ -43,5 +43,27 @@ class UserDataController extends Controller
 
         return redirect('/')->with('success', 'Cuenta creada correctamente.');
     }
+    public function actualizar(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'age' => 'nullable|numeric|min:1',
+            'gender' => 'in:male,female',
+            'weight_kg' => 'nullable|numeric|min:1',
+            'height_cm' => 'nullable|numeric|min:1',
+        ]);
+
+        $user->update([
+            'name' => $request->input('name'),
+            'age' => $request->input('age'),
+            'gender' => $request->input('gender'),
+            'weight_kg' => $request->input('weight_kg'),
+            'height_cm' => $request->input('height_cm'),
+        ]);
+
+        return redirect()->back()->with('success', 'Perfil actualizado correctamente.');
+    }
 
 }
