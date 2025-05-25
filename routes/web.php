@@ -6,7 +6,9 @@ use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\PreferenceController;
 use App\Http\Middleware\CheckStreak;
+
 
 // Home
 Route::get('/', function () {
@@ -72,3 +74,8 @@ Route::get('/logros', function () {
 
     return app(PerfilController::class)->indexLogros();
 })->name('logros');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/preferences', [PreferenceController::class, 'fetch']);
+    Route::post('/preferences', [PreferenceController::class, 'update']);
+});

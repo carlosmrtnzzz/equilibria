@@ -16,7 +16,7 @@ class ChatController extends Controller
             'mensaje' => 'required|string',
         ]);
 
-        $user = Auth::user(); 
+        $user = Auth::user();
 
         ChatMessage::create([
             'user_id' => $user->id,
@@ -28,7 +28,7 @@ class ChatController extends Controller
             $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Eres un asistente nutricional llamado Equilibria.'],
+                    ['role' => 'system', 'content' => 'Eres un nutricionista profesional que crea planes de alimentación seguros. Tienes prohibido recomendar alimentos que no se adapten a las intolerancias del usuario. Tu prioridad es evitar cualquier riesgo para su salud.'],
                     ['role' => 'user', 'content' => $request->mensaje],
                 ],
             ]);
@@ -57,7 +57,22 @@ class ChatController extends Controller
 
     public function historial()
     {
-        $mensajes = ChatMessage::where('user_id', Auth::id())->orderBy('created_at')->get();
+        $user = Auth::user();
+
+        $mensajes = ChatMessage::where('user_id', $user->id)->orderBy('created_at')->get();
+
+        if ($mensajes->isEmpty()) {
+            ChatMessage::create([
+                'user_id' => $user->id,
+                'role' => 'assistant',
+                'content' => 'Prueba a generar tu primer plan con el botón “Generar Plan Semanal” !!'
+            ]);
+
+            // Vuelve a cargar con el mensaje recién insertado
+            $mensajes = ChatMessage::where('user_id', $user->id)->orderBy('created_at')->get();
+        }
+
         return response()->json($mensajes);
     }
+
 }

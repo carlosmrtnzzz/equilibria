@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Preference extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'is_celiac',
         'is_lactose_intolerant',
-        'disliked_foods',
+        'is_fructose_intolerant',
+        'is_histamine_intolerant',
+        'is_sorbitol_intolerant',
+        'is_casein_intolerant',
+        'is_egg_intolerant',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

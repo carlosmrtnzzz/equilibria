@@ -21,19 +21,61 @@ class PlanController extends Controller
         $user = Auth::user();
         $preferencias = Preference::where('user_id', $user->id)->first();
 
-        $prompt = "Eres un nutricionista. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n";
+        $prompt = "Eres un nutricionista experto en intolerancias alimentarias. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n\n";
+        $prompt .= "Haz platos completos, equilibrados, variados y compatibles con las intolerancias. Si una comida suele llevar un ingrediente prohibido, sustitúyelo.\n";
 
         $prompt .= "Edad: {$user->age}\n";
         $prompt .= "Peso: {$user->weight_kg} kg\n";
         $prompt .= "Altura: {$user->height_cm} cm\n";
-        $prompt .= "Género: {$user->gender}\n";
+        $prompt .= "Género: {$user->gender}\n\n";
+
         if ($preferencias) {
+            $intolerancias = [];
+
             if ($preferencias->is_celiac)
-                $prompt .= "Es celíaco.\n";
+                $intolerancias[] = 'gluten';
             if ($preferencias->is_lactose_intolerant)
-                $prompt .= "Es intolerante a la lactosa.\n";
-            if ($preferencias->disliked_foods)
-                $prompt .= "No le gusta comer: {$preferencias->disliked_foods}.\n";
+                $intolerancias[] = 'lactosa';
+            if ($preferencias->is_fructose_intolerant)
+                $intolerancias[] = 'fructosa';
+            if ($preferencias->is_histamine_intolerant)
+                $intolerancias[] = 'histamina';
+            if ($preferencias->is_sorbitol_intolerant)
+                $intolerancias[] = 'sorbitol';
+            if ($preferencias->is_casein_intolerant)
+                $intolerancias[] = 'caseína';
+            if ($preferencias->is_egg_intolerant)
+                $intolerancias[] = 'huevo';
+
+            if (!empty($intolerancias)) {
+                $prompt .= "Esta persona tiene las siguientes intolerancias alimentarias: " . implode(', ', $intolerancias) . ".\n";
+                $prompt .= "No incluyas ningún alimento que contenga o pueda contener esas sustancias, ni en trazas ni derivados.\n";
+
+                if (in_array('gluten', $intolerancias)) {
+                    $prompt .= "No incluyas: trigo, cebada, centeno, espelta, kamut, productos con gluten ni avena común.\n";
+                }
+                if (in_array('lactosa', $intolerancias)) {
+                    $prompt .= "No incluyas: leche de vaca, yogur, nata, mantequilla, quesos, ni productos con suero lácteo o lactosa.\n";
+                }
+                if (in_array('fructosa', $intolerancias)) {
+                    $prompt .= "Prohibido: plátano, manzana, pera, mango, sandía, uvas, cerezas, higos, tomate, cebolla, espinacas, alcachofa, puerro, miel, jarabe de maíz, etc.\n";
+                }
+                if (in_array('histamina', $intolerancias)) {
+                    $prompt .= "Evita: embutidos, pescado azul, alimentos fermentados, berenjena, espinaca, tomate, mariscos, alcohol, quesos curados.\n";
+                }
+                if (in_array('sorbitol', $intolerancias)) {
+                    $prompt .= "No uses: manzana, pera, ciruela, melocotón, frutas deshidratadas, chicles sin azúcar, caramelos sin azúcar.\n";
+                }
+                if (in_array('caseína', $intolerancias)) {
+                    $prompt .= "Evita todo producto lácteo o derivado de leche: quesos, yogur, leche, suero, incluso si son sin lactosa.\n";
+                }
+                if (in_array('huevo', $intolerancias)) {
+                    $prompt .= "No incluyas: huevo cocido, tortilla, huevos revueltos, huevo frito, ni pastas o preparaciones con huevo.\n";
+                }
+
+                $prompt .= "⚠️ Es preferible que no uses alimentos dudosos si no estás 100% seguro de que son seguros. Usa siempre ingredientes seguros, conocidos por no contener las sustancias mencionadas.\n";
+            }
+
         }
 
         $prompt .= "Devuelve ÚNICAMENTE el plan en formato JSON con esta estructura exacta:\n\n";
@@ -47,7 +89,7 @@ class PlanController extends Controller
             $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Eres un asistente nutricional llamado Equilibria.'],
+                    ['role' => 'system', 'content' => 'Eres un nutricionista profesional que crea planes de alimentación seguros. Tienes prohibido recomendar alimentos que no se adapten a las intolerancias del usuario. Tu prioridad es evitar cualquier riesgo para su salud.'],
                     ['role' => 'user', 'content' => $prompt],
                 ],
             ]);
@@ -281,7 +323,7 @@ class PlanController extends Controller
             $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
                 'model' => 'gpt-3.5-turbo',
                 'messages' => [
-                    ['role' => 'system', 'content' => 'Eres un asistente nutricional llamado Equilibria.'],
+                    ['role' => 'system', 'content' => 'Eres un nutricionista profesional que crea planes de alimentación seguros. Tienes prohibido recomendar alimentos que no se adapten a las intolerancias del usuario. Tu prioridad es evitar cualquier riesgo para su salud.'],
                     ['role' => 'user', 'content' => $prompt],
                 ],
             ]);
@@ -358,7 +400,6 @@ class PlanController extends Controller
             } catch (\Throwable $e) {
                 Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
             }
-
 
             $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).";
             "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
