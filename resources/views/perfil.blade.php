@@ -3,7 +3,6 @@
 @section('content')
     <div class="w-full">
 
-        <!-- Banner con avatar -->
         <div class="relative w-full h-64 bg-cover bg-center"
             style="background-image: url('{{ asset('images/profile-banner.jpg') }}');">
             <div class="absolute bottom-[-48px] left-1/2 transform -translate-x-1/2">
@@ -12,7 +11,6 @@
             </div>
         </div>
 
-        <!-- Nombre + botón -->
         <div class="mt-20 px-4 flex flex-col md:flex-row justify-center items-center gap-4">
             <h2 class="text-2xl font-semibold text-gray-800 text-center">
                 {{ Auth::user()->name }}
@@ -53,8 +51,6 @@
             </script>
         @endif
 
-
-        <!-- Datos del perfil -->
         <div class="mt-8 px-4 flex justify-center">
             <div class="bg-white shadow-md rounded-xl p-6 w-full max-w-xl text-center">
                 <p class="text-gray-600"><strong>Email:</strong> {{ Auth::user()->email }}</p>
@@ -68,7 +64,6 @@
             </div>
         </div>
 
-        <!-- Modal con blur -->
         <div id="edit-modal" class="fixed inset-0 z-50 items-center justify-center hidden bg-white/30 backdrop-blur-sm">
             <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md m-auto">
                 <h3 class="text-xl font-semibold mb-4 text-emerald-700 text-center">Editar perfil</h3>
@@ -126,7 +121,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script>
         const modal = document.getElementById('edit-modal');
         const openBtn = document.getElementById('edit-profile-btn');

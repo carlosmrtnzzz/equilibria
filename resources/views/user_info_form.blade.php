@@ -7,7 +7,6 @@
 
         <div class="relative z-10 w-full max-w-5xl flex flex-col md:flex-row gap-8 items-center justify-between">
 
-            <!-- Formulario -->
             <div class="w-full md:w-1/2 bg-green-50 p-8 rounded-2xl shadow-lg">
                 <h2 class="text-2xl font-bold text-center text-emerald-700 mb-6">Rellena tus datos</h2>
 

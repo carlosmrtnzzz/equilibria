@@ -7,7 +7,8 @@
         <div id="chat-box" class="border p-4 h-96 overflow-y-auto bg-white shadow rounded mb-4"></div>
 
         <div class="mb-4 flex gap-2">
-            <button type="button" id="generarBtn" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">
+            <button type="button" id="generarBtn"
+                class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700 cursor-pointer">
                 Generar Plan Semanal
             </button>
             <button type="button" id="abrirModalBtn"
@@ -18,12 +19,10 @@
     </div>
 @endsection
 
-<!-- Modal para cambiar platos -->
 <div id="modalCambiarPlatos" class="fixed inset-0 z-50 hidden bg-black/50 flex items-center justify-center">
     <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] p-6 overflow-y-auto">
         <h2 class="text-xl font-bold mb-4 text-gray-800 text-center">Selecciona hasta 3 platos para reemplazar</h2>
         <div id="contenedorPlatos" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <!-- Aquí se insertarán dinámicamente los platos -->
         </div>
         <div class="flex justify-end gap-2">
             <button id="cancelarModalBtn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
@@ -42,7 +41,6 @@
 
         document.addEventListener('DOMContentLoaded', async function () {
             try {
-                // Cargar historial
                 const resHistorial = await fetch('/chat/historial');
                 const mensajes = await resHistorial.json();
 
@@ -57,7 +55,6 @@
 
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                // Comprobar cambios restantes
                 const resPlan = await fetch('/chat/plan-actual');
                 const dataPlan = await resPlan.json();
                 const cambios = dataPlan.changes_left;
@@ -80,15 +77,15 @@
 
             const tempId = 'temp-msg';
             chatBox.innerHTML += `
-                                <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
-                                    <div class="dot-spinner">
-                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                        <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                                    </div>
-                                    Generando tu plan semanal...
-                                </div>`;
+                                        <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
+                                            <div class="dot-spinner">
+                                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                                <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                            </div>
+                                            Generando tu plan semanal...
+                                        </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -103,11 +100,11 @@
                 document.getElementById(tempId)?.remove();
 
                 chatBox.innerHTML += `
-                                    <div class="mb-2 text-left text-emerald-700">
-                                        <strong>Equilibria:</strong> ${data.mensaje}
-                                        <br><a href="${data.pdf_url}" target="_blank" class="underline text-sm text-emerald-800 hover:text-emerald-900">📄 Descargar Plan en PDF</a>
-                                        <br><span class="text-sm text-gray-600">También puedes verlo en <a href="{{ route('planes') }}" class="underline">Planes</a>.</span>
-                                    </div>`;
+                                            <div class="mb-2 text-left text-emerald-700">
+                                                <strong>Equilibria:</strong> ${data.mensaje}
+                                                <br><a href="${data.pdf_url}" target="_blank" class="underline text-sm text-emerald-800 hover:text-emerald-900">📄 Descargar Plan en PDF</a>
+                                                <br><span class="text-sm text-gray-600">También puedes verlo en <a href="{{ route('planes') }}" class="underline">Planes</a>.</span>
+                                            </div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             } catch (e) {
                 document.getElementById(tempId)?.remove();
@@ -190,15 +187,15 @@
 
             const tempId = 'cambio-spinner';
             chatBox.innerHTML += `
-                    <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
-                        <div class="dot-spinner">
-                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                            <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
-                        </div>
-                        Actualizando platos seleccionados...
-                    </div>`;
+                            <div id="${tempId}" class="mb-2 text-left flex items-center gap-2 text-gray-500 italic">
+                                <div class="dot-spinner">
+                                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                    <div class="dot-spinner__dot"></div><div class="dot-spinner__dot"></div>
+                                </div>
+                                Actualizando platos seleccionados...
+                            </div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
@@ -216,16 +213,15 @@
 
                 if (data.success) {
                     chatBox.innerHTML += `
-                            <div class="mb-2 text-left text-emerald-700">
-                                <strong>Equilibria:</strong> He actualizado los platos seleccionados. Te quedan <strong>${data.changes_left}</strong> intento(s).
-                            </div>`;
+                                    <div class="mb-2 text-left text-emerald-700">
+                                        <strong>Equilibria:</strong> He actualizado los platos seleccionados. Te quedan <strong>${data.changes_left}</strong> intento(s).
+                                    </div>`;
                     chatBox.scrollTop = chatBox.scrollHeight;
 
-                    // Si aún quedan intentos, recargar el modal
                     if (data.changes_left > 0) {
-                        abrirModalBtn.click(); // vuelve a abrir el modal desde cero
+                        abrirModalBtn.click();
                     } else {
-                        modal.classList.add('hidden'); // cerrar modal
+                        modal.classList.add('hidden');
                         abrirModalBtn.disabled = true;
                         abrirModalBtn.classList.add('opacity-50', 'cursor-not-allowed');
                         abrirModalBtn.title = "Ya has agotado tus 3 cambios.";
@@ -233,9 +229,9 @@
                 } else {
                     modal.classList.add('hidden');
                     chatBox.innerHTML += `
-                            <div class="mb-2 text-left text-red-600">
-                                <strong>Equilibria:</strong> Hubo un error actualizando los platos.
-                            </div>`;
+                                    <div class="mb-2 text-left text-red-600">
+                                        <strong>Equilibria:</strong> Hubo un error actualizando los platos.
+                                    </div>`;
                 }
 
             } catch (e) {
@@ -243,9 +239,9 @@
                 document.getElementById(tempId)?.remove();
                 modal.classList.add('hidden');
                 chatBox.innerHTML += `
-                        <div class="mb-2 text-left text-red-600">
-                            <strong>Equilibria:</strong> Error al contactar con el servidor.
-                        </div>`;
+                                <div class="mb-2 text-left text-red-600">
+                                    <strong>Equilibria:</strong> Error al contactar con el servidor.
+                                </div>`;
             }
         });
 

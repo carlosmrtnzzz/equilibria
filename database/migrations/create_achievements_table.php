@@ -5,17 +5,23 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('achievements', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->string('icon')->nullable();
+            $table->text('description')->nullable();
+            $table->string('type'); // 'generate_plan', 'login_streak', etc.
+            $table->integer('target_value')->default(1);
+            $table->string('reward_type')->nullable(); // 'extra_swap', 'extra_regeneration', etc.
+            $table->integer('reward_amount')->nullable();
+            $table->string('icon')->nullable(); // archivo imagen, ej: plan1.png
             $table->timestamps();
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('achievements');
     }
 };

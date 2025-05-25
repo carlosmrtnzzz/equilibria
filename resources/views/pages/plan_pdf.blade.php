@@ -41,7 +41,6 @@
         $diasSegunda = ['viernes', 'sábado', 'domingo'];
     @endphp
 
-    {{-- Página 1 --}}
     @foreach ($diasPrimera as $dia)
         @if(isset($meals[$dia]))
             <h2>{{ ucfirst($dia) }}</h2>
@@ -66,7 +65,6 @@
 
     <div style="page-break-before: always;"></div>
 
-    {{-- Página 2 --}}
     @foreach ($diasSegunda as $dia)
         @if(isset($meals[$dia]))
             <h2>{{ ucfirst($dia) }}</h2>

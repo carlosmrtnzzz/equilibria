@@ -26,7 +26,7 @@ class User extends Authenticatable
         'weight_kg',
         'height_cm',
     ];
-    
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,8 +51,14 @@ class User extends Authenticatable
         ];
     }
     public function preference()
-{
-    return $this->hasOne(Preference::class);
-}
+    {
+        return $this->hasOne(Preference::class);
+    }
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class, 'user_achievements')
+            ->withPivot('progress', 'unlocked', 'unlocked_at')
+            ->withTimestamps();
+    }
 
 }

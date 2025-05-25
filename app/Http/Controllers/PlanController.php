@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ChatMessage;
+use App\Models\Achievement;
+use App\Models\UserAchievement;
 class PlanController extends Controller
 {
     public function generar(Request $request)
@@ -19,7 +21,6 @@ class PlanController extends Controller
         $user = Auth::user();
         $preferencias = Preference::where('user_id', $user->id)->first();
 
-        // Construimos el prompt
         $prompt = "Eres un nutricionista. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n";
 
         $prompt .= "Edad: {$user->age}\n";
@@ -60,7 +61,6 @@ class PlanController extends Controller
 
             $planTexto = $data['choices'][0]['message']['content'];
 
-            // Extraer sólo el JSON, ignorando texto adicional
             if (preg_match('/\{.*\}/s', $planTexto, $coincidencias)) {
                 $jsonLimpio = $coincidencias[0];
                 $planJson = json_decode($jsonLimpio, true);
@@ -74,7 +74,6 @@ class PlanController extends Controller
                 return back()->with('error', 'El plan generado no tiene el formato esperado.');
             }
 
-            // Verificar si alguna comida está vacía o en blanco
             $hayVacio = false;
             foreach ($planJson as $dia => $comidas) {
                 foreach (['desayuno', 'comida', 'cena'] as $tipo) {
@@ -87,14 +86,12 @@ class PlanController extends Controller
 
             if ($hayVacio) {
                 Log::warning('El plan contiene campos vacíos, se va a regenerar automáticamente.');
-                return $this->generar($request); // Vuelve a intentarlo recursivamente
+                return $this->generar($request);
             }
 
-
-            $inicioSemana = Carbon::now()->startOfWeek(Carbon::MONDAY);
+            $inicioSemana = Carbon::now()->startOfWeek(\Carbon\CarbonInterface::MONDAY);
             $finSemana = $inicioSemana->copy()->addDays(6);
 
-            // Guardar en base de datos
             $plan = WeeklyPlan::create([
                 'user_id' => $user->id,
                 'start_date' => $inicioSemana,
@@ -104,25 +101,20 @@ class PlanController extends Controller
                 'changes_left' => 3,
             ]);
 
-            // Crear PDF
             $pdf = Pdf::loadView('pages.plan_pdf', [
                 'meals' => $planJson,
                 'start_date' => $inicioSemana->format('d/m/Y'),
                 'end_date' => $finSemana->format('d/m/Y'),
             ]);
 
-
             $nombrePdf = 'plan_' . $plan->id . '.pdf';
             $path = 'planes/' . $nombrePdf;
 
-            // Guardar PDF en storage/app/public/planes
             Storage::disk('public')->put($path, $pdf->output());
 
-            // Actualizar la URL en la base de datos
             $plan->pdf_url = 'storage/' . $path;
             $plan->save();
 
-            // Guardar el mensaje en la base de datos para el historial del chat
             ChatMessage::create([
                 'user_id' => $user->id,
                 'role' => 'user',
@@ -139,13 +131,58 @@ class PlanController extends Controller
                 'content' => $mensajeIA,
             ]);
 
+            try {
+                $logros = Achievement::where('type', 'generate_plan')->get();
+
+                foreach ($logros as $logro) {
+                    $userLogro = UserAchievement::firstOrNew([
+                        'user_id' => $user->id,
+                        'achievement_id' => $logro->id,
+                    ]);
+
+                    if (!$userLogro->exists) {
+                        $userLogro->progress = 0;
+                        $userLogro->unlocked = false;
+                    }
+
+                    Log::info("LOGRO: {$logro->name} | progreso actual: {$userLogro->progress} / {$logro->target_value} | desbloqueado: " . ($userLogro->unlocked ? 'sí' : 'no'));
+
+                    if (!$userLogro->unlocked) {
+                        $userLogro->progress += 1;
+                        Log::info("➡️ Después de incrementar: progress={$userLogro->progress}");
+
+                        if ($userLogro->progress >= $logro->target_value) {
+                            Log::info("✅ Logro desbloqueado: {$logro->name}");
+
+                            $userLogro->unlocked = true;
+                            $userLogro->unlocked_at = now();
+
+                            if ($logro->reward_type && $logro->reward_amount) {
+                                if ($logro->reward_type === 'extra_swap') {
+                                    $user->increment('extra_swaps', $logro->reward_amount);
+                                } elseif ($logro->reward_type === 'extra_regeneration') {
+                                    $user->increment('extra_regenerations', $logro->reward_amount);
+                                }
+                            }
+
+                            session()->flash('success', '¡Has desbloqueado el logro: ' . $logro->name . '!');
+                        }
+                        Log::info("💾 Guardando progreso de logro: {$logro->name}");
+
+                        $userLogro->save();
+                    }
+                }
+                Log::info("➡️ Revisando logro: {$logro->name}");
+                Log::info("➡️ Antes: progress={$userLogro->progress}, unlocked=" . ($userLogro->unlocked ? 'sí' : 'no') . ", target={$logro->target_value}");
+
+            } catch (\Throwable $e) {
+                Log::error('ERROR EN BLOQUE DE LOGROS: ' . $e->getMessage());
+            }
 
             return response()->json([
                 'mensaje' => "Aquí tienes tu plan semanal.",
                 'pdf_url' => asset('storage/' . $path),
             ]);
-
-
 
         } catch (\Exception $e) {
             Log::error('Error al generar plan: ' . $e->getMessage());
@@ -154,16 +191,13 @@ class PlanController extends Controller
     }
     public function index()
     {
-        // Si no ha completado el registro aún (no está logueado pero tiene datos en sesión)
         if (!Auth::check()) {
             if (session()->has('register_email')) {
                 return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los planes.');
             }
-            // Si no hay sesión ni login, simplemente mándalo al registro
             return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los planes.');
         }
 
-        // Si está autenticado, carga sus planes
         $user = Auth::user();
         $planes = WeeklyPlan::where('user_id', $user->id)->latest()->get();
 
@@ -195,8 +229,6 @@ class PlanController extends Controller
         $user = Auth::user();
         $plan = WeeklyPlan::where('user_id', $user->id)->latest()->first();
 
-
-
         if (!$plan) {
             return response()->json(['error' => 'No tienes un plan activo.'], 404);
         }
@@ -204,7 +236,6 @@ class PlanController extends Controller
         if ($plan->changes_left <= 0) {
             return response()->json(['error' => 'Ya has usado todos tus intentos.'], 403);
         }
-
 
         if (count($request->platos) > $plan->changes_left) {
             return response()->json([
@@ -215,7 +246,6 @@ class PlanController extends Controller
         $originalPlan = json_decode($plan->meals_json, true);
         $platosAReemplazar = $request->input('platos');
 
-        // Crear prompt personalizado para reemplazar solo esos platos
         $prompt = "Eres un nutricionista. Reemplaza únicamente los siguientes platos por otros equivalentes y saludables:\n";
 
         foreach ($platosAReemplazar as $p) {
@@ -265,7 +295,6 @@ class PlanController extends Controller
                 return response()->json(['error' => 'Error al parsear el JSON devuelto.'], 500);
             }
 
-            // Reemplazar solo los platos seleccionados en el plan original
             foreach ($platosAReemplazar as $p) {
                 if (isset($nuevoJson[$p['dia']][$p['tipo']])) {
                     $originalPlan[$p['dia']][$p['tipo']] = $nuevoJson[$p['dia']][$p['tipo']];
@@ -275,7 +304,6 @@ class PlanController extends Controller
             $plan->meals_json = json_encode($originalPlan);
             $plan->changes_left -= count($platosAReemplazar);
 
-            // Regenerar el PDF con los nuevos datos
             $pdf = Pdf::loadView('pages.plan_pdf', [
                 'meals' => $originalPlan,
                 'start_date' => Carbon::parse($plan->start_date)->format('d/m/Y'),
@@ -284,17 +312,11 @@ class PlanController extends Controller
 
             $nombrePdf = 'plan_' . $plan->id . '.pdf';
             $path = 'planes/' . $nombrePdf;
-
-            // Guardar el nuevo PDF
             Storage::disk('public')->put($path, $pdf->output());
-
-            // Actualizar la ruta
             $plan->pdf_url = 'storage/' . $path;
+            $plan->save();
 
-            $plan->save(); // guardar todo junto
-
-            // Guardar en historial del chat
-            $mensajeIA = "He actualizado los platos seleccionados. Te quedan {$plan->changes_left} intento(s).";
+            $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).";
             "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
                 "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
 
@@ -303,7 +325,6 @@ class PlanController extends Controller
                 'role' => 'assistant',
                 'content' => $mensajeIA,
             ]);
-
 
             return response()->json([
                 'success' => true,
@@ -317,5 +338,4 @@ class PlanController extends Controller
             return response()->json(['error' => 'Ocurrió un error al contactar con la IA.'], 500);
         }
     }
-
 }

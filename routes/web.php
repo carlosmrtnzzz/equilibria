@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PlanController;
-
+use App\Http\Controllers\PerfilController;
 
 // Home
 Route::get('/', function () {
@@ -62,3 +62,11 @@ Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middlewa
 Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware('auth');
 
 Route::put('/perfil/actualizar', [UserDataController::class, 'actualizar'])->name('perfil.actualizar');
+
+Route::get('/logros', function () {
+    if (!auth()->check()) {
+        return redirect()->route('register')->with('message', 'Debes registrarte para acceder a los logros.');
+    }
+
+    return app(PerfilController::class)->indexLogros();
+})->name('logros');
