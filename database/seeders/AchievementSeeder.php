@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -9,6 +10,7 @@ class AchievementSeeder extends Seeder
     public function run(): void
     {
         $achievements = [
+            // No tocar
             [
                 'name' => 'Primer plan generado',
                 'description' => 'Has generado tu primer plan semanal.',
@@ -16,34 +18,56 @@ class AchievementSeeder extends Seeder
                 'target_value' => 1,
                 'reward_type' => 'extra_swap',
                 'reward_amount' => 1,
-                'icon' => 'plan1.png',
+                'icon' => null,
             ],
-            [
-                'name' => 'Racha de 3 días',
-                'description' => 'Has iniciado sesión 3 días seguidos.',
-                'type' => 'login_streak',
-                'target_value' => 3,
-                'reward_type' => 'extra_swap',
-                'reward_amount' => 1,
-                'icon' => 'streak3.png',
-            ],
-            [
-                'name' => 'Racha de 7 días',
-                'description' => 'Has iniciado sesión durante 7 días seguidos.',
-                'type' => 'login_streak',
-                'target_value' => 7,
-                'reward_type' => 'extra_regeneration',
-                'reward_amount' => 1,
-                'icon' => 'streak7.png',
-            ],
+
+            // Cambiar platos
             [
                 'name' => 'Primer cambio de plato',
-                'description' => 'Has cambiado un plato por primera vez.',
+                'description' => 'Has reemplazado un plato en tu plan semanal.',
                 'type' => 'change_dish',
                 'target_value' => 1,
                 'reward_type' => 'extra_swap',
                 'reward_amount' => 1,
-                'icon' => 'dish1.png',
+                'icon' => null,
+            ],
+            [
+                'name' => 'Maestro del reemplazo',
+                'description' => 'Has reemplazado 20 platos en total.',
+                'type' => 'change_dish',
+                'target_value' => 20,
+                'reward_type' => 'extra_swap',
+                'reward_amount' => 3,
+                'icon' => null,
+            ],
+
+            // Rachas de login
+            [
+                'name' => 'Racha de 3 días',
+                'description' => 'Has accedido a Equilibria durante 3 días seguidos.',
+                'type' => 'login_streak',
+                'target_value' => 3,
+                'reward_type' => 'extra_regeneration',
+                'reward_amount' => 1,
+                'icon' => null,
+            ],
+            [
+                'name' => 'Racha de 7 días',
+                'description' => 'Has accedido a Equilibria durante 7 días seguidos.',
+                'type' => 'login_streak',
+                'target_value' => 7,
+                'reward_type' => 'extra_regeneration',
+                'reward_amount' => 2,
+                'icon' => null,
+            ],
+            [
+                'name' => 'Racha de 30 días',
+                'description' => 'Has accedido a Equilibria durante 30 días seguidos.',
+                'type' => 'login_streak',
+                'target_value' => 30,
+                'reward_type' => 'extra_regeneration',
+                'reward_amount' => 5,
+                'icon' => null,
             ],
             [
                 'name' => 'Perfil completo',
@@ -53,11 +77,14 @@ class AchievementSeeder extends Seeder
                 'reward_type' => 'extra_swap',
                 'reward_amount' => 1,
                 'icon' => 'profile.png',
-            ],
+            ]
         ];
 
         foreach ($achievements as $data) {
-            Achievement::updateOrCreate(['name' => $data['name']], $data);
+            Achievement::firstOrCreate(
+                ['name' => $data['name']],
+                $data
+            );
         }
     }
 }

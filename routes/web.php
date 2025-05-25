@@ -1,10 +1,12 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Middleware\CheckStreak;
 
 // Home
 Route::get('/', function () {
@@ -47,19 +49,19 @@ Route::get('/logros', function () {
 // Perfil (solo para usuarios ya autenticados)
 Route::get('/perfil', function () {
     return view('perfil');
-})->middleware('auth')->name('perfil');
+})->middleware(['auth', CheckStreak::class])->name('perfil');
 
-Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->middleware('auth');
+Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->middleware(['auth', CheckStreak::class]);
 
-Route::post('/plan/generar', [PlanController::class, 'generar'])->middleware('auth')->name('plan.generar');
+Route::post('/plan/generar', [PlanController::class, 'generar'])->middleware(['auth', CheckStreak::class])->name('plan.generar');
 
 Route::get('/planes', [PlanController::class, 'index'])->name('planes');
 
-Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware('auth');
+Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware(['auth', CheckStreak::class]);
 
-Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware('auth');
+Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware(['auth', CheckStreak::class]);
 
-Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware('auth');
+Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware(['auth', CheckStreak::class]);
 
 Route::put('/perfil/actualizar', [UserDataController::class, 'actualizar'])->name('perfil.actualizar');
 

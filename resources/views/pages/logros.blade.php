@@ -20,7 +20,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 @foreach ($allAchievements as $achievement)
                     @php
-                        $pivot = $achievement->users->first()?->pivot;
+                        $pivot = $achievement->users->where('pivot.achievement_id', $achievement->id)->first()?->pivot;
                         $progress = $pivot?->progress ?? 0;
                         $target = $achievement->target_value;
                         $completed = $pivot?->unlocked ?? false;
@@ -29,7 +29,7 @@
 
                     <div class="bg-white shadow rounded-xl p-5 transition hover:scale-[1.02]">
                         <div class="flex items-center gap-4 mb-3">
-                            <img src="{{ asset('icons/' . $achievement->icon) }}" alt="Icono logro"
+                            <img src="{{ asset('images/achievement.png') }}" alt="Icono logro"
                                 class="w-12 h-12 {{ $completed ? '' : 'grayscale opacity-50' }}">
                             <div>
                                 <h3 class="text-lg font-semibold text-emerald-700">{{ $achievement->name }}</h3>
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <p class="text-sm mt-1 text-right text-gray-500">
-                                {{ $percentage }}% {{ $completed ? 'Completado' : 'Pendiente' }}
+                                {{ $percentage }}% {{ $completed ? 'Completado' : 'Pendiente' }} ({{ $progress }}/{{ $target }})
                             </p>
                         </div>
                     </div>

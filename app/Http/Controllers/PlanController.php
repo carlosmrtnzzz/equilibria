@@ -132,6 +132,7 @@ class PlanController extends Controller
             ]);
 
             try {
+                $logrosDesbloqueados = [];
                 $logros = Achievement::where('type', 'generate_plan')->get();
 
                 foreach ($logros as $logro) {
@@ -165,7 +166,7 @@ class PlanController extends Controller
                                 }
                             }
 
-                            session()->flash('success', '¡Has desbloqueado el logro: ' . $logro->name . '!');
+                            $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';
                         }
                         Log::info("💾 Guardando progreso de logro: {$logro->name}");
 
@@ -182,7 +183,9 @@ class PlanController extends Controller
             return response()->json([
                 'mensaje' => "Aquí tienes tu plan semanal.",
                 'pdf_url' => asset('storage/' . $path),
+                'logros' => $logrosDesbloqueados,
             ]);
+
 
         } catch (\Exception $e) {
             Log::error('Error al generar plan: ' . $e->getMessage());
@@ -316,6 +319,47 @@ class PlanController extends Controller
             $plan->pdf_url = 'storage/' . $path;
             $plan->save();
 
+            try {
+                $logros = Achievement::where('type', 'change_dish')->get();
+                $logrosDesbloqueados = [];
+
+                foreach ($logros as $logro) {
+                    $userLogro = UserAchievement::firstOrNew([
+                        'user_id' => $user->id,
+                        'achievement_id' => $logro->id,
+                    ]);
+
+                    if (!$userLogro->exists) {
+                        $userLogro->progress = 0;
+                        $userLogro->unlocked = false;
+                    }
+
+                    if (!$userLogro->unlocked) {
+                        $userLogro->progress += count($platosAReemplazar);
+
+                        if ($userLogro->progress >= $logro->target_value) {
+                            $userLogro->unlocked = true;
+                            $userLogro->unlocked_at = now();
+
+                            if ($logro->reward_type && $logro->reward_amount) {
+                                if ($logro->reward_type === 'extra_swap') {
+                                    $user->increment('extra_swaps', $logro->reward_amount);
+                                } elseif ($logro->reward_type === 'extra_regeneration') {
+                                    $user->increment('extra_regenerations', $logro->reward_amount);
+                                }
+                            }
+
+                            $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';
+                        }
+
+                        $userLogro->save();
+                    }
+                }
+            } catch (\Throwable $e) {
+                Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
+            }
+
+
             $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).";
             "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
                 "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
@@ -331,7 +375,9 @@ class PlanController extends Controller
                 'nuevo_plan' => $originalPlan,
                 'changes_left' => $plan->changes_left,
                 'pdf_url' => asset('storage/' . $path),
+                'logros' => $logrosDesbloqueados ?? [],
             ]);
+
 
         } catch (\Exception $e) {
             Log::error('Error reemplazando platos: ' . $e->getMessage());

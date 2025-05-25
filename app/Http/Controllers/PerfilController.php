@@ -11,13 +11,16 @@ class PerfilController extends Controller
     {
         $user = Auth::user();
 
-        $allAchievements = Achievement::with([
-            'users' => function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            }
-        ])->get();
+        $allAchievements = Achievement::all()->map(function ($achievement) use ($user) {
+            $achievement->setRelation(
+                'users',
+                $achievement->users()->where('user_id', $user->id)->get()
+            );
+            return $achievement;
+        });
 
         return view('pages.logros', compact('allAchievements'));
     }
+
 
 }

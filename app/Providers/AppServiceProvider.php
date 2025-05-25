@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\CheckStreak;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +30,10 @@ class AppServiceProvider extends ServiceProvider
                 \Log::error('No se pudo crear el enlace de storage: ' . $e->getMessage());
             }
         }
+        app()->booted(function () {
+            if (Auth::check()) {
+                app(CheckStreak::class)->handle(request(), fn() => null);
+            }
+        });
     }
 }
