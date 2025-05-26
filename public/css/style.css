@@ -244,3 +244,28 @@ header {
     background-color: #d1fae5 !important;
     border-color: #10b981 !important;
 }
+
+
+    /* Scroll personalizado */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #10b981, #0891b2);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #059669, #0e7490);
+    }
+
+    /* Efectos adicionales */
+    .hover\:shadow-3xl:hover {
+        box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
+    }

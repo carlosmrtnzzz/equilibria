@@ -63,9 +63,38 @@
         @yield('content')
     </main>
 
-    <footer class="bg-emerald-600 text-center text-sm py-4 border-t dark:border-gray-700">
-        &copy; {{ date('Y') }} Equilibria. All rights reserved.
+    <footer class="bg-emerald-700 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
+            <div>
+                <h4 class="text-base font-semibold mb-2">Equilibria</h4>
+                <p>Tu bienestar es nuestra misión. Mejora tus hábitos de forma sostenible.</p>
+            </div>
+
+            <div>
+                <h4 class="text-base font-semibold mb-2">Navegación</h4>
+                <ul class="space-y-1">
+                    <li><a href="{{ route('/') }}" class="hover:underline">Inicio</a></li>
+                    <li><a href="{{ route('planes') }}" class="hover:underline">Planes Semanales</a></li>
+                    <li><a href="{{ route('chat') }}" class="hover:underline">Chat</a></li>
+                    <li><a href="{{ route('logros') }}" class="hover:underline">Logros</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-base font-semibold mb-2">Contacto</h4>
+                <ul class="space-y-1">
+                    <li>Email: <a href="mailto:info@equilibria.com" class="hover:underline">info@equilibria.com</a></li>
+                    <li>Twitter: <a href="#" class="hover:underline">@EquilibriaApp</a></li>
+                    <li>GitHub: <a href="#" class="hover:underline">github.com/Equilibria</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-emerald-500 mt-6 pt-4 text-center text-xs text-emerald-100">
+            &copy; {{ date('Y') }} Equilibria. Todos los derechos reservados.
+        </div>
     </footer>
+
 
 
     @stack('scripts')

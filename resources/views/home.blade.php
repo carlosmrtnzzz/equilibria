@@ -76,7 +76,52 @@
             </div>
         </div>
     </main>
+    <!-- Sección adicional con características -->
+    <div class="max-w-7xl mx-auto px-8 mt-24 mb-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+            class="group backdrop-blur-xl bg-white/60 rounded-3xl p-6 shadow-xl border border-white/20 transform hover:scale-105 hover:bg-white/70 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Planes Personalizados</h3>
+            <p class="text-gray-600 text-center">Cada plan se adapta a tus necesidades específicas y preferencias
+                alimentarias.</p>
+        </div>
 
+        <div
+            class="group backdrop-blur-xl bg-white/60 rounded-3xl p-6 shadow-xl border border-white/20 transform hover:scale-105 hover:bg-white/70 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Estilo de Vida</h3>
+            <p class="text-gray-600 text-center">No es una dieta temporal, es un cambio sostenible hacia un estilo de vida
+                más saludable.</p>
+        </div>
+
+        <div
+            class="group backdrop-blur-xl bg-white/60 rounded-3xl p-6 shadow-xl border border-white/20 transform hover:scale-105 hover:bg-white/70 transition-all duration-300">
+            <div
+                class="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center mb-4 mx-auto shadow-lg group-hover:rotate-12 transition-all duration-300">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 text-center mb-3">Resultados Rápidos</h3>
+            <p class="text-gray-600 text-center">Ve cambios positivos desde la primera semana con nuestros planes
+                balanceados.</p>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -84,3 +129,65 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="{{ asset('js/home-scroll-animation.js') }}"></script>
 @endpush
+
+
+<style>
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+
+    .animate-slideDown {
+        animation: slideDown 0.4s ease-out;
+    }
+
+    /* Animación de pulso personalizada */
+    @keyframes pulse-custom {
+
+        0%,
+        100% {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+
+        50% {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+    }
+
+    .animate-pulse {
+        animation: pulse-custom 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Mejoras para el video de fondo */
+    .background-video {
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    /* Efectos de hover para botones */
+    button:active,
+    a:active {
+        transform: scale(0.98);
+    }
+
+    /* Animaciones suaves para elementos interactivos */
+    .group:hover .group-hover\:rotate-12 {
+        transform: rotate(12deg);
+    }
+
+    .group:hover .group-hover\:translate-x-1 {
+        transform: translateX(4px);
+    }
+
+    .group:hover .group-hover\:scale-105 {
+        transform: scale(1.05);
+    }
+</style>
