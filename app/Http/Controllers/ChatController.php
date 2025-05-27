@@ -64,8 +64,7 @@ class ChatController extends Controller
         if ($mensajes->isEmpty()) {
             ChatMessage::create([
                 'user_id' => $user->id,
-                'role' => 'assistant',
-                'content' => 'Prueba a generar tu primer plan con el botón “Generar Plan Semanal” !!'
+                'role' => 'assistant'
             ]);
 
             // Vuelve a cargar con el mensaje recién insertado

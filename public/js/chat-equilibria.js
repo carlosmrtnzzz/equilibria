@@ -5,16 +5,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const formPreferencias = document.getElementById('formPreferencias');
     const chatBox = document.getElementById('chat-box');
 
-    const resHistorial = await fetch('/chat/historial');
-    const mensajes = await resHistorial.json();
-
-    if (mensajes.length === 0) {
-        chatBox.innerHTML += `
-        <div class="mb-2 text-left text-emerald-700">
-            <strong>Equilibria:</strong> Prueba a generar tu primer plan con el botón <strong>“Generar Plan Semanal”</strong> !!
-        </div>`;
-    }
-
     function mostrarToast(mensaje) {
         const toast = document.getElementById('toast-success');
         toast.textContent = mensaje;

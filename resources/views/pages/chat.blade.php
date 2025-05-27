@@ -208,7 +208,7 @@
 
 <!-- Toast de éxito mejorado -->
 <div id="toast-success"
-    class="fixed top-8 right-[-100%] z-[9999] backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out border border-green-400/30 flex items-center gap-3">
+    class="fixed top-33 right-[-100%] z-[9999] backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out border border-green-400/30 flex items-center gap-3">
     <div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

@@ -4,8 +4,14 @@
 
     @if (session('message'))
         <div id="toast-message"
-            class="fixed top-30 right-[-100%] z-[9999] bg-green-100 border-l-4 border-green-500 text-green-800 px-6 py-3 rounded shadow-lg transition-all duration-500 ease-out">
-            {{ session('message') }}
+            class="fixed top-[8.5rem] right-[-100%] z-[9999] backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out border border-green-400/30 flex items-center gap-3">
+            <div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+                </svg>
+            </div>
+            <span class="font-medium">{{ session('message') }}</span>
         </div>
 
         <script>
