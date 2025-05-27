@@ -71,7 +71,7 @@
 
             <div class="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center">
                 <video autoplay loop muted class="w-full h-auto">
-                    <source src="{{ asset('videos/running.mp4') }}" type="video/mp4">
+                    <!-- <source src="{{ asset('videos/running.mp4') }}" type="video/mp4"> -->
                 </video>
             </div>
         </div>

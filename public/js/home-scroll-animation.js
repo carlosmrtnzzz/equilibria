@@ -1,7 +1,7 @@
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.to(".mask h2", {
-    scale: 300,
+    scale: 60,
     scrollTrigger: {
         trigger: ".scroll-container",
         scrub: 1,

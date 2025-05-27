@@ -42,7 +42,7 @@
                         {{ Auth::user()->name }}
                     </h1>
                     <button id="edit-profile-btn"
-                        class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20">
+                        class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 cursor-pointer">
                         <div
                             class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         </div>
@@ -296,11 +296,11 @@
             <!-- Footer del modal -->
             <div class="bg-gray-50/80 backdrop-blur-sm p-6 flex justify-end gap-3 border-t border-gray-200/50">
                 <button type="button" id="close-modal"
-                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Cancelar
                 </button>
                 <button type="submit" form="edit-modal" onclick="document.querySelector('#edit-modal form').submit()"
-                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Guardar Cambios
                 </button>
             </div>

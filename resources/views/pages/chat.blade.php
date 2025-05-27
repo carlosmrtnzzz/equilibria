@@ -133,11 +133,11 @@
             <!-- Footer del modal -->
             <div class="bg-gray-50/80 backdrop-blur-sm p-6 flex justify-end gap-3 border-t border-gray-200/50">
                 <button id="cancelarModalBtn"
-                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Cancelar
                 </button>
                 <button id="confirmarCambiosBtn"
-                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Actualizar
                 </button>
             </div>
@@ -238,11 +238,11 @@
             <!-- Footer del modal -->
             <div class="bg-gray-50/80 backdrop-blur-sm p-6 flex justify-end gap-3 border-t border-gray-200/50">
                 <button type="button" id="cancelarPreferenciasBtn"
-                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Cancelar
                 </button>
                 <button type="submit" form="formPreferencias"
-                    class="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105">
+                    class="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Guardar Preferencias
                 </button>
             </div>

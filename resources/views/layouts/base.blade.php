@@ -23,7 +23,7 @@
             </a>
 
             <!-- Botón hamburguesa -->
-            <button id="mobile-menu-toggle" class="md:hidden text-gray-700">
+            <button id="mobile-menu-toggle" class="md:hidden text-gray-700 cursor-pointer">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
@@ -38,7 +38,6 @@
                 <a href="{{ route('logros') }}" class="hover:text-emerald-600">Logros</a>
             </nav>
 
-            <!-- Usuario o botones auth -->
             <div class="relative md:flex hidden"> @auth
                 <div id="user-button"
                     class="cursor-pointer text-gray-700 hover:text-emerald-600 flex items-center justify-center w-10 h-10 rounded-full transition">
@@ -49,16 +48,19 @@
                     </svg>
                 </div>
                 <div id="user-dropdown"
-                    class="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-md hidden transition-all duration-200">
-                    <a href="{{ route('perfil') }}"
-                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-100">Perfil</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-emerald-100">
-                            Logout
-                        </button>
-                    </form>
+                    class="absolute right-0 mt-10 w-40 bg-white border border-emerald-200 rounded-md shadow-md hidden transition-all duration-200 z-50">
+
+                    <div class="relative z-20 rounded-md overflow-hidden">
+                        <a href="{{ route('perfil') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-100">Perfil</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-emerald-100 cursor-pointer">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
                 </div>
             @else
                     <div class="space-x-2 hidden md:flex">
@@ -85,7 +87,8 @@
                 <a href="{{ route('perfil') }}" class="block hover:text-emerald-600">Perfil</a>
                 <form method="POST" action="{{ route('logout') }}" class="w-full">
                     @csrf
-                    <button type="submit" class="block w-full text-left hover:text-emerald-600">Logout</button>
+                    <button type="submit"
+                        class="block w-full text-left hover:text-emerald-600 cursor-pointer">Logout</button>
                 </form>
             @else
                 <a href="{{ route('login') }}"
