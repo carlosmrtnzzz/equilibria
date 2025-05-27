@@ -1,9 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-    <!-- Fondo con gradiente animado -->
     <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
-        <!-- Elementos decorativos animados -->
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
         </div>
@@ -11,8 +9,7 @@
             class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000">
         </div>
 
-        <div class="relative max-w-6xl mx-auto pt-16 pb-12 px-4">
-            <!-- Header mejorado -->
+        <div class="relative max-w-6xl mx-auto pt-16 pb-12 px-4 mb-25">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center gap-3 mb-4">
                     <div
@@ -34,7 +31,6 @@
             </div>
 
             @if ($planes->isEmpty())
-                <!-- Estado vacío mejorado -->
                 <div
                     class="backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-12 text-center transform hover:scale-[1.01] transition-all duration-300">
                     <div
@@ -123,7 +119,7 @@
                 </div>
 
                 <!-- Tabla mejorada -->
-                <div class="backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                <div class="backdrop-blur-xl bg-white/80 mt-15 rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="min-w-full">
                             <thead class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
@@ -186,74 +182,10 @@
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
             @endif
         </div>
     </div>
-
-    <!-- Estilos CSS adicionales -->
-    <style>
-        /* Animaciones personalizadas */
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Scroll personalizado para la tabla */
-        .overflow-x-auto::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .overflow-x-auto::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-        }
-
-        .overflow-x-auto::-webkit-scrollbar-thumb {
-            background: linear-gradient(to right, #10b981, #0891b2);
-            border-radius: 10px;
-        }
-
-        .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(to right, #059669, #0e7490);
-        }
-
-        /* Efectos de hover para filas de tabla */
-        tbody tr:hover {
-            transform: translateX(4px);
-        }
-
-        /* Gradientes para las comidas */
-        .desayuno-bg {
-            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
-        }
-
-        .comida-bg {
-            background: linear-gradient(135deg, #dbeafe 0%, #c7d2fe 100%);
-        }
-
-        .cena-bg {
-            background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%);
-        }
-
-        /* Efectos de profundidad */
-        .table-cell:hover {
-            transform: scale(1.02);
-            z-index: 10;
-        }
-    </style>
 @endsection

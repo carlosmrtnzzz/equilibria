@@ -104,7 +104,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-emerald-700 text-white py-8 mt-12">
+    <footer class="bg-emerald-700 text-white py-8">
         <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm">
             <div>
                 <h4 class="text-base font-semibold mb-2">Equilibria</h4>
