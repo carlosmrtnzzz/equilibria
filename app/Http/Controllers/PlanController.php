@@ -78,10 +78,10 @@ class PlanController extends Controller
 
         }
 
-        $prompt .= "Devuelve ÚNICAMENTE el plan en formato JSON con esta estructura exacta:\n\n";
+        $prompt .= "Devuelve ÚNICAMENTE el plan en formato JSON con esta estructura exacta (5 comidas por día):\n\n";
         $prompt .= "{\n";
-        $prompt .= "  \"lunes\": {\n    \"desayuno\": \"...\",\n    \"comida\": \"...\",\n    \"cena\": \"...\"\n  },\n";
-        $prompt .= "  \"martes\": { \"desayuno\": \"...\" },\n  ... hasta domingo\n";
+        $prompt .= "  \"lunes\": {\n    \"desayuno\": \"...\",\n    \"media-mañana\": \"...\",\n    \"comida\": \"...\",\n    \"merienda\": \"...\",\n    \"cena\": \"...\"\n  },\n";
+        $prompt .= "  \"martes\": { \"desayuno\": \"...\", \"media-mañana\": \"...\", \"comida\": \"...\", \"merienda\": \"...\", \"cena\": \"...\" },\n  ... hasta domingo\n";
         $prompt .= "}\n\n";
         $prompt .= "No incluyas ninguna explicación ni texto adicional fuera del JSON.";
 
@@ -188,14 +188,10 @@ class PlanController extends Controller
                         $userLogro->unlocked = false;
                     }
 
-                    Log::info("LOGRO: {$logro->name} | progreso actual: {$userLogro->progress} / {$logro->target_value} | desbloqueado: " . ($userLogro->unlocked ? 'sí' : 'no'));
-
                     if (!$userLogro->unlocked) {
                         $userLogro->progress += 1;
-                        Log::info("➡️ Después de incrementar: progress={$userLogro->progress}");
 
                         if ($userLogro->progress >= $logro->target_value) {
-                            Log::info("✅ Logro desbloqueado: {$logro->name}");
 
                             $userLogro->unlocked = true;
                             $userLogro->unlocked_at = now();
@@ -210,13 +206,10 @@ class PlanController extends Controller
 
                             $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';
                         }
-                        Log::info("💾 Guardando progreso de logro: {$logro->name}");
 
                         $userLogro->save();
                     }
                 }
-                Log::info("➡️ Revisando logro: {$logro->name}");
-                Log::info("➡️ Antes: progress={$userLogro->progress}, unlocked=" . ($userLogro->unlocked ? 'sí' : 'no') . ", target={$logro->target_value}");
 
             } catch (\Throwable $e) {
                 Log::error('ERROR EN BLOQUE DE LOGROS: ' . $e->getMessage());

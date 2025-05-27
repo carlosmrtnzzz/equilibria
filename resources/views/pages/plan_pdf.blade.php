@@ -7,28 +7,43 @@
     <style>
         body {
             font-family: sans-serif;
-            font-size: 14px;
+            font-size: 13px;
+            color: #1a202c;
         }
 
         h1 {
-            color: #2f855a;
+            color: #047857;
+            font-size: 20px;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-top: 20px;
+            border: 1px solid #ccc;
         }
 
         th,
         td {
+            padding: 10px;
             border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
+            vertical-align: top;
         }
 
         th {
-            background-color: #def7e2;
+            font-size: 14px;
+            color: #1f2937;
+        }
+
+        td {
+            background-color: #ffffff;
+            line-height: 1.5;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9fafb;
         }
     </style>
 </head>
@@ -36,56 +51,30 @@
 <body>
     <h1>Plan Semanal - {{ $start_date }} a {{ $end_date }}</h1>
 
-    @php
-        $diasPrimera = ['lunes', 'martes', 'miércoles', 'jueves'];
-        $diasSegunda = ['viernes', 'sábado', 'domingo'];
-    @endphp
-
-    @foreach ($diasPrimera as $dia)
-        @if(isset($meals[$dia]))
-            <h2>{{ ucfirst($dia) }}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Comida</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($meals[$dia] as $tipo => $descripcion)
-                        <tr>
-                            <td>{{ ucfirst($tipo) }}</td>
-                            <td>{{ $descripcion }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
-    @endforeach
-
-    <div style="page-break-before: always;"></div>
-
-    @foreach ($diasSegunda as $dia)
-        @if(isset($meals[$dia]))
-            <h2>{{ ucfirst($dia) }}</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Comida</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($meals[$dia] as $tipo => $descripcion)
-                        <tr>
-                            <td>{{ ucfirst($tipo) }}</td>
-                            <td>{{ $descripcion }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
-    @endforeach
+    <table>
+        <thead>
+            <tr>
+                <th style="background-color: #d1fae5;">Día</th>
+                <th style="background-color: #fef3c7;">Desayuno</th>
+                <th style="background-color: #fde68a;">Media Mañana</th>
+                <th style="background-color: #bfdbfe;">Comida</th>
+                <th style="background-color: #bbf7d0;">Merienda</th>
+                <th style="background-color: #fbcfe8;">Cena</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($meals as $dia => $comidas)
+                <tr>
+                    <td style="font-weight: bold;">{{ ucfirst($dia) }}</td>
+                    <td>{{ $comidas['desayuno'] ?? '-' }}</td>
+                    <td>{{ $comidas['media-mañana'] ?? '-' }}</td>
+                    <td>{{ $comidas['comida'] ?? '-' }}</td>
+                    <td>{{ $comidas['merienda'] ?? '-' }}</td>
+                    <td>{{ $comidas['cena'] ?? '-' }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </body>
 
 </html>

@@ -20,12 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('hidden');
         contenedorPlatos.innerHTML = '';
         seleccionados = [];
-
-        const aviso = document.createElement('div');
-        aviso.className = 'col-span-2 text-sm text-gray-600 mb-2';
-        aviso.innerText = `Puedes cambiar hasta ${changesLeft} plato(s).`;
-        contenedorPlatos.appendChild(aviso);
-
         const meals = data.meals;
         let idCounter = 0;
 
@@ -34,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id = `plato-${idCounter++}`;
                 const div = document.createElement('div');
                 div.className = 'plato-caja';
-                div.textContent = `${capitalize(dia)} - ${capitalize(tipo)}: ${plato}`;
+                div.innerHTML = `<strong>${capitalize(dia)}</strong> - ${capitalize(tipo)}: ${plato}`;
                 div.dataset.dia = dia;
                 div.dataset.tipo = tipo;
                 div.dataset.plato = plato;
