@@ -3,40 +3,40 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     try {
         const resHistorial = await fetch('/chat/historial');
-        const mensajes = await resHistorial.json();
+        if (!resHistorial.ok) throw new Error("No hay historial todavía");
 
-        if (Array.isArray(mensajes) && mensajes.length > 0) {
-            mensajes.forEach(msg => {
-                const clase = msg.role === 'user' ? 'text-right' : 'text-left text-emerald-700';
-                const nombre = msg.role === 'user' ? 'Tú' : 'Equilibria';
-                const contenedor = document.createElement('div');
-                contenedor.className = `mb-2 ${clase}`;
-                contenedor.innerHTML = `<strong>${nombre}:</strong> ${msg.content}`;
-                chatBox.appendChild(contenedor);
-            });
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
+        const mensajes = await resHistorial.json();
+        mensajes.forEach(msg => {
+            const clase = msg.role === 'user' ? 'text-right' : 'text-left text-emerald-700';
+            const nombre = msg.role === 'user' ? 'Tú' : 'Equilibria';
+            const contenedor = document.createElement('div');
+            contenedor.className = `mb-2 ${clase}`;
+            contenedor.innerHTML = `<strong>${nombre}:</strong> ${msg.content}`;
+            chatBox.appendChild(contenedor);
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
     } catch (e) {
-        console.error("Error cargando historial:", e);
+        console.warn("No se pudo cargar historial:", e.message);
     }
 
-    // 2. Cargar cambios restantes
     try {
-        const resPlan = await fetch('/chat/plan-actual');
+        const resPlan = await fetch(window.planActualUrl);
+        if (!resPlan.ok) throw new Error("No hay plan actual");
         const dataPlan = await resPlan.json();
+
         const cambios = dataPlan.changes_left;
 
         if (cambios <= 0) {
             const btnCambiar = document.getElementById('abrirModalBtn');
-            if (btnCambiar) {
-                btnCambiar.disabled = true;
-                btnCambiar.classList.add('opacity-50', 'cursor-not-allowed');
-                btnCambiar.title = "Ya has agotado tus 3 cambios.";
-            }
+            btnCambiar.disabled = true;
+            btnCambiar.classList.add('opacity-50', 'cursor-not-allowed');
+            btnCambiar.title = "Ya has agotado tus 3 cambios.";
         }
-    } catch (e) {
-        console.error("Error verificando cambios disponibles:", e);
+    } catch (err) {
+        console.warn("No hay ningun plan generado.");
     }
+
 
     document.getElementById('generarBtn')?.addEventListener('click', async function () {
         const texto = 'Generar un plan semanal personalizado';

@@ -64,10 +64,10 @@ class ChatController extends Controller
         if ($mensajes->isEmpty()) {
             ChatMessage::create([
                 'user_id' => $user->id,
-                'role' => 'assistant'
+                'role' => 'assistant',
+                'content' => '¡Hola! Soy Equilibria, tu asistente nutricional. ¿En qué puedo ayudarte hoy?'
             ]);
 
-            // Vuelve a cargar con el mensaje recién insertado
             $mensajes = ChatMessage::where('user_id', $user->id)->orderBy('created_at')->get();
         }
 
