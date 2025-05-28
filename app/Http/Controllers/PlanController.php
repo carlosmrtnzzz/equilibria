@@ -19,7 +19,7 @@ class PlanController extends Controller
     public function generar(Request $request)
     {
         $user = Auth::user();
-        $preferencias = Preference::where('user_id', $user->id)->first();
+        // $preferencias = Preference::where('user_id', $user->id)->first();
 
         $prompt = "Eres un nutricionista experto en intolerancias alimentarias. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n\n";
         $prompt .= "Haz platos completos, equilibrados, variados y compatibles con las intolerancias. Si una comida suele llevar un ingrediente prohibido, sustitúyelo.\n";
@@ -28,56 +28,6 @@ class PlanController extends Controller
         $prompt .= "Peso: {$user->weight_kg} kg\n";
         $prompt .= "Altura: {$user->height_cm} cm\n";
         $prompt .= "Género: {$user->gender}\n\n";
-
-        if ($preferencias) {
-            $intolerancias = [];
-
-            if ($preferencias->is_celiac)
-                $intolerancias[] = 'gluten';
-            if ($preferencias->is_lactose_intolerant)
-                $intolerancias[] = 'lactosa';
-            if ($preferencias->is_fructose_intolerant)
-                $intolerancias[] = 'fructosa';
-            if ($preferencias->is_histamine_intolerant)
-                $intolerancias[] = 'histamina';
-            if ($preferencias->is_sorbitol_intolerant)
-                $intolerancias[] = 'sorbitol';
-            if ($preferencias->is_casein_intolerant)
-                $intolerancias[] = 'caseína';
-            if ($preferencias->is_egg_intolerant)
-                $intolerancias[] = 'huevo';
-
-            if (!empty($intolerancias)) {
-                $prompt .= "Esta persona tiene las siguientes intolerancias alimentarias: " . implode(', ', $intolerancias) . ".\n";
-                $prompt .= "No incluyas ningún alimento que contenga o pueda contener esas sustancias, ni en trazas ni derivados.\n";
-
-                if (in_array('gluten', $intolerancias)) {
-                    $prompt .= "No incluyas: trigo, cebada, centeno, espelta, kamut, productos con gluten ni avena común.\n";
-                }
-                if (in_array('lactosa', $intolerancias)) {
-                    $prompt .= "No incluyas: leche de vaca, yogur, nata, mantequilla, quesos, ni productos con suero lácteo o lactosa.\n";
-                }
-                if (in_array('fructosa', $intolerancias)) {
-                    $prompt .= "Prohibido: plátano, manzana, pera, mango, sandía, uvas, cerezas, higos, tomate, cebolla, espinacas, alcachofa, puerro, miel, jarabe de maíz, etc.\n";
-                }
-                if (in_array('histamina', $intolerancias)) {
-                    $prompt .= "Evita: embutidos, pescado azul, alimentos fermentados, berenjena, espinaca, tomate, mariscos, alcohol, quesos curados.\n";
-                }
-                if (in_array('sorbitol', $intolerancias)) {
-                    $prompt .= "No uses: manzana, pera, ciruela, melocotón, frutas deshidratadas, chicles sin azúcar, caramelos sin azúcar.\n";
-                }
-                if (in_array('caseína', $intolerancias)) {
-                    $prompt .= "Evita todo producto lácteo o derivado de leche: quesos, yogur, leche, suero, incluso si son sin lactosa.\n";
-                }
-                if (in_array('huevo', $intolerancias)) {
-                    $prompt .= "No incluyas: huevo cocido, tortilla, huevos revueltos, huevo frito, ni pastas o preparaciones con huevo.\n";
-                }
-
-                $prompt .= "⚠️ Es preferible que no uses alimentos dudosos si no estás 100% seguro de que son seguros. Usa siempre ingredientes seguros, conocidos por no contener las sustancias mencionadas.\n";
-            }
-
-        }
-
         $prompt .= "Devuelve ÚNICAMENTE el plan en formato JSON con esta estructura exacta (5 comidas por día):\n\n";
         $prompt .= "{\n";
         $prompt .= "  \"lunes\": {\n    \"desayuno\": \"...\",\n    \"media-mañana\": \"...\",\n    \"comida\": \"...\",\n    \"merienda\": \"...\",\n    \"cena\": \"...\"\n  },\n";
