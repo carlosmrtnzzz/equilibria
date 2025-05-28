@@ -66,21 +66,6 @@ class PlanController extends Controller
                 return back()->with('error', 'El plan generado no tiene el formato esperado.');
             }
 
-            $hayVacio = false;
-            foreach ($planJson as $dia => $comidas) {
-                foreach (['desayuno', 'comida', 'cena'] as $tipo) {
-                    if (!isset($comidas[$tipo]) || trim($comidas[$tipo]) === '') {
-                        $hayVacio = true;
-                        break 2;
-                    }
-                }
-            }
-
-            if ($hayVacio) {
-                Log::warning('El plan contiene campos vacíos, se va a regenerar automáticamente.');
-                return $this->generar($request);
-            }
-
             $inicioSemana = Carbon::now()->startOfWeek(\Carbon\CarbonInterface::MONDAY);
             $finSemana = $inicioSemana->copy()->addDays(6);
 
