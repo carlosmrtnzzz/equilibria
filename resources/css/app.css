@@ -45,6 +45,7 @@ body {
     width: 100%;
     object-fit: cover;
     top: 0;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .spacer {
@@ -251,10 +252,6 @@ header {
     border-color: #10b981 !important;
 }
 
-.hover\:shadow-3xl:hover {
-    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.25);
-}
-
 @keyframes sparkle {
 
     0%,
@@ -438,13 +435,6 @@ input[type="radio"]:checked {
     background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
 }
 
-.group:hover .group-hover\:opacity-100 {
-    opacity: 1;
-}
-
-button:active {
-    transform: scale(0.98);
-}
 
 .card-hover-effect {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -504,11 +494,6 @@ button:active {
 
 .animate-pulse {
     animation: pulse-custom 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Mejoras para el video de fondo */
-.background-video {
-    transition: opacity 0.5s ease-in-out;
 }
 
 /* Efectos de hover para botones */

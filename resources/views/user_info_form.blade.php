@@ -15,19 +15,21 @@
 
                     <div>
                         <label for="birth_date" class="block text-sm font-medium text-gray-700">Fecha de nacimiento</label>
-                        <input type="date" name="birth_date" required
+                        <input type="date" id="birth_date" name="birth_date" required
                             class="mt-1 w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
                         <div class="flex gap-4">
-                            <label class="flex items-center">
-                                <input type="radio" name="gender" value="male" checked class="text-emerald-600">
+                            <label for="gender_male" class="flex items-center">
+                                <input type="radio" id="gender_male" name="gender" value="male" checked
+                                    class="text-emerald-600">
                                 <span class="ml-2">Hombre</span>
                             </label>
-                            <label class="flex items-center">
-                                <input type="radio" name="gender" value="female" class="text-emerald-600">
+                            <label for="gender_female" class="flex items-center">
+                                <input type="radio" id="gender_female" name="gender" value="female"
+                                    class="text-emerald-600">
                                 <span class="ml-2">Mujer</span>
                             </label>
                         </div>

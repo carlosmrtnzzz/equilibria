@@ -64,3 +64,4 @@ Route::middleware(RequireRegistration::class)->group(function () {
     Route::get('/preferences', [PreferenceController::class, 'fetch']);
     Route::post('/preferences', [PreferenceController::class, 'update']);
 });
+

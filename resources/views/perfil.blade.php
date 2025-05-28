@@ -2,8 +2,7 @@
 
 @section('content')
     <!-- Fondo con gradiente animado -->
-    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
-        <!-- Elementos decorativos animados -->
+    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">        <!-- Elementos decorativos animados -->
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
         </div>
