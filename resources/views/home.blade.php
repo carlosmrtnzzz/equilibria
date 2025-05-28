@@ -1,3 +1,10 @@
+@push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+@endpush
+
+@vite(['resources/js/home-scroll-animation.js'])
+
 @extends('layouts.base')
 
 @section('content')
@@ -123,71 +130,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="{{ asset('js/home-scroll-animation.js') }}"></script>
-@endpush
-
-
-<style>
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateX(-50%) translateY(-20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-    }
-
-    .animate-slideDown {
-        animation: slideDown 0.4s ease-out;
-    }
-
-    /* Animación de pulso personalizada */
-    @keyframes pulse-custom {
-
-        0%,
-        100% {
-            opacity: 0.6;
-            transform: scale(1);
-        }
-
-        50% {
-            opacity: 0.8;
-            transform: scale(1.05);
-        }
-    }
-
-    .animate-pulse {
-        animation: pulse-custom 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    /* Mejoras para el video de fondo */
-    .background-video {
-        transition: opacity 0.5s ease-in-out;
-    }
-
-    /* Efectos de hover para botones */
-    button:active,
-    a:active {
-        transform: scale(0.98);
-    }
-
-    /* Animaciones suaves para elementos interactivos */
-    .group:hover .group-hover\:rotate-12 {
-        transform: rotate(12deg);
-    }
-
-    .group:hover .group-hover\:translate-x-1 {
-        transform: translateX(4px);
-    }
-
-    .group:hover .group-hover\:scale-105 {
-        transform: scale(1.05);
-    }
-</style>

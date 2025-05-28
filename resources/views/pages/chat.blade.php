@@ -1,3 +1,7 @@
+@vite(['resources/js/preferencias.js'])
+@vite(['resources/js/cambiar-platos.js'])
+@vite(['resources/js/chat-equilibria.js'])
+
 @extends('layouts.base')
 
 @section('content')
@@ -97,7 +101,7 @@
     </div>
 
     <div id="modalCambiarPlatos"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
         <div
             class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden border border-white/20 transform animate-slideUp">
             <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-6 text-center">
@@ -132,7 +136,7 @@
     </div>
 
     <div id="modalIntolerancias"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
         <div
             class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-white/20 transform animate-slideUp">
             <div class="bg-gradient-to-r from-purple-500 to-indigo-500 p-6 text-center">
@@ -232,24 +236,12 @@
         </div>
     </div>
 
-    <div id="toast-success"
-        class="fixed top-33 right-[-100%] z-[9999] backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out border border-green-400/30 flex items-center gap-3">
-        <div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-
-        </div>
-        <span class="font-medium"></span>
-    </div>
-
     @push('scripts')
 
         <script>
             window.generarPlanUrl = "{{ route('plan.generar') }}";
             window.planesUrl = "{{ route('planes') }}";
         </script>
-
-        <script src="{{ asset('js/chat-equilibria.js') }}"></script>
-        <script src="{{ asset('js/cambiar-platos.js') }}"></script>
-        <script src="{{ asset('js/preferencias.js') }}"></script>
 
     @endpush
 @endsection

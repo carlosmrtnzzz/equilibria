@@ -60,6 +60,6 @@ class UserDataController extends Controller
             'height_cm' => $request->input('height_cm'),
         ]);
 
-        return redirect()->back()->with('success', 'Perfil actualizado correctamente.');
+        return redirect()->route('perfil')->with('success', 'Perfil actualizado correctamente.');
     }
 }

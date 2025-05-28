@@ -25,7 +25,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Formulario de datos del usuario (segunda parte del registro)
 Route::get('/datos', function () {
     if (!session()->has('register_email')) {
-        return redirect()->route('register')->with('message', 'Primero completa el formulario de registro.');
+        return redirect()->route('register')->with('info', 'Primero completa el formulario de registro.');
     }
     return view('user_info_form');
 })->name('datos.usuario');

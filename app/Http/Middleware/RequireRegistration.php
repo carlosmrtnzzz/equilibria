@@ -11,7 +11,8 @@ class RequireRegistration
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('register')->with('message', 'Debes registrarte para acceder a esta sección.');
+            return redirect()->route('register')->with('info', 'Debes registrarte para acceder a esta sección.');
+            
         }
 
         return $next($request);

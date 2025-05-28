@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="relative min-h-screen flex items-center justify-center bg-white dark:bg-white overflow-hidden px-6 py-12">
-        <img src="{{ asset('images/user-form.png') }}" alt="Decoración"
+        <img src="{{ asset('images/user-form.webp') }}" alt="Decoración"
             class="absolute right-[-420px] top-1/2 transform -translate-y-1/2 w-[1350px] hidden md:block pointer-events-none z-0" />
 
         <div class="relative z-10 w-full max-w-5xl flex flex-col md:flex-row gap-8 items-center justify-between">

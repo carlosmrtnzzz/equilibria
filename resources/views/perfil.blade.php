@@ -26,7 +26,7 @@
                 <div class="absolute bottom-[-60px] left-1/2 transform -translate-x-1/2">
                     <div class="relative">
                         <div class="w-32 h-32 rounded-full bg-gradient-to-r from-white to-gray-100 p-2 shadow-2xl">
-                            <img src="{{ asset('images/default.jpg') }}" alt="Avatar"
+                            <img src="{{ asset('images/default.webp') }}" alt="Avatar"
                                 class="w-full h-full rounded-full object-cover border-4 border-white/50">
                         </div>
                     </div>
@@ -34,12 +34,12 @@
             </div>
 
             <!-- Información del usuario -->
-            <div class="relative max-w-4xl mx-auto pt-20 pb-12 px-4">
+            <div class="relative max-w-5xl mx-auto pt-20 pb-12 px-4">
                 <!-- Header con nombre y botón -->
                 <div class="text-center mb-12">
                     <h1
-                        class="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4">
-                        {{ Auth::user()->name }}
+                        class="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4 pb-4">
+                        {{ ucfirst(Auth::user()->name) }}
                     </h1>
                     <button id="edit-profile-btn"
                         class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 cursor-pointer">
@@ -219,7 +219,8 @@
 
     <!-- Modal de edición mejorado -->
     <div id="edit-modal"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
+
         <div
             class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden border border-white/20 transform animate-slideUp">
             <!-- Header del modal -->
@@ -245,7 +246,7 @@
                     <!-- Nombre -->
                     <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
-                        <input type="text" name="name" value="{{ Auth::user()->name }}" required
+                        <input type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>
 
@@ -307,116 +308,6 @@
         </div>
     </div>
 
-    <!-- Toast de éxito mejorado -->
-    @if (session('success'))
-        <div id="toast-success"
-            class="fixed top-33 right-[-100%] z-[9999] backdrop-blur-xl bg-green-500/90 text-white px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 ease-out border border-green-400/30 flex items-center gap-3">
-            <div class="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-            <span class="font-medium">{{ session('success') }}</span>
-        </div>
+    @include('components.toast')
 
-        <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                const toast = document.getElementById('toast-success');
-                if (toast) {
-                    setTimeout(() => {
-                        toast.style.right = '1.25rem';
-                    }, 100);
-
-                    setTimeout(() => {
-                        toast.style.opacity = '0';
-                        toast.style.right = '-100%';
-                        setTimeout(() => toast.remove(), 500);
-                    }, 4000);
-                }
-            });
-        </script>
-    @endif
-
-    <!-- JavaScript para modal -->
-    <script>
-        const modal = document.getElementById('edit-modal');
-        const openBtn = document.getElementById('edit-profile-btn');
-        const closeBtn = document.getElementById('close-modal');
-
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        });
-
-        // Cerrar modal al hacer clic fuera
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-        });
-    </script>
-
-    <!-- Estilos CSS adicionales -->
-    <style>
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .animate-fadeIn {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .animate-slideUp {
-            animation: slideUp 0.4s ease-out;
-        }
-
-        /* Efectos de hover para checkboxes/radios */
-        input[type="radio"]:checked {
-            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
-        }
-
-        /* Animación suave para elementos interactivos */
-        .group:hover .group-hover\:opacity-100 {
-            opacity: 1;
-        }
-
-        /* Efectos de profundidad para botones */
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* Gradientes personalizados para las tarjetas */
-        .card-hover-effect {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .card-hover-effect:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-        }
-    </style>
 @endsection

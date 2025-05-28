@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         modal.classList.remove('hidden');
+        modal.classList.add('flex');
         contenedorPlatos.innerHTML = '';
         seleccionados = [];
         const meals = data.meals;
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     confirmarCambiosBtn?.addEventListener('click', async () => {
         if (seleccionados.length === 0) {
-            mostrarToast('Selecciona al menos 1 plato.');
+            mostrarToast('Selecciona al menos 1 plato.', 'error');
             return;
         }
 
@@ -115,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         } catch (e) {
-            console.error(e);
             document.getElementById(tempId)?.remove();
             modal.classList.add('hidden');
             chatBox.innerHTML += `
@@ -129,16 +129,3 @@ document.addEventListener('DOMContentLoaded', () => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 });
-
-function mostrarToast(mensaje) {
-    const toast = document.getElementById('toast-success');
-    toast.textContent = mensaje;
-    toast.style.right = '1.25rem';
-    toast.style.opacity = '1';
-
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.right = '-100%';
-        setTimeout(() => toast.textContent = '', 500);
-    }, 4000);
-}

@@ -6,20 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Equilibria</title>
-    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/favicon.webp') }}">
 
     @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @vite('resources/js/toast-notification.js')
+    @vite(['resources/js/modal-handler.js'])
 
     @stack('styles')
+    @stack('scripts')
 </head>
 
 <body class="min-h-screen flex flex-col">
     <header class="w-full shadow bg-white dark:bg-gray-100 relative z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="Equilibria" class="h-16">
+                <img src="{{ asset('images/logo.webp') }}" alt="Equilibria" class="h-16">
             </a>
 
             <!-- Botón hamburguesa -->
@@ -136,8 +137,6 @@
         </div>
     </footer>
 
-    @stack('scripts')
-
     <script>
         const userBtn = document.getElementById('user-button');
         const dropdown = document.getElementById('user-dropdown');
@@ -155,24 +154,6 @@
             mobileNav.classList.toggle('hidden');
         });
     </script>
-
-    <style>
-        @keyframes fade-down {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-down {
-            animation: fade-down 0.3s ease-out;
-        }
-    </style>
 
 </body>
 

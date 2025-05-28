@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Tabla mejorada -->
-                <div class="backdrop-blur-xl bg-white/80 mt-15 rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                <div class="backdrop-blur-xl bg-white/80 mt-15 rounded-3xl shadow-2xl border border-white/20 overflow-hidden" id="weekly_plan_mobile">
                     <div class="overflow-x-auto">
                         <table class="min-w-full">
                             <thead class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">

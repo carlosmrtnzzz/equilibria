@@ -50,15 +50,15 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
-    
+
         // Guardamos los datos en sesión (no en DB)
         session([
             'register_name' => $request->name,
             'register_email' => $request->email,
             'register_password' => bcrypt($request->password),
         ]);
-    
+
         return redirect()->route('datos.usuario');
     }
-    
+
 }

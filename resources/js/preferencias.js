@@ -18,13 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('is_egg_intolerant').checked = data?.is_egg_intolerant ?? false;
 
             modalIntolerancias.classList.remove('hidden');
+            modalIntolerancias.classList.add('flex');
+
         } catch (e) {
-            console.error('Error al cargar preferencias:', e);
             mostrarToast('Error al cargar tus preferencias.');
         }
     });
 
     cancelarPreferenciasBtn.addEventListener('click', () => {
+        modalIntolerancias.classList.remove('flex');
         modalIntolerancias.classList.add('hidden');
     });
 
@@ -56,11 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 mostrarToast('Preferencias guardadas correctamente.');
                 modalIntolerancias.classList.add('hidden');
             } else {
-                mostrarToast('No se pudieron guardar las preferencias.');
+                mostrarToast('No se pudieron guardar las preferencias.', 'info');
             }
         } catch (e) {
-            console.error('Error guardando preferencias:', e);
-            mostrarToast('Error al guardar las preferencias.');
+            mostrarToast('Error al guardar las preferencias.', 'error');
         }
     });
 });
