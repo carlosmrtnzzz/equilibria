@@ -30,10 +30,10 @@ class PlanController extends Controller
         $prompt = <<<PROMPT
 Actúa como un nutricionista clínico especializado en intolerancias alimentarias. Tu tarea es generar un plan de comidas semanal completamente adaptado al siguiente perfil del usuario:
 
-Edad: {$user->age}  
-Peso: {$user->weight_kg} kg  
-Altura: {$user->height_cm} cm  
-Género: {$user->gender}  
+Edad: {$user->age}
+Peso: {$user->weight_kg} kg
+Altura: {$user->height_cm} cm
+Género: {$user->gender}
 
 {$textoIntolerancias}
 

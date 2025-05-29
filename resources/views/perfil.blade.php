@@ -248,14 +248,16 @@
                     <!-- Nombre -->
                     <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
-                        <input type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}" required
+                        <input id="name" type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}" required
+                            autocomplete="name"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>
 
                     <!-- Edad -->
                     <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label for="age" class="block text-sm font-semibold text-gray-700 mb-2">Edad</label>
-                        <input type="number" name="age" value="{{ Auth::user()->age }}" min="1" max="120"
+                        <input id="age" type="number" name="age" value="{{ Auth::user()->age }}" min="1" max="120"
+                            autocomplete="off"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>
 
@@ -282,14 +284,16 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
                             <label for="weight_kg" class="block text-sm font-semibold text-gray-700 mb-2">Peso (kg)</label>
-                            <input type="number" name="weight_kg" value="{{ Auth::user()->weight_kg }}" min="1" max="500"
+                            <input id="weight_kg" type="number" name="weight_kg" value="{{ Auth::user()->weight_kg }}" min="1" max="500"
                                 step="0.1"
+                                autocomplete="off"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                         </div>
                         <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
                             <label for="height_cm" class="block text-sm font-semibold text-gray-700 mb-2">Altura
                                 (cm)</label>
-                            <input type="number" name="height_cm" value="{{ Auth::user()->height_cm }}" min="1" max="300"
+                            <input id="height_cm" type="number" name="height_cm" value="{{ Auth::user()->height_cm }}" min="1" max="300"
+                                autocomplete="off"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                         </div>
                     </div>

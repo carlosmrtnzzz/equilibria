@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const changesLeft = data.changes_left;
         if (changesLeft <= 0) {
-            alert("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.");
+            mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.", "error");
             return;
         }
 

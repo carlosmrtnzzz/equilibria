@@ -1,10 +1,11 @@
-@vite(['resources/js/preferencias.js'])
-@vite(['resources/js/cambiar-platos.js'])
-@vite(['resources/js/chat-equilibria.js'])
-
 @extends('layouts.base')
 
 @section('content')
+
+    @vite(['resources/js/preferencias.js'])
+    @vite(['resources/js/cambiar-platos.js'])
+    @vite(['resources/js/chat-equilibria.js'])
+
     <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
@@ -59,7 +60,7 @@
                 <button type="button" id="abrirModalBtn"
                     class="group relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-yellow-500 text-white px-6 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-amber-400/20 cursor-pointer">
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        class="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-100">
                     </div>
                     <div class="relative flex items-center justify-center gap-3">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +74,7 @@
                 <button type="button" id="abrirIntrolerancias"
                     class="group relative overflow-hidden bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 text-white px-6 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-purple-400/20 cursor-pointer">
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        class="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity">
                     </div>
                     <div class="relative flex items-center justify-center gap-3">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,7 +89,7 @@
     </div>
 
     <div id="modalCambiarPlatos"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn mt-20">
         <div
             class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden border border-white/20 transform animate-slideUp">
             <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-6 text-center">
@@ -228,24 +229,6 @@
             window.generarPlanUrl = "{{ route('plan.generar') }}";
             window.planesUrl = "{{ route('planes') }}";
             window.planActualUrl = "{{ url('/chat/plan-actual') }}";
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const btnActualizar = document.getElementById('confirmarCambiosBtn');
-                const modalCambiarPlatos = document.getElementById('modalCambiarPlatos');
-                if (btnActualizar && modalCambiarPlatos) {
-                    btnActualizar.addEventListener('click', function () {
-                        modalCambiarPlatos.classList.add('hidden');
-                    });
-                }
-
-                const formPreferencias = document.getElementById('formPreferencias');
-                const modalIntolerancias = document.getElementById('modalIntolerancias');
-                if (formPreferencias && modalIntolerancias) {
-                    formPreferencias.addEventListener('submit', function (e) {
-                        modalIntolerancias.classList.add('hidden');
-                    });
-                }
-            });
         </script>
     @endpush
 @endsection
