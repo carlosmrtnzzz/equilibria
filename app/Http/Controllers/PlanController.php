@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ChatMessage;
 use App\Models\Achievement;
 use App\Models\UserAchievement;
+use App\Models\Preference;
+
 class PlanController extends Controller
 {
     public function generar()
@@ -21,19 +23,39 @@ class PlanController extends Controller
         $storagePath = 'storage/';
         $user = Auth::user();
 
-        $prompt = "Eres un nutricionista experto en intolerancias alimentarias. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n\n";
-        $prompt .= "Haz platos completos, equilibrados, variados y compatibles con las intolerancias. Si una comida suele llevar un ingrediente prohibido, sustitúyelo.\n";
+        // Cargar preferencias del usuario
+        $preferences = Preference::where('user_id', $user->id)->first();
+        $textoIntolerancias = $this->getIntoleranciasPromptText($preferences);
 
-        $prompt .= "Edad: {$user->age}\n";
-        $prompt .= "Peso: {$user->weight_kg} kg\n";
-        $prompt .= "Altura: {$user->height_cm} cm\n";
-        $prompt .= "Género: {$user->gender}\n\n";
-        $prompt .= "Devuelve ÚNICAMENTE el plan en formato JSON con esta estructura exacta (5 comidas por día):\n\n";
-        $prompt .= "{\n";
-        $prompt .= "  \"lunes\": {\n    \"desayuno\": \"...\",\n    \"media-mañana\": \"...\",\n    \"comida\": \"...\",\n    \"merienda\": \"...\",\n    \"cena\": \"...\"\n  },\n";
-        $prompt .= "  \"martes\": { \"desayuno\": \"...\", \"media-mañana\": \"...\", \"comida\": \"...\", \"merienda\": \"...\", \"cena\": \"...\" },\n  ... hasta domingo\n";
-        $prompt .= "}\n\n";
-        $prompt .= "No incluyas ninguna explicación ni texto adicional fuera del JSON.";
+        $prompt = <<<PROMPT
+Actúa como un nutricionista clínico especializado en intolerancias alimentarias. Tu tarea es generar un plan de comidas semanal completamente adaptado al siguiente perfil del usuario:
+
+Edad: {$user->age}  
+Peso: {$user->weight_kg} kg  
+Altura: {$user->height_cm} cm  
+Género: {$user->gender}  
+
+{$textoIntolerancias}
+
+Solo debes aplicar restricciones si han sido indicadas por el usuario. NO apliques restricciones como “sin lactosa” o “sin gluten” si no se han marcado.
+
+Devuelve exclusivamente un JSON con esta estructura exacta (5 comidas por día, de lunes a domingo):
+
+{
+  "lunes": {
+    "desayuno": "string",
+    "media-mañana": "string",
+    "comida": "string",
+    "merienda": "string",
+    "cena": "string"
+  },
+  ...
+  "domingo": { ... }
+}
+
+No incluyas ningún texto adicional, encabezado ni explicación. SOLO el JSON exacto.
+PROMPT;
+
 
         try {
             $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
@@ -203,6 +225,12 @@ class PlanController extends Controller
         ]);
 
         $user = Auth::user();
+
+        // --- NUEVO: Cargar preferencias del usuario ---
+        $preferences = Preference::where('user_id', $user->id)->first();
+        $textoIntolerancias = $this->getIntoleranciasPromptText($preferences);
+        // --- FIN NUEVO ---
+
         $plan = WeeklyPlan::where('user_id', $user->id)->latest()->first();
 
         if (!$plan) {
@@ -222,7 +250,9 @@ class PlanController extends Controller
 
         $originalPlan = json_decode($plan->meals_json, true);
 
-        $prompt = $this->buildPrompt($platosAReemplazar, $originalPlan);
+        // --- NUEVO: pasa el texto de intolerancias al prompt ---
+        $prompt = $this->buildPrompt($platosAReemplazar, $originalPlan, $textoIntolerancias);
+        // --- FIN NUEVO ---
 
         try {
             $nuevoJson = $this->getNuevosPlatosFromIA($prompt);
@@ -275,9 +305,12 @@ class PlanController extends Controller
     /**
      * Construye el prompt para la IA.
      */
-    private function buildPrompt(array $platosAReemplazar, array $originalPlan): string
+    private function buildPrompt(array $platosAReemplazar, array $originalPlan, string $textoIntolerancias = ''): string
     {
         $prompt = "Eres un nutricionista. Reemplaza únicamente los siguientes platos por otros equivalentes y saludables:\n";
+        if ($textoIntolerancias) {
+            $prompt .= $textoIntolerancias;
+        }
         foreach ($platosAReemplazar as $p) {
             $prompt .= ucfirst($p['dia']) . " - " . ucfirst($p['tipo']) . ": " . $originalPlan[$p['dia']][$p['tipo']] . "\n";
         }
@@ -369,6 +402,89 @@ class PlanController extends Controller
             Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
         }
         return $logrosDesbloqueados;
+    }
+
+    private function getIntoleranciasPromptText($preferences)
+    {
+        $tipos = [
+            [
+                'key' => 'is_celiac',
+                'nombre' => 'gluten',
+                'extra' => function () {
+                    return "Prohíbe cualquier alimento que contenga gluten (trigo, cebada, centeno, espelta, etc.). Usa solo productos certificados sin gluten. ";
+                }
+            ],
+            [
+                'key' => 'is_lactose_intolerant',
+                'nombre' => 'lactosa',
+                'extra' => function () {
+                    return "Prohíbe cualquier lácteo que contenga lactosa. Solo usa lácteos sin lactosa cuando sea necesario. ";
+                }
+            ],
+            [
+                'key' => 'is_fructose_intolerant',
+                'nombre' => 'fructosa',
+                'extra' => function () {
+                    return "El usuario es INTOLERANTE a la FRUCTOSA. Está TERMINANTEMENTE PROHIBIDO incluir ningún alimento que contenga fructosa, sacarosa o sorbitol, ni siquiera en pequeñas cantidades. Prohíbe absolutamente:
+
+- Frutas: plátano, manzana, pera, mango, piña, sandía, melón, uvas, cerezas, higos, coco, aguacate, fresa.
+- Verduras: tomate (con o sin semillas), cebolla (todas las partes), alcachofa, espárragos, pimiento, remolacha, brócoli, coliflor, espinacas cocinadas, puerros, rúcula, jícama, apio.
+- Otros: pan integral, pan de centeno, miel, mermeladas, zumos, galletas sin azúcar, edulcorantes como sorbitol (E420), comidas ambiguas o preparadas.
+
+Solo están permitidos ingredientes seguros como arroz blanco, patata, calabacín, zanahoria cocida, pepino, escarola, acelga, huevo, pollo, ternera, pescado blanco, nueces y almendras naturales.
+
+⚠️ Si algún ingrediente genera dudas, NO lo incluyas. Estas instrucciones son obligatorias.";
+                }
+            ],
+            [
+                'key' => 'is_histamine_intolerant',
+                'nombre' => 'histamina',
+                'extra' => function () {
+                    return "Evita alimentos ricos en histamina como pescado azul, embutidos, quesos curados, tomate, espinacas y berenjena. ";
+                }
+            ],
+            [
+                'key' => 'is_sorbitol_intolerant',
+                'nombre' => 'sorbitol',
+                'extra' => function () {
+                    return "Prohíbe alimentos y productos que contengan sorbitol (E420), como chicles, caramelos sin azúcar, peras, manzanas, ciruelas, etc. ";
+                }
+            ],
+            [
+                'key' => 'is_casein_intolerant',
+                'nombre' => 'caseína',
+                'extra' => function () {
+                    return "Prohíbe cualquier producto lácteo o derivado que contenga caseína. ";
+                }
+            ],
+            [
+                'key' => 'is_egg_intolerant',
+                'nombre' => 'huevo',
+                'extra' => function () {
+                    return "No incluyas huevo ni productos que lo contengan. ";
+                }
+            ],
+        ];
+
+        $intolerancias = [];
+        $restricciones = '';
+
+        foreach ($tipos as $tipo) {
+            if ($preferences && !empty($preferences->{$tipo['key']})) {
+                $intolerancias[] = $tipo['nombre'];
+                $restricciones .= call_user_func($tipo['extra']);
+            }
+        }
+
+        $texto = '';
+        if (count($intolerancias)) {
+            $texto .= "ATENCIÓN: El usuario tiene las siguientes intolerancias alimentarias: " . implode(', ', $intolerancias) . ". ";
+            $texto .= "Solo debes aplicar restricciones si están explícitamente indicadas. NO apliques restricciones a ingredientes como lactosa, gluten u otros si no se mencionan aquí. ";
+            $texto .= $restricciones;
+            $texto .= "Si algún alimento genera dudas, no lo incluyas. Estas restricciones son OBLIGATORIAS.";
+        }
+
+        return $texto;
     }
 
 }

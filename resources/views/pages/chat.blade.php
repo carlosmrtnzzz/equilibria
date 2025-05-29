@@ -224,7 +224,6 @@
     </div>
 
     @push('scripts')
-
         <script>
             window.generarPlanUrl = "{{ route('plan.generar') }}";
             window.planesUrl = "{{ route('planes') }}";
@@ -238,8 +237,15 @@
                         modalCambiarPlatos.classList.add('hidden');
                     });
                 }
+
+                const formPreferencias = document.getElementById('formPreferencias');
+                const modalIntolerancias = document.getElementById('modalIntolerancias');
+                if (formPreferencias && modalIntolerancias) {
+                    formPreferencias.addEventListener('submit', function (e) {
+                        modalIntolerancias.classList.add('hidden');
+                    });
+                }
             });
         </script>
-
     @endpush
 @endsection
