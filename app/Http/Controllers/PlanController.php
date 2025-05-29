@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Models\WeeklyPlan;
-use App\Models\Preference;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -16,10 +15,11 @@ use App\Models\Achievement;
 use App\Models\UserAchievement;
 class PlanController extends Controller
 {
-    public function generar(Request $request)
+    public function generar()
     {
+        $dateFormat = 'd/m/Y';
+        $storagePath = 'storage/';
         $user = Auth::user();
-        // $preferencias = Preference::where('user_id', $user->id)->first();
 
         $prompt = "Eres un nutricionista experto en intolerancias alimentarias. Genera un plan de comidas semanal personalizado para una persona con los siguientes datos:\n\n";
         $prompt .= "Haz platos completos, equilibrados, variados y compatibles con las intolerancias. Si una comida suele llevar un ingrediente prohibido, sustitúyelo.\n";
@@ -80,8 +80,8 @@ class PlanController extends Controller
 
             $pdf = Pdf::loadView('pages.plan_pdf', [
                 'meals' => $planJson,
-                'start_date' => $inicioSemana->format('d/m/Y'),
-                'end_date' => $finSemana->format('d/m/Y'),
+                'start_date' => $inicioSemana->format($dateFormat),
+                'end_date' => $finSemana->format($dateFormat),
             ]);
 
             $nombrePdf = 'plan_' . $plan->id . '.pdf';
@@ -89,7 +89,7 @@ class PlanController extends Controller
 
             Storage::disk('public')->put($path, $pdf->output());
 
-            $plan->pdf_url = 'storage/' . $path;
+            $plan->pdf_url = $storagePath . $path;
             $plan->save();
 
             ChatMessage::create([
@@ -99,7 +99,7 @@ class PlanController extends Controller
             ]);
 
             $mensajeIA = "Aquí tienes tu plan semanal.<br>" .
-                "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
+                "<a href='" . asset($storagePath . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
                 "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
 
             ChatMessage::create([
@@ -152,7 +152,7 @@ class PlanController extends Controller
 
             return response()->json([
                 'mensaje' => "Aquí tienes tu plan semanal.",
-                'pdf_url' => asset('storage/' . $path),
+                'pdf_url' => asset($storagePath . $path),
                 'logros' => $logrosDesbloqueados,
             ]);
 
@@ -193,6 +193,9 @@ class PlanController extends Controller
 
     public function reemplazarPlatos(Request $request)
     {
+        $dateFormat = 'd/m/Y';
+        $storagePath = 'storage/';
+
         $request->validate([
             'platos' => 'required|array|max:3',
             'platos.*.dia' => 'required|string',
@@ -279,14 +282,14 @@ class PlanController extends Controller
 
             $pdf = Pdf::loadView('pages.plan_pdf', [
                 'meals' => $originalPlan,
-                'start_date' => Carbon::parse($plan->start_date)->format('d/m/Y'),
-                'end_date' => Carbon::parse($plan->end_date)->format('d/m/Y'),
+                'start_date' => Carbon::parse($plan->start_date)->format($dateFormat),
+                'end_date' => Carbon::parse($plan->end_date)->format($dateFormat),
             ]);
 
             $nombrePdf = 'plan_' . $plan->id . '.pdf';
             $path = 'planes/' . $nombrePdf;
             Storage::disk('public')->put($path, $pdf->output());
-            $plan->pdf_url = 'storage/' . $path;
+            $plan->pdf_url = $storagePath . $path;
             $plan->save();
 
             try {
@@ -329,8 +332,8 @@ class PlanController extends Controller
                 Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
             }
 
-            $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).";
-            "<a href='" . asset('storage/' . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
+            $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).<br>" .
+                "<a href='" . asset($storagePath . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
                 "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
 
             ChatMessage::create([
@@ -343,7 +346,7 @@ class PlanController extends Controller
                 'success' => true,
                 'nuevo_plan' => $originalPlan,
                 'changes_left' => $plan->changes_left,
-                'pdf_url' => asset('storage/' . $path),
+                'pdf_url' => asset($storagePath . $path),
                 'logros' => $logrosDesbloqueados ?? [],
             ]);
 
