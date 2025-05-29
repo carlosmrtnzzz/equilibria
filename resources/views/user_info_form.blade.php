@@ -20,7 +20,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                        <span class="block text-sm font-medium text-gray-700 mb-1">Sexo</span>
                         <div class="flex gap-4">
                             <label for="gender_male" class="flex items-center">
                                 <input type="radio" id="gender_male" name="gender" value="male" checked

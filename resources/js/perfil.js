@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .join(' ');
     }
 
-    perfilForm.addEventListener('submit', async function(e) {
+    perfilForm.addEventListener('submit', async function (e) {
         e.preventDefault();
         const nameInput = perfilForm.querySelector('input[name="name"]');
         if (nameInput && nameInput.value.length > 0) {
@@ -34,7 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const result = await response.json();
             document.querySelectorAll('.nombre-usuario').forEach(el => el.textContent = result.name.charAt(0).toUpperCase() + result.name.slice(1));
             document.querySelectorAll('.edad-usuario').forEach(el => el.textContent = result.age + ' años');
-            document.querySelectorAll('.genero-usuario').forEach(el => el.textContent = result.gender === 'male' ? 'Hombre' : (result.gender === 'female' ? 'Mujer' : 'No especificado'));
+            let generoTexto = 'No especificado';
+            if (result.gender === 'male') {
+                generoTexto = 'Hombre';
+            } else if (result.gender === 'female') {
+                generoTexto = 'Mujer';
+            }
+            document.querySelectorAll('.genero-usuario').forEach(el => el.textContent = generoTexto);
             document.querySelectorAll('.peso-usuario').forEach(el => el.textContent = result.weight_kg + ' kg');
             document.querySelectorAll('.altura-usuario').forEach(el => el.textContent = result.height_cm + ' cm');
 

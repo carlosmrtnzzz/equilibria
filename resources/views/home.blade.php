@@ -18,8 +18,14 @@
         </div>
     @endif
     <div class="scroll-container">
-        <video autoplay loop muted class="background-video">
+        <video autoplay loop muted class="background-video"
+            aria-label="Animación de bienvenida de Equilibria, fondo motivacional">
             <source src="{{ asset('videos/equilibria-home.webm') }}" type="video/mp4">
+            <track kind="subtitles" src="{{ asset('videos/equilibria-home-es.vtt') }}" srclang="es" label="Español">
+            <track kind="subtitles" src="{{ asset('videos/equilibria-home-en.vtt') }}" srclang="en" label="English">
+            <track kind="descriptions" src="{{ asset('videos/equilibria-home-desc.vtt') }}" srclang="es"
+                label="Descripción en español">
+            Tu navegador no soporta el elemento vídeo.
         </video>
         <div class="mask">
             <h2>EQUILIBRIA</h2>
@@ -77,8 +83,14 @@
             </div>
 
             <div class="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center">
-                <video autoplay loop muted class="w-full h-auto">
+                <video autoplay loop muted class="w-full h-auto"
+                    aria-label="Vídeo motivacional de personas corriendo y comiendo sano">
                     <source src="{{ asset('videos/running.mp4') }}" type="video/mp4">
+                    <track kind="subtitles" src="{{ asset('videos/running-es.vtt') }}" srclang="es" label="Español">
+                    <track kind="subtitles" src="{{ asset('videos/running-en.vtt') }}" srclang="en" label="English">
+                    <track kind="descriptions" src="{{ asset('videos/running-desc.vtt') }}" srclang="es"
+                        label="Descripción en español">
+                    Tu navegador no soporta el elemento vídeo.
                 </video>
             </div>
         </div>

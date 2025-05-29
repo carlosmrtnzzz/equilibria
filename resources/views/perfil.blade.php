@@ -261,17 +261,17 @@
 
                     <!-- Género -->
                     <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Género</label>
+                        <span class="block text-sm font-semibold text-gray-700 mb-3">Género</span>
                         <div class="grid grid-cols-2 gap-3">
-                            <label
+                            <label for="gender-male"
                                 class="group flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition-all duration-200 cursor-pointer border border-gray-200 hover:border-emerald-300">
-                                <input type="radio" name="gender" value="male" {{ Auth::user()->gender == 'male' ? 'checked' : '' }}
+                                <input id="gender-male" type="radio" name="gender" value="male" {{ Auth::user()->gender == 'male' ? 'checked' : '' }}
                                     class="w-5 h-5 text-emerald-600 bg-white border-2 border-gray-300 focus:ring-emerald-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-emerald-700 font-medium">Hombre</span>
                             </label>
-                            <label
+                            <label for="gender-female"
                                 class="group flex items-center gap-3 p-3 rounded-xl hover:bg-emerald-50 transition-all duration-200 cursor-pointer border border-gray-200 hover:border-emerald-300">
-                                <input type="radio" name="gender" value="female" {{ Auth::user()->gender == 'female' ? 'checked' : '' }}
+                                <input id="gender-female" type="radio" name="gender" value="female" {{ Auth::user()->gender == 'female' ? 'checked' : '' }}
                                     class="w-5 h-5 text-emerald-600 bg-white border-2 border-gray-300 focus:ring-emerald-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-emerald-700 font-medium">Mujer</span>
                             </label>
