@@ -3,11 +3,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalIntolerancias = document.getElementById('modalIntolerancias');
     const cancelarPreferenciasBtn = document.getElementById('cancelarPreferenciasBtn');
     const formPreferencias = document.getElementById('formPreferencias');
+    const contenedorChecks = document.getElementById('contenedorChecks'); // Añade este id al div que contiene los checkboxes
 
     abrirIntoleranciasBtn.addEventListener('click', async () => {
+        // 1. Mostrar la modal al instante
+        modalIntolerancias.classList.remove('hidden');
+        modalIntolerancias.classList.add('flex');
+
+        // 2. Mostrar loader/spinner mientras se cargan las preferencias
+        if (contenedorChecks) {
+            contenedorChecks.innerHTML = `
+                <div class="flex justify-center items-center py-10">
+                    <svg class="animate-spin h-6 w-6 text-purple-500 mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    <span class="text-gray-500">Cargando preferencias...</span>
+                </div>
+            `;
+        }
+
         try {
             const res = await fetch('/preferences');
             const data = await res.json();
+
+            // 3. Rellena los checkboxes cuando llegan los datos
+            if (contenedorChecks) {
+                contenedorChecks.innerHTML = `
+                    <label><input type="checkbox" id="is_celiac"> Celiaquía</label>
+                    <label><input type="checkbox" id="is_lactose_intolerant"> Intolerancia a la lactosa</label>
+                    <label><input type="checkbox" id="is_fructose_intolerant"> Intolerancia a la fructosa</label>
+                    <label><input type="checkbox" id="is_histamine_intolerant"> Intolerancia a la histamina</label>
+                    <label><input type="checkbox" id="is_sorbitol_intolerant"> Intolerancia al sorbitol</label>
+                    <label><input type="checkbox" id="is_casein_intolerant"> Intolerancia a la caseína</label>
+                    <label><input type="checkbox" id="is_egg_intolerant"> Intolerancia al huevo</label>
+                `;
+            }
 
             document.getElementById('is_celiac').checked = data?.is_celiac ?? false;
             document.getElementById('is_lactose_intolerant').checked = data?.is_lactose_intolerant ?? false;
@@ -17,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('is_casein_intolerant').checked = data?.is_casein_intolerant ?? false;
             document.getElementById('is_egg_intolerant').checked = data?.is_egg_intolerant ?? false;
 
-            modalIntolerancias.classList.remove('hidden');
-            modalIntolerancias.classList.add('flex');
-
         } catch (e) {
+            if (contenedorChecks) {
+                contenedorChecks.innerHTML = `<div class="text-center text-red-500">Error al cargar tus preferencias.</div>`;
+            }
             mostrarToast('Error al cargar tus preferencias.');
         }
     });

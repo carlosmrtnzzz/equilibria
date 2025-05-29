@@ -8,16 +8,36 @@ document.addEventListener('DOMContentLoaded', () => {
     let seleccionados = [];
 
     abrirModalBtn?.addEventListener('click', async () => {
-        const res = await fetch('/chat/plan-actual');
-        const data = await res.json();
+        // Mostrar la modal al instante
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
 
-        const changesLeft = data.changes_left;
-        if (changesLeft <= 0) {
-            mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.", "error");
-            return;
+        // Mostrar loader/spinner mientras se cargan los platos
+        contenedorPlatos.innerHTML = `
+            <div class="col-span-full flex justify-center items-center py-10">
+                <svg class="animate-spin h-6 w-6 text-emerald-500 mr-2" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                <span class="text-gray-500">Cargando platos...</span>
+            </div>
+        `;
+
+        try {
+            const res = await fetch('/chat/plan-actual');
+            const data = await res.json();
+
+            const changesLeft = data.changes_left;
+            if (changesLeft <= 0) {
+                mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.", "error");
+                modal.classList.add('hidden');
+                return;
+            }
+
+            mostrarModalConPlatos(data.meals, changesLeft);
+        } catch (e) {
+            contenedorPlatos.innerHTML = `<div class="col-span-full text-center text-red-500">Error al cargar los platos.</div>`;
         }
-
-        mostrarModalConPlatos(data.meals, changesLeft);
     });
 
     cancelarModalBtn?.addEventListener('click', () => {
@@ -67,8 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function mostrarModalConPlatos(meals, changesLeft) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
         contenedorPlatos.innerHTML = '';
         seleccionados = [];
 
