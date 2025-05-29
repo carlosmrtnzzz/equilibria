@@ -345,10 +345,6 @@ header {
     animation: float 3s ease-in-out infinite;
 }
 
-tbody tr:hover {
-    transform: translateX(4px);
-}
-
 .desayuno-bg {
     background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
 }
