@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Achievement;
+use Illuminate\Http\Request;
 
 class PerfilController extends Controller
 {
@@ -21,6 +22,4 @@ class PerfilController extends Controller
 
         return view('pages.logros', compact('allAchievements'));
     }
-
-
 }

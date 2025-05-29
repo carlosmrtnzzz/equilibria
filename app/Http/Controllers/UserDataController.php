@@ -38,9 +38,8 @@ class UserDataController extends Controller
         session()->forget(['register_name', 'register_email', 'register_password']);
         Auth::login($user);
         return redirect('/')->with('success', 'Cuenta creada correctamente.');
-
     }
-    public function actualizar(Request $request)
+    public function update(Request $request)
     {
         $user = Auth::user();
 
@@ -53,12 +52,16 @@ class UserDataController extends Controller
         ]);
 
         $user->update([
-            'name' => $request->input('name'),
+            'name' => ucwords(strtolower($request->input('name'))),
             'age' => $request->input('age'),
             'gender' => $request->input('gender'),
             'weight_kg' => $request->input('weight_kg'),
             'height_cm' => $request->input('height_cm'),
         ]);
+
+        if ($request->wantsJson()) {
+            return response()->json($user);
+        }
 
         return redirect()->route('perfil')->with('success', 'Perfil actualizado correctamente.');
     }

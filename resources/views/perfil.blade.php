@@ -2,7 +2,8 @@
 
 @section('content')
     <!-- Fondo con gradiente animado -->
-    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">        <!-- Elementos decorativos animados -->
+    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
+        <!-- Elementos decorativos animados -->
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
         </div>
@@ -37,7 +38,7 @@
                 <!-- Header con nombre y botón -->
                 <div class="text-center mb-12">
                     <h1
-                        class="text-4xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4 pb-4">
+                        class="nombre-usuario text-4xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4 pb-4">
                         {{ ucfirst(Auth::user()->name) }}
                     </h1>
                     <button id="edit-profile-btn"
@@ -103,7 +104,8 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-purple-700">Edad</h3>
-                                    <p class="text-purple-600 font-medium">{{ Auth::user()->age ?? 'No especificada' }} años
+                                    <p class="edad-usuario text-purple-600 font-medium">
+                                        {{ Auth::user()->age ?? 'No especificada' }} años
                                     </p>
                                 </div>
                             </div>
@@ -122,7 +124,7 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-amber-700">Género</h3>
-                                    <p class="text-amber-600 font-medium">
+                                    <p class="genero-usuario text-amber-600 font-medium">
                                         {{ Auth::user()->gender == 'male' ? 'Hombre' : (Auth::user()->gender == 'female' ? 'Mujer' : 'No especificado') }}
                                     </p>
                                 </div>
@@ -143,7 +145,8 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-green-700">Peso</h3>
-                                    <p class="text-green-600 font-medium">{{ Auth::user()->weight_kg ?? 'No especificado' }}
+                                    <p class="peso-usuario text-green-600 font-medium">
+                                        {{ Auth::user()->weight_kg ?? 'No especificado' }}
                                         kg</p>
                                 </div>
                             </div>
@@ -163,7 +166,8 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-teal-700">Altura</h3>
-                                    <p class="text-teal-600 font-medium">{{ Auth::user()->height_cm ?? 'No especificada' }}
+                                    <p class="altura-usuario text-teal-600 font-medium">
+                                        {{ Auth::user()->height_cm ?? 'No especificada' }}
                                         cm</p>
                                 </div>
                             </div>
@@ -171,31 +175,30 @@
 
                         <!-- IMC (si tenemos peso y altura) -->
                         @if(Auth::user()->weight_kg && Auth::user()->height_cm)
-                            @php
-                                $altura_m = Auth::user()->height_cm / 100;
-                                $imc = round(Auth::user()->weight_kg / ($altura_m * $altura_m), 1);
-                                $categoria = $imc < 18.5 ? 'Bajo peso' : ($imc < 25 ? 'Normal' : ($imc < 30 ? 'Sobrepeso' : 'Obesidad'));
-                                $color = $imc < 18.5 ? 'from-blue-50 to-indigo-50 border-blue-200/50' : ($imc < 25 ? 'from-green-50 to-emerald-50 border-green-200/50' : ($imc < 30 ? 'from-yellow-50 to-orange-50 border-yellow-200/50' : 'from-red-50 to-pink-50 border-red-200/50'));
-                                $iconColor = $imc < 18.5 ? 'from-blue-500 to-indigo-500' : ($imc < 25 ? 'from-green-500 to-emerald-500' : ($imc < 30 ? 'from-yellow-500 to-orange-500' : 'from-red-500 to-pink-500'));
-                                $textColor = $imc < 18.5 ? 'text-blue-700' : ($imc < 25 ? 'text-green-700' : ($imc < 30 ? 'text-yellow-700' : 'text-red-700'));
-                            @endphp
-                            <div
-                                class="bg-gradient-to-r {{ $color }} rounded-2xl p-6 border transform hover:scale-105 transition-all duration-300">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div
-                                        class="w-10 h-10 bg-gradient-to-r {{ $iconColor }} rounded-xl flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                            </path>
-                                        </svg>
+                                    @php
+                                        $altura_m = Auth::user()->height_cm / 100;
+                                        $imc = round(Auth::user()->weight_kg / ($altura_m * $altura_m), 1);
+                                        $categoria = $imc < 18.5 ? 'Bajo peso' : ($imc < 25 ? 'Normal' : ($imc < 30 ? 'Sobrepeso' : 'Obesidad'));
+                                        $color = $imc < 18.5 ? 'from-blue-50 to-indigo-50 border-blue-200/50' : ($imc < 25 ? 'from-green-50 to-emerald-50 border-green-200/50' : ($imc < 30 ? 'from-yellow-50 to-orange-50 border-yellow-200/50' : 'from-red-50 to-pink-50 border-red-200/50'));
+                                        $iconColor = $imc < 18.5 ? 'from-blue-500 to-indigo-500' : ($imc < 25 ? 'from-green-500 to-emerald-500' : ($imc < 30 ? 'from-yellow-500 to-orange-500' : 'from-red-500 to-pink-500'));
+                                        $textColor = $imc < 18.5 ? 'text-blue-700' : ($imc < 25 ? 'text-green-700' : ($imc < 30 ? 'text-yellow-700' : 'text-red-700'));
+                                    @endphp
+                            <div id="imc-box"
+                                        class="imc-usuario bg-gradient-to-r {{ $color }} rounded-2xl p-6 border transform hover:scale-105 transition-all duration-300">
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <div id="imc-icon" class="w-10 h-10 bg-gradient-to-r {{ $iconColor }} rounded-xl flex items-center justify-center">
+                                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="imc-titulo font-semibold {{ $textColor }}">IMC</h3>
+                                                <p class="imc-valor {{ $textColor }} font-medium">{{ $imc }} - {{ $categoria }}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 class="font-semibold {{ $textColor }}">IMC</h3>
-                                        <p class="{{ $textColor }} font-medium">{{ $imc }} - {{ $categoria }}</p>
-                                    </div>
-                                </div>
-                            </div>
                         @endif
                     </div>
                 </div>
@@ -218,7 +221,7 @@
 
     <!-- Modal de edición mejorado -->
     <div id="edit-modal"
-        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn">
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-3 animate-fadeIn mt-20">
 
         <div
             class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-hidden border border-white/20 transform animate-slideUp">
@@ -237,27 +240,27 @@
             </div>
 
             <!-- Contenido del modal -->
-            <div class="p-6 overflow-y-auto max-h-[60vh]">
-                <form method="POST" action="{{ route('perfil.actualizar') }}" class="space-y-6">
+            <div class="p-5 overflow-y-auto max-h-[60vh]">
+                <form id="perfil-form" method="POST" action="{{ route('perfil.actualizar') }}" class="space-y-6">
                     @csrf
                     @method('PUT')
 
                     <!-- Nombre -->
-                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
+                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
                         <input type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}" required
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>
 
                     <!-- Edad -->
-                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
+                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label for="age" class="block text-sm font-semibold text-gray-700 mb-2">Edad</label>
                         <input type="number" name="age" value="{{ Auth::user()->age }}" min="1" max="120"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>
 
                     <!-- Género -->
-                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
+                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label class="block text-sm font-semibold text-gray-700 mb-3">Género</label>
                         <div class="grid grid-cols-2 gap-3">
                             <label
@@ -294,12 +297,12 @@
             </div>
 
             <!-- Footer del modal -->
-            <div class="bg-gray-50/80 backdrop-blur-sm p-6 flex justify-end gap-3 border-t border-gray-200/50">
+            <div class="bg-gray-50/80 backdrop-blur-sm p-3.5 flex justify-end gap-3 border-t border-gray-200/50">
                 <button type="button" id="close-modal"
                     class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Cancelar
                 </button>
-                <button type="submit" form="edit-modal" onclick="document.querySelector('#edit-modal form').submit()"
+                <button type="submit" form="perfil-form"
                     class="px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium shadow-lg transition-all duration-300 transform hover:scale-105 cursor-pointer">
                     Guardar Cambios
                 </button>
@@ -309,4 +312,6 @@
 
     @include('components.toast')
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @vite('resources/js/perfil.js') ?>
 @endsection

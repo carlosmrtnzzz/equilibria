@@ -229,6 +229,16 @@
             window.generarPlanUrl = "{{ route('plan.generar') }}";
             window.planesUrl = "{{ route('planes') }}";
             window.planActualUrl = "{{ url('/chat/plan-actual') }}";
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const btnActualizar = document.getElementById('confirmarCambiosBtn');
+                const modalCambiarPlatos = document.getElementById('modalCambiarPlatos');
+                if (btnActualizar && modalCambiarPlatos) {
+                    btnActualizar.addEventListener('click', function () {
+                        modalCambiarPlatos.classList.add('hidden');
+                    });
+                }
+            });
         </script>
 
     @endpush

@@ -213,69 +213,24 @@ class PlanController extends Controller
             return response()->json(['error' => 'Ya has usado todos tus intentos.'], 403);
         }
 
-        if (count($request->platos) > $plan->changes_left) {
+        $platosAReemplazar = $request->input('platos');
+        if (count($platosAReemplazar) > $plan->changes_left) {
             return response()->json([
-                'error' => "Solo te quedan {$plan->changes_left} intento(s), pero intentas cambiar " . count($request->platos) . " plato(s)."
+                'error' => "Solo te quedan {$plan->changes_left} intento(s), pero intentas cambiar " . count($platosAReemplazar) . " plato(s)."
             ], 403);
         }
 
         $originalPlan = json_decode($plan->meals_json, true);
-        $platosAReemplazar = $request->input('platos');
 
-        $prompt = "Eres un nutricionista. Reemplaza únicamente los siguientes platos por otros equivalentes y saludables:\n";
-
-        foreach ($platosAReemplazar as $p) {
-            $prompt .= ucfirst($p['dia']) . " - " . ucfirst($p['tipo']) . ": " . $originalPlan[$p['dia']][$p['tipo']] . "\n";
-        }
-
-        $prompt .= "\nDevuelve ÚNICAMENTE un JSON con esta estructura exacta (respetando el número y formato de llaves):\n{\n";
-
-        $estructuraEsperada = [];
-        foreach ($platosAReemplazar as $p) {
-            if (!isset($estructuraEsperada[$p['dia']])) {
-                $estructuraEsperada[$p['dia']] = [];
-            }
-            $estructuraEsperada[$p['dia']][] = $p['tipo'];
-        }
-
-        foreach ($estructuraEsperada as $dia => $tipos) {
-            $prompt .= "  \"$dia\": {\n";
-            foreach ($tipos as $i => $tipo) {
-                $coma = $i < count($tipos) - 1 ? ',' : '';
-                $prompt .= "    \"$tipo\": \"...\"$coma\n";
-            }
-            $prompt .= "  },\n";
-        }
-
-        $prompt .= "}\n\n";
-        $prompt .= "No incluyas ninguna explicación ni comentario adicional. Solo el JSON exacto con los nuevos platos reemplazados. No dejes ninguno fuera.";
+        $prompt = $this->buildPrompt($platosAReemplazar, $originalPlan);
 
         try {
-            $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-3.5-turbo',
-                'messages' => [
-                    ['role' => 'system', 'content' => 'Eres un nutricionista profesional que crea planes de alimentación seguros. Tienes prohibido recomendar alimentos que no se adapten a las intolerancias del usuario. Tu prioridad es evitar cualquier riesgo para su salud.'],
-                    ['role' => 'user', 'content' => $prompt],
-                ],
-            ]);
-
-            $data = $response->json();
-            $planNuevo = $data['choices'][0]['message']['content'] ?? '';
-
-            if (!preg_match('/\{.*\}/s', $planNuevo, $match)) {
+            $nuevoJson = $this->getNuevosPlatosFromIA($prompt);
+            if (!$nuevoJson) {
                 return response()->json(['error' => 'La IA no devolvió un JSON válido.'], 500);
             }
 
-            $nuevoJson = json_decode($match[0], true);
-            if (!$nuevoJson) {
-                return response()->json(['error' => 'Error al parsear el JSON devuelto.'], 500);
-            }
-
-            foreach ($platosAReemplazar as $p) {
-                if (isset($nuevoJson[$p['dia']][$p['tipo']])) {
-                    $originalPlan[$p['dia']][$p['tipo']] = $nuevoJson[$p['dia']][$p['tipo']];
-                }
-            }
+            $this->actualizaPlatos($originalPlan, $nuevoJson, $platosAReemplazar);
 
             $plan->meals_json = json_encode($originalPlan);
             $plan->changes_left -= count($platosAReemplazar);
@@ -292,45 +247,7 @@ class PlanController extends Controller
             $plan->pdf_url = $storagePath . $path;
             $plan->save();
 
-            try {
-                $logros = Achievement::where('type', 'change_dish')->get();
-                $logrosDesbloqueados = [];
-
-                foreach ($logros as $logro) {
-                    $userLogro = UserAchievement::firstOrNew([
-                        'user_id' => $user->id,
-                        'achievement_id' => $logro->id,
-                    ]);
-
-                    if (!$userLogro->exists) {
-                        $userLogro->progress = 0;
-                        $userLogro->unlocked = false;
-                    }
-
-                    if (!$userLogro->unlocked) {
-                        $userLogro->progress += count($platosAReemplazar);
-
-                        if ($userLogro->progress >= $logro->target_value) {
-                            $userLogro->unlocked = true;
-                            $userLogro->unlocked_at = now();
-
-                            if ($logro->reward_type && $logro->reward_amount) {
-                                if ($logro->reward_type === 'extra_swap') {
-                                    $user->increment('extra_swaps', $logro->reward_amount);
-                                } elseif ($logro->reward_type === 'extra_regeneration') {
-                                    $user->increment('extra_regenerations', $logro->reward_amount);
-                                }
-                            }
-
-                            $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';
-                        }
-
-                        $userLogro->save();
-                    }
-                }
-            } catch (\Throwable $e) {
-                Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
-            }
+            $logrosDesbloqueados = $this->procesaLogrosChangeDish($user, $platosAReemplazar);
 
             $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).<br>" .
                 "<a href='" . asset($storagePath . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
@@ -347,13 +264,111 @@ class PlanController extends Controller
                 'nuevo_plan' => $originalPlan,
                 'changes_left' => $plan->changes_left,
                 'pdf_url' => asset($storagePath . $path),
-                'logros' => $logrosDesbloqueados ?? [],
+                'logros' => $logrosDesbloqueados,
             ]);
-
-
         } catch (\Exception $e) {
             Log::error('Error reemplazando platos: ' . $e->getMessage());
             return response()->json(['error' => 'Ocurrió un error al contactar con la IA.'], 500);
         }
     }
+
+    /**
+     * Construye el prompt para la IA.
+     */
+    private function buildPrompt(array $platosAReemplazar, array $originalPlan): string
+    {
+        $prompt = "Eres un nutricionista. Reemplaza únicamente los siguientes platos por otros equivalentes y saludables:\n";
+        foreach ($platosAReemplazar as $p) {
+            $prompt .= ucfirst($p['dia']) . " - " . ucfirst($p['tipo']) . ": " . $originalPlan[$p['dia']][$p['tipo']] . "\n";
+        }
+        $prompt .= "\nDevuelve ÚNICAMENTE un JSON con esta estructura exacta (respetando el número y formato de llaves):\n{\n";
+
+        $estructuraEsperada = [];
+        foreach ($platosAReemplazar as $p) {
+            $estructuraEsperada[$p['dia']][] = $p['tipo'];
+        }
+        foreach ($estructuraEsperada as $dia => $tipos) {
+            $prompt .= "  \"$dia\": {\n";
+            foreach ($tipos as $i => $tipo) {
+                $coma = $i < count($tipos) - 1 ? ',' : '';
+                $prompt .= "    \"$tipo\": \"...\"$coma\n";
+            }
+            $prompt .= "  },\n";
+        }
+        $prompt .= "}\n\n";
+        $prompt .= "No incluyas ninguna explicación ni comentario adicional. Solo el JSON exacto con los nuevos platos reemplazados. No dejes ninguno fuera.";
+        return $prompt;
+    }
+
+    /**
+     * Llama a la IA y devuelve el JSON de platos nuevos.
+     */
+    private function getNuevosPlatosFromIA(string $prompt): ?array
+    {
+        $response = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                ['role' => 'system', 'content' => 'Eres un nutricionista profesional que crea planes de alimentación seguros. Tienes prohibido recomendar alimentos que no se adapten a las intolerancias del usuario. Tu prioridad es evitar cualquier riesgo para su salud.'],
+                ['role' => 'user', 'content' => $prompt],
+            ],
+        ]);
+        $data = $response->json();
+        $planNuevo = $data['choices'][0]['message']['content'] ?? '';
+        if (!preg_match('/\{.*\}/s', $planNuevo, $match)) {
+            return null;
+        }
+        $nuevoJson = json_decode($match[0], true);
+        return $nuevoJson ?: null;
+    }
+
+    /**
+     * Actualiza los platos en el plan original con los nuevos.
+     */
+    private function actualizaPlatos(array &$originalPlan, array $nuevoJson, array $platosAReemplazar): void
+    {
+        foreach ($platosAReemplazar as $p) {
+            if (isset($nuevoJson[$p['dia']][$p['tipo']])) {
+                $originalPlan[$p['dia']][$p['tipo']] = $nuevoJson[$p['dia']][$p['tipo']];
+            }
+        }
+    }
+
+    /**
+     * Procesa los logros relacionados con el cambio de platos.
+     */
+    private function procesaLogrosChangeDish($user, $platosAReemplazar): array
+    {
+        $logrosDesbloqueados = [];
+        try {
+            $logros = Achievement::where('type', 'change_dish')->get();
+            foreach ($logros as $logro) {
+                $userLogro = UserAchievement::firstOrNew([
+                    'user_id' => $user->id,
+                    'achievement_id' => $logro->id,
+                ]);
+                if (!$userLogro->exists) {
+                    $userLogro->progress = 0;
+                    $userLogro->unlocked = false;
+                }
+                if (!$userLogro->unlocked) {
+                    $userLogro->progress += count($platosAReemplazar);
+                    if ($userLogro->progress >= $logro->target_value) {
+                        $userLogro->unlocked = true;
+                        $userLogro->unlocked_at = now();
+                        if ($logro->reward_type && $logro->reward_amount) {
+                            if ($logro->reward_type === 'extra_swap') {
+                                $user->increment('extra_swaps', $logro->reward_amount);
+                            }
+                        }
+                        $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';
+                    }
+                    $userLogro->save();
+                }
+            }
+        } catch (\Throwable $e) {
+            Log::error('ERROR EN BLOQUE DE LOGROS (change_dish): ' . $e->getMessage());
+        }
+        return $logrosDesbloqueados;
+    }
+
 }

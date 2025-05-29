@@ -163,7 +163,7 @@
 
                                 <div class="flex-1">
                                     <h3
-                                        class="text-lg font-bold {{ $completed ? 'text-amber-700' : 'text-gray-700' }} group-hover:text-emerald-700 transition-colors duration-300">
+                                        class="text-lg font-bold {{ $completed ? 'text-amber-700' : 'text-gray-700' }} transition-colors duration-300">
                                         {{ $achievement->name }}
                                     </h3>
                                     <p class="text-sm text-gray-600 leading-relaxed">

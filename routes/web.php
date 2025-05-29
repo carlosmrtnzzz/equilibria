@@ -55,7 +55,7 @@ Route::middleware(RequireRegistration::class)->group(function () {
     Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware(CheckStreak::class);
     Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware(CheckStreak::class);
 
-    Route::put('/perfil/actualizar', [UserDataController::class, 'actualizar'])->name('perfil.actualizar');
+    Route::put('/perfil/actualizar', [UserDataController::class, 'update'])->name('perfil.actualizar');
 
     Route::get('/logros', function () {
         return app(PerfilController::class)->indexLogros();
