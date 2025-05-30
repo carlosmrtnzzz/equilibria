@@ -72,7 +72,6 @@ class AuthController extends Controller
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
 
-        // ¿Ya existe el usuario?
         $user = User::where('google_id', $googleUser->getId())->orWhere('email', $googleUser->getEmail())->first();
 
         if ($user) {
@@ -86,7 +85,6 @@ class AuthController extends Controller
             'register_email' => $googleUser->getEmail(),
             'register_name' => $googleUser->getName(),
             'google_id' => $googleUser->getId(),
-            // Puedes guardar más datos si quieres
         ]);
 
         return redirect()->route('datos.usuario');

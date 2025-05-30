@@ -7,7 +7,6 @@
             class="absolute right-[-560px] top-1/2 transform -translate-y-1/2 w-[1500px] hidden md:block pointer-events-none z-0" />
 
         <div class="relative z-10 w-full max-w-md mx-auto md:mx-0 md:ml-24 lg:ml-70 px-4 md:px-0">
-            <!-- Tarjeta del formulario con efecto glassmorphism -->
             <div
                 class="backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-8 transition-all duration-300">
                 <div class="text-center mb-8">

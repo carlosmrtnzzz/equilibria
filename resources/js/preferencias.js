@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalIntolerancias = document.getElementById('modalIntolerancias');
     const cancelarPreferenciasBtn = document.getElementById('cancelarPreferenciasBtn');
     const formPreferencias = document.getElementById('formPreferencias');
-    const contenedorChecks = document.getElementById('contenedorChecks'); // Añade este id al div que contiene los checkboxes
+    const contenedorChecks = document.getElementById('contenedorChecks');
 
     abrirIntoleranciasBtn.addEventListener('click', async () => {
-        // 1. Mostrar la modal al instante
+        // Mostrar la modal al instante
         modalIntolerancias.classList.remove('hidden');
         modalIntolerancias.classList.add('flex');
 
-        // 2. Mostrar loader/spinner mientras se cargan las preferencias
+        // Mostrar loader/spinner mientras se cargan las preferencias
         if (contenedorChecks) {
             contenedorChecks.innerHTML = `
                 <div class="flex justify-center items-center py-10">
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/preferences');
             const data = await res.json();
 
-            // 3. Rellena los checkboxes cuando llegan los datos
+            // Rellenar los checkboxs cuando llegan los datos
             if (contenedorChecks) {
                 contenedorChecks.innerHTML = `
                     <label><input type="checkbox" id="is_celiac"> Celiaquía</label>

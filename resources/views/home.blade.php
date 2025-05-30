@@ -95,7 +95,6 @@
         </div>
     </div>
 
-    <!-- Sección adicional con características -->
     <div class="max-w-7xl mx-auto px-8 mt-24 mb-24 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div
             class="group backdrop-blur-xl bg-white/60 rounded-3xl p-6 shadow-xl border border-white/20 transform hover:scale-105 hover:bg-white/70 transition-all duration-300">

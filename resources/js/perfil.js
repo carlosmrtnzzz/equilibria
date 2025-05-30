@@ -100,9 +100,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             document.getElementById('edit-modal').classList.add('hidden');
-            
-            // Añadir esta línea para mostrar el toast
             mostrarToast('Perfil actualizado correctamente', 'success');
+            
         } else {
             mostrarToast('Error al actualizar el perfil', 'error');
         }

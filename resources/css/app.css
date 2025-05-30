@@ -473,7 +473,6 @@ input[type="radio"]:checked {
     animation: slideDown 0.4s ease-out;
 }
 
-/* Animación de pulso personalizada */
 @keyframes pulse-custom {
 
     0%,
@@ -492,13 +491,11 @@ input[type="radio"]:checked {
     animation: pulse-custom 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Efectos de hover para botones */
 button:active,
 a:active {
     transform: scale(0.98);
 }
 
-/* Animaciones suaves para elementos interactivos */
 .group:hover .group-hover\:rotate-12 {
     transform: rotate(12deg);
 }

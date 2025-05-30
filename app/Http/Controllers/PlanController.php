@@ -226,10 +226,8 @@ PROMPT;
 
         $user = Auth::user();
 
-        // --- NUEVO: Cargar preferencias del usuario ---
         $preferences = Preference::where('user_id', $user->id)->first();
         $textoIntolerancias = $this->getIntoleranciasPromptText($preferences);
-        // --- FIN NUEVO ---
 
         $plan = WeeklyPlan::where('user_id', $user->id)->latest()->first();
 
@@ -249,10 +247,7 @@ PROMPT;
         }
 
         $originalPlan = json_decode($plan->meals_json, true);
-
-        // --- NUEVO: pasa el texto de intolerancias al prompt ---
         $prompt = $this->buildPrompt($platosAReemplazar, $originalPlan, $textoIntolerancias);
-        // --- FIN NUEVO ---
 
         try {
             $nuevoJson = $this->getNuevosPlatosFromIA($prompt);

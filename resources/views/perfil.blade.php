@@ -1,9 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-    <!-- Fondo con gradiente animado -->
     <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden pt-5">
-        <!-- Elementos decorativos animados -->
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
         </div>
@@ -11,11 +9,9 @@
             class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-full blur-3xl animate-pulse delay-1000">
         </div>
 
-        <!-- Hero section con imagen de perfil -->
         <div class="relative">
             <!-- Banner superior -->
             <div class="relative w-full h-80 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 pb-20">
-                <!-- Patrón decorativo -->
                 <div class="absolute inset-0 opacity-20">
                     <div class="absolute top-10 left-10 w-32 h-32 bg-white/30 rounded-full blur-2xl"></div>
                     <div class="absolute top-20 right-20 w-24 h-24 bg-white/20 rounded-full blur-xl"></div>
@@ -35,7 +31,6 @@
 
             <!-- Información del usuario -->
             <div class="relative max-w-5xl mx-auto pt-20 pb-12 px-4">
-                <!-- Header con nombre y botón -->
                 <div class="text-center mb-12">
                     <h1
                         class="nombre-usuario text-4xl font-bold bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 bg-clip-text text-transparent mb-4 pb-4">
@@ -219,7 +214,7 @@
         </div>
     </div>
 
-    <!-- Modal de edición mejorado -->
+    <!-- Modal de edición -->
     <div id="edit-modal"
         class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-3 animate-fadeIn mt-20">
 
