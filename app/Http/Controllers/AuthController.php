@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -61,4 +63,32 @@ class AuthController extends Controller
         return redirect()->route('datos.usuario');
     }
 
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        // ¿Ya existe el usuario?
+        $user = User::where('google_id', $googleUser->getId())->orWhere('email', $googleUser->getEmail())->first();
+
+        if ($user) {
+            // Si ya existe y tiene los datos completos, loguea y redirige
+            Auth::login($user);
+            return redirect()->route('perfil');
+        }
+
+        // Si NO existe, guarda los datos en sesión y redirige a /datos
+        session([
+            'register_email' => $googleUser->getEmail(),
+            'register_name' => $googleUser->getName(),
+            'google_id' => $googleUser->getId(),
+            // Puedes guardar más datos si quieres
+        ]);
+
+        return redirect()->route('datos.usuario');
+    }
 }

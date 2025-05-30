@@ -24,6 +24,7 @@ class User extends Authenticatable
         'gender',
         'weight_kg',
         'height_cm',
+        'google_id',
     ];
 
 

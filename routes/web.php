@@ -65,3 +65,6 @@ Route::middleware(RequireRegistration::class)->group(function () {
     Route::post('/preferences', [PreferenceController::class, 'update']);
 });
 
+// Google Auth
+Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);

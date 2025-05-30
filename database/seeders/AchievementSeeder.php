@@ -10,15 +10,13 @@ class AchievementSeeder extends Seeder
     public function run(): void
     {
         $achievements = [
-            // No tocar
             [
                 'name' => 'Primer plan generado',
                 'description' => 'Has generado tu primer plan semanal.',
                 'type' => 'generate_plan',
                 'target_value' => 1,
                 'reward_type' => 'extra_swap',
-                'reward_amount' => 1,
-                'icon' => null,
+                'reward_amount' => 1
             ],
 
             // Cambiar platos
@@ -28,8 +26,7 @@ class AchievementSeeder extends Seeder
                 'type' => 'change_dish',
                 'target_value' => 1,
                 'reward_type' => 'extra_swap',
-                'reward_amount' => 1,
-                'icon' => null,
+                'reward_amount' => 1
             ],
             [
                 'name' => 'Maestro del reemplazo',
@@ -37,8 +34,7 @@ class AchievementSeeder extends Seeder
                 'type' => 'change_dish',
                 'target_value' => 20,
                 'reward_type' => 'extra_swap',
-                'reward_amount' => 3,
-                'icon' => null,
+                'reward_amount' => 3
             ],
 
             // Rachas de login
@@ -48,8 +44,7 @@ class AchievementSeeder extends Seeder
                 'type' => 'login_streak',
                 'target_value' => 3,
                 'reward_type' => 'extra_regeneration',
-                'reward_amount' => 1,
-                'icon' => null,
+                'reward_amount' => 1
             ],
             [
                 'name' => 'Racha de 7 días',
@@ -57,8 +52,7 @@ class AchievementSeeder extends Seeder
                 'type' => 'login_streak',
                 'target_value' => 7,
                 'reward_type' => 'extra_regeneration',
-                'reward_amount' => 2,
-                'icon' => null,
+                'reward_amount' => 2
             ],
             [
                 'name' => 'Racha de 30 días',
@@ -66,17 +60,7 @@ class AchievementSeeder extends Seeder
                 'type' => 'login_streak',
                 'target_value' => 30,
                 'reward_type' => 'extra_regeneration',
-                'reward_amount' => 5,
-                'icon' => null,
-            ],
-            [
-                'name' => 'Perfil completo',
-                'description' => 'Has completado todos los datos de tu perfil.',
-                'type' => 'complete_profile',
-                'target_value' => 1,
-                'reward_type' => 'extra_swap',
-                'reward_amount' => 1,
-                'icon' => 'profile.png',
+                'reward_amount' => 5
             ]
         ];
 

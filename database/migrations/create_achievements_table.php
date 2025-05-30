@@ -11,11 +11,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('type'); // 'generate_plan', 'login_streak', etc.
+            $table->string('type');
             $table->integer('target_value')->default(1);
-            $table->string('reward_type')->nullable(); // 'extra_swap', 'extra_regeneration', etc.
+            $table->string('reward_type')->nullable();
             $table->integer('reward_amount')->nullable();
-            $table->string('icon')->nullable(); // archivo imagen, ej: plan1.png
             $table->timestamps();
         });
     }

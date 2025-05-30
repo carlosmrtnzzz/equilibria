@@ -48,6 +48,12 @@
                 ¿No tienes cuenta?
                 <a href="{{ route('register') }}" class="text-green-600 hover:underline">Regístrate</a>
             </div>
+
+            <div class="mt-6">
+                <a href="{{ route('google.login') }}" class="btn btn-google">
+                    <img src="/img/google-icon.svg" alt="Google" class="inline w-5 h-5 mr-2"> Iniciar sesión con Google
+                </a>
+            </div>
         </div>
     </div>
 @endsection

@@ -20,22 +20,35 @@ class UserDataController extends Controller
         $name = session('register_name');
         $email = session('register_email');
         $password = session('register_password');
+        $google_id = session('google_id');
 
-        if (!$name || !$email || !$password) {
+        if (!$name || !$email || (!$password && !$google_id)) {
             return redirect()->route('register')->with('message', 'Sesión expirada. Regístrate de nuevo.');
+        }
+
+        // Evita duplicados por email o google_id
+        $user = \App\Models\User::where('email', $email)
+            ->orWhere('google_id', $google_id)
+            ->first();
+
+        if ($user) {
+            Auth::login($user);
+            session()->forget(['register_name', 'register_email', 'register_password', 'google_id']);
+            return redirect('/')->with('info', 'Ya tenías cuenta, has iniciado sesión.');
         }
 
         $user = \App\Models\User::create([
             'name' => $name,
             'email' => $email,
-            'password' => $password,
+            'password' => $password ?? bcrypt(uniqid()),
+            'google_id' => $google_id,
             'age' => Carbon::parse($request->birth_date)->age,
             'gender' => $request->gender,
             'weight_kg' => $request->weight,
             'height_cm' => $request->height,
         ]);
 
-        session()->forget(['register_name', 'register_email', 'register_password']);
+        session()->forget(['register_name', 'register_email', 'register_password', 'google_id']);
         Auth::login($user);
         return redirect('/')->with('success', 'Cuenta creada correctamente.');
     }

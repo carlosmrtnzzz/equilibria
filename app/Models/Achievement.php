@@ -14,7 +14,6 @@ class Achievement extends Model
         'target_value',
         'reward_type',
         'reward_amount',
-        'icon',
     ];
 
     public function users(): BelongsToMany
