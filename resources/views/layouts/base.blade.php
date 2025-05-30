@@ -18,6 +18,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col">
+    @include('components.toast')
     <header class="w-full shadow bg-white dark:bg-gray-100 relative z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/">

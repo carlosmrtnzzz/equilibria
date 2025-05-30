@@ -313,9 +313,6 @@
             </div>
         </div>
     </div>
-
-    @include('components.toast')
-
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/js/perfil.js')
 @endsection

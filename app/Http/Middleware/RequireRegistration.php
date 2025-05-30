@@ -11,8 +11,10 @@ class RequireRegistration
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('register')->with('info', 'Debes registrarte para acceder a esta sección.');
-            
+            if ($request->ajax()) {
+                return response()->json(['error' => 'No autorizado'], 401);
+            }
+            return redirect()->route('login')->with('info', 'Debes iniciar sesión para acceder a esta sección.');
         }
 
         return $next($request);

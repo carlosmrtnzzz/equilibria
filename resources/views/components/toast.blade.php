@@ -1,23 +1,15 @@
-@if (session('success'))
+@if (session('success') || session('error') || session('info'))
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            mostrarToast(@json(session('success')), 'success');
-        });
-    </script>
-@endif
-
-@if (session('error'))
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            mostrarToast(@json(session('error')), 'error');
-        });
-    </script>
-@endif
-
-@if (session('info'))
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            mostrarToast(@json(session('info')), 'info');
-        });
+            @if (session('success'))
+                mostrarToast(@json(session('success')), 'success');
+            @endif
+            @if (session('error'))
+                mostrarToast(@json(session('error')), 'error');
+            @endif
+            @if (session('info'))
+                mostrarToast(@json(session('info')), 'info');
+            @endif
+            });
     </script>
 @endif
