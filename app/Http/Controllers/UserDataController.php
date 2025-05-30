@@ -50,7 +50,7 @@ class UserDataController extends Controller
 
         session()->forget(['register_name', 'register_email', 'register_password', 'google_id']);
         Auth::login($user);
-        return redirect('/')->with('success', 'Bienvenido, a Equilibria ' . explode(' ', $user->name)[0] . '!');
+        return redirect('perfil')->with('success', 'Bienvenido, a Equilibria ' . explode(' ', $user->name)[0] . '!');
     }
     public function update(Request $request)
     {
