@@ -56,6 +56,20 @@ class UserDataController extends Controller
     {
         $user = Auth::user();
 
+        if ($request->hasFile('profile_photo')) {
+            $request->validate([
+                'profile_photo' => 'image|max:1024',
+            ]);
+            $path = $request->file('profile_photo')->store('profile_photos', 'public');
+            $user->profile_photo = $path;
+            $user->save();
+
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['profile_photo' => $path]);
+            }
+            return redirect()->route('perfil')->with('success', 'Foto de perfil actualizada.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'age' => 'nullable|numeric|min:1',

@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('password');
             $table->string('google_id')->nullable();
+            $table->string('profile_photo')->nullable();
             $table->unsignedTinyInteger('age')->nullable();
             $table->unsignedSmallInteger('height_cm')->nullable();
             $table->decimal('weight_kg', 5, 2)->nullable();

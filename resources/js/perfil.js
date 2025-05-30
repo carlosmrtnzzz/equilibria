@@ -106,4 +106,53 @@ document.addEventListener('DOMContentLoaded', function () {
             mostrarToast('Error al actualizar el perfil', 'error');
         }
     });
+
+    const photoForm = document.getElementById('photo-form');
+    const photoInput = document.getElementById('profile_photo');
+    if (photoForm && photoInput) {
+        const avatarImg = photoForm.querySelector('img');
+        photoInput.addEventListener('change', function () {
+            if (!photoInput.files.length) return;
+
+            const file = photoInput.files[0];
+            if (file.size > 1024 * 1024) { // 1MB
+                mostrarToast("La foto debe ser de máximo 1MB", "error");
+                photoInput.value = "";
+                return;
+            }
+
+            let formData = new FormData();
+            formData.append('profile_photo', file);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+            formData.append('_method', 'PUT');
+
+            fetch(photoForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    let data = await response.json().catch(() => ({}));
+                    let msg = data.errors && data.errors.profile_photo ? data.errors.profile_photo[0] : "Error al subir la foto";
+                    mostrarToast(msg, "error");
+                    photoInput.value = "";
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.profile_photo) {
+                    avatarImg.src = '/storage/' + data.profile_photo + '?t=' + Date.now();
+                    mostrarToast("Foto de perfil actualizada", "success");
+                }
+            })
+            .catch(() => {
+                mostrarToast("Error al subir la foto", "error");
+                photoInput.value = "";
+            });
+        });
+    }
 });

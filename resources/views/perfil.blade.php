@@ -21,10 +21,23 @@
                 <!-- Avatar flotante -->
                 <div class="absolute bottom-[-60px] left-1/2 transform -translate-x-1/2">
                     <div class="relative">
-                        <div class="w-32 h-32 rounded-full bg-gradient-to-r from-white to-gray-100 p-2 shadow-2xl">
-                            <img src="{{ asset('images/default.webp') }}" alt="Avatar"
-                                class="w-full h-full rounded-full object-cover border-4 border-white/50">
-                        </div>
+                        <form id="photo-form" method="POST" action="{{ route('perfil.actualizar') }}"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <input type="file" id="profile_photo" name="profile_photo" accept="image/*" class="hidden">
+                            <div class="w-32 h-32 rounded-full bg-gradient-to-r from-white to-gray-100 p-2 shadow-2xl cursor-pointer group"
+                                onclick="document.getElementById('profile_photo').click();"
+                                title="Haz clic para cambiar tu foto de perfil">
+                                <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('images/default.webp') }} "
+                                    alt="Avatar"
+                                    class="w-full h-full rounded-full object-cover border-4 border-white/50 group-hover:opacity-80 transition-opacity duration-200">
+                                <div
+                                    class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                    <span class="bg-black/60 text-white text-xs px-2 py-1 rounded">Cambiar foto</span>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -142,7 +155,8 @@
                                     <h3 class="font-semibold text-green-700">Peso</h3>
                                     <p class="peso-usuario text-green-600 font-medium">
                                         {{ Auth::user()->weight_kg ?? 'No especificado' }}
-                                        kg</p>
+                                        kg
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -163,37 +177,39 @@
                                     <h3 class="font-semibold text-teal-700">Altura</h3>
                                     <p class="altura-usuario text-teal-600 font-medium">
                                         {{ Auth::user()->height_cm ?? 'No especificada' }}
-                                        cm</p>
+                                        cm
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
                         <!-- IMC (si tenemos peso y altura) -->
                         @if(Auth::user()->weight_kg && Auth::user()->height_cm)
-                                    @php
-                                        $altura_m = Auth::user()->height_cm / 100;
-                                        $imc = round(Auth::user()->weight_kg / ($altura_m * $altura_m), 1);
-                                        $categoria = $imc < 18.5 ? 'Bajo peso' : ($imc < 25 ? 'Normal' : ($imc < 30 ? 'Sobrepeso' : 'Obesidad'));
-                                        $color = $imc < 18.5 ? 'from-blue-50 to-indigo-50 border-blue-200/50' : ($imc < 25 ? 'from-green-50 to-emerald-50 border-green-200/50' : ($imc < 30 ? 'from-yellow-50 to-orange-50 border-yellow-200/50' : 'from-red-50 to-pink-50 border-red-200/50'));
-                                        $iconColor = $imc < 18.5 ? 'from-blue-500 to-indigo-500' : ($imc < 25 ? 'from-green-500 to-emerald-500' : ($imc < 30 ? 'from-yellow-500 to-orange-500' : 'from-red-500 to-pink-500'));
-                                        $textColor = $imc < 18.5 ? 'text-blue-700' : ($imc < 25 ? 'text-green-700' : ($imc < 30 ? 'text-yellow-700' : 'text-red-700'));
-                                    @endphp
+                            @php
+                                $altura_m = Auth::user()->height_cm / 100;
+                                $imc = round(Auth::user()->weight_kg / ($altura_m * $altura_m), 1);
+                                $categoria = $imc < 18.5 ? 'Bajo peso' : ($imc < 25 ? 'Normal' : ($imc < 30 ? 'Sobrepeso' : 'Obesidad'));
+                                $color = $imc < 18.5 ? 'from-blue-50 to-indigo-50 border-blue-200/50' : ($imc < 25 ? 'from-green-50 to-emerald-50 border-green-200/50' : ($imc < 30 ? 'from-yellow-50 to-orange-50 border-yellow-200/50' : 'from-red-50 to-pink-50 border-red-200/50'));
+                                $iconColor = $imc < 18.5 ? 'from-blue-500 to-indigo-500' : ($imc < 25 ? 'from-green-500 to-emerald-500' : ($imc < 30 ? 'from-yellow-500 to-orange-500' : 'from-red-500 to-pink-500'));
+                                $textColor = $imc < 18.5 ? 'text-blue-700' : ($imc < 25 ? 'text-green-700' : ($imc < 30 ? 'text-yellow-700' : 'text-red-700'));
+                            @endphp
                             <div id="imc-box"
-                                        class="imc-usuario bg-gradient-to-r {{ $color }} rounded-2xl p-6 border transform hover:scale-105 transition-all duration-300">
-                                        <div class="flex items-center gap-3 mb-3">
-                                            <div id="imc-icon" class="w-10 h-10 bg-gradient-to-r {{ $iconColor }} rounded-xl flex items-center justify-center">
-                                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <h3 class="imc-titulo font-semibold {{ $textColor }}">IMC</h3>
-                                                <p class="imc-valor {{ $textColor }} font-medium">{{ $imc }} - {{ $categoria }}</p>
-                                            </div>
-                                        </div>
+                                class="imc-usuario bg-gradient-to-r {{ $color }} rounded-2xl p-6 border transform hover:scale-105 transition-all duration-300">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div id="imc-icon"
+                                        class="w-10 h-10 bg-gradient-to-r {{ $iconColor }} rounded-xl flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                            </path>
+                                        </svg>
                                     </div>
+                                    <div>
+                                        <h3 class="imc-titulo font-semibold {{ $textColor }}">IMC</h3>
+                                        <p class="imc-valor {{ $textColor }} font-medium">{{ $imc }} - {{ $categoria }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -279,16 +295,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
                             <label for="weight_kg" class="block text-sm font-semibold text-gray-700 mb-2">Peso (kg)</label>
-                            <input id="weight_kg" type="number" name="weight_kg" value="{{ Auth::user()->weight_kg }}" min="1" max="500"
-                                step="0.1"
-                                autocomplete="off"
+                            <input id="weight_kg" type="number" name="weight_kg" value="{{ Auth::user()->weight_kg }}"
+                                min="1" max="500" step="0.1" autocomplete="off"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                         </div>
                         <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-4 border border-gray-200/50">
                             <label for="height_cm" class="block text-sm font-semibold text-gray-700 mb-2">Altura
                                 (cm)</label>
-                            <input id="height_cm" type="number" name="height_cm" value="{{ Auth::user()->height_cm }}" min="1" max="300"
-                                autocomplete="off"
+                            <input id="height_cm" type="number" name="height_cm" value="{{ Auth::user()->height_cm }}"
+                                min="1" max="300" autocomplete="off"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                         </div>
                     </div>
@@ -310,4 +325,5 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/js/perfil.js')
+
 @endsection

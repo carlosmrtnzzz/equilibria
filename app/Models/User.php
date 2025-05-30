@@ -25,6 +25,7 @@ class User extends Authenticatable
         'weight_kg',
         'height_cm',
         'google_id',
+        'profile_photo',
     ];
 
 
