@@ -248,7 +248,7 @@
                     <!-- Nombre -->
                     <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nombre completo</label>
-                        <input id="name" type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}" required
+                        <input id="name" type="text" name="name" value="{{ ucfirst(Auth::user()->name) }}"
                             autocomplete="name"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                     </div>

@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/chat/plan-actual');
             const data = await res.json();
 
+            if (!data.meals || Object.keys(data.meals).length === 0) {
+                contenedorPlatos.innerHTML = `
+                    <div class="col-span-full text-center text-gray-600">
+                        Aún no hay platos. Genera un plan primero para poder hacer cambios.
+                    </div>`;
+                return;
+            }
+
             const changesLeft = data.changes_left;
             if (changesLeft <= 0) {
                 mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.", "error");
@@ -36,7 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             mostrarModalConPlatos(data.meals, changesLeft);
         } catch (e) {
-            contenedorPlatos.innerHTML = `<div class="col-span-full text-center text-red-500">Error al cargar los platos.</div>`;
+            contenedorPlatos.innerHTML = `
+                <div class="col-span-full text-center text-red-500">
+                    Error al conectar con el servidor. Inténtalo de nuevo más tarde.
+                </div>`;
         }
     });
 

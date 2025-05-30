@@ -13,6 +13,7 @@ export default defineConfig({
                 'resources/js/modal-handler.js',
                 'resources/js/preferencias.js',
                 'resources/js/toast-notification.js',
+                'resources/js/visual-password-validation.js'
             ], refresh: true,
         }),
         tailwindcss(),
