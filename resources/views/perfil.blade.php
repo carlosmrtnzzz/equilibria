@@ -27,7 +27,8 @@
                             @method('PUT')
                             <input type="file" id="profile_photo" name="profile_photo" accept="image/*" class="hidden">
                             <div class="w-32 h-32 rounded-full bg-gradient-to-r from-white to-gray-100 p-2 shadow-2xl cursor-pointer group"
-                                onclick="document.getElementById('profile_photo').click();"
+                                role="button" tabindex="0" onclick="document.getElementById('profile_photo').click();"
+                                onkeydown="if(event.key === 'Enter' || event.key === ' ') document.getElementById('profile_photo').click();"
                                 title="Haz clic para cambiar tu foto de perfil">
                                 <img src="{{ Auth::user()->profile_photo ? asset('storage/' . Auth::user()->profile_photo) : asset('images/default.webp') }} "
                                     alt="Avatar"

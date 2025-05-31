@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const fields = [
         { id: 'name', validate: value => value.trim() !== '', message: 'El nombre es obligatorio.' },
-        { id: 'email', validate: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), message: 'Email no válido.' },
+        { id: 'email', validate: value => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value), message: 'Email no válido.' },
         { id: 'password', validate: value => value.trim() !== '', message: 'La contraseña es obligatoria.' },
         { id: 'password_confirmation', validate: value => value === document.getElementById('password').value, message: 'Las contraseñas no coinciden.' }
     ];
