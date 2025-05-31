@@ -41,6 +41,56 @@ document.addEventListener('DOMContentLoaded', function () {
         const confirmPasswordInput = document.getElementById('password_confirmation');
         toggleConfirmPassword.addEventListener('click', () => togglePasswordVisibility(confirmPasswordInput, showConfirmPasswordIcon, hideConfirmPasswordIcon));
     }
+
+    const fields = [
+        { id: 'name', validate: value => value.trim() !== '', message: 'El nombre es obligatorio.' },
+        { id: 'email', validate: value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value), message: 'Email no válido.' },
+        { id: 'password', validate: value => value.trim() !== '', message: 'La contraseña es obligatoria.' },
+        { id: 'password_confirmation', validate: value => value === document.getElementById('password').value, message: 'Las contraseñas no coinciden.' }
+    ];
+
+    fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input) return;
+
+        // Crear mensaje de error
+        let errorMsg = document.createElement('div');
+        errorMsg.className = 'text-red-500 text-xs mt-1 hidden';
+        errorMsg.id = `${field.id}-error`;
+        input.parentNode.appendChild(errorMsg);
+
+        // Validar en tiempo real para quitar error si el usuario corrige
+        input.addEventListener('input', () => {
+            if (field.validate(input.value)) {
+                input.classList.remove('border-red-400');
+                errorMsg.textContent = '';
+                errorMsg.classList.add('hidden');
+            }
+        });
+    });
+
+    // Añade esto al final del bloque DOMContentLoaded:
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            let hasError = false;
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const errorMsg = document.getElementById(`${field.id}-error`);
+                if (input && errorMsg) {
+                    // Validar el campo al enviar
+                    if (!field.validate(input.value)) {
+                        input.classList.add('border-red-400');
+                        errorMsg.textContent = field.message;
+                        errorMsg.classList.remove('hidden');
+                        hasError = true;
+                    }
+                }
+            });
+            if (hasError) {
+                event.preventDefault();
+            }
+        });
+    });
 });
 
 function validatePassword(password) {

@@ -50,7 +50,7 @@
                                 class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70"
                                 data-tooltip="password-requirements" />
                             <button type="button"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
+                                class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
                                 id="togglePassword">
                                 <!-- Icono de ojo (oculto por defecto) -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -105,7 +105,7 @@
                             <input type="password" name="password_confirmation" id="password_confirmation"
                                 class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
                             <button type="button"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
+                                class="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer"
                                 id="toggleConfirmPassword">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-5 h-5 hidden" id="showConfirmPassword">
@@ -172,7 +172,7 @@
             </div>
         </div>
     </div>
-    
+
     @vite(['resources/js/visual-password-validation.js'])
 
 @endsection

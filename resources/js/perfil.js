@@ -11,8 +11,35 @@ document.addEventListener('DOMContentLoaded', function () {
             .join(' ');
     }
 
+    const fields = [
+        { id: 'name', validate: v => v.trim() !== '', message: 'El nombre es obligatorio.' },
+        { id: 'age', validate: v => v.trim() !== '' && Number(v) > 0 && Number(v) <= 120, message: 'Edad no válida.' },
+        { id: 'weight_kg', validate: v => v.trim() !== '' && Number(v) > 0 && Number(v) <= 500, message: 'Peso no válido.' },
+        { id: 'height_cm', validate: v => v.trim() !== '' && Number(v) > 0 && Number(v) <= 300, message: 'Altura no válida.' }
+    ];
+
     perfilForm.addEventListener('submit', async function (e) {
         e.preventDefault();
+
+        let hasError = false;
+        fields.forEach(field => {
+            const input = document.getElementById(field.id);
+            const errorMsg = document.getElementById(`${field.id}-error`);
+            if (input && errorMsg) {
+                if (!field.validate(input.value)) {
+                    input.classList.add('border-red-400');
+                    errorMsg.textContent = field.message;
+                    errorMsg.classList.remove('hidden');
+                    hasError = true;
+                } else {
+                    input.classList.remove('border-red-400');
+                    errorMsg.textContent = '';
+                    errorMsg.classList.add('hidden');
+                }
+            }
+        });
+        if (hasError) return; // No envía si hay errores
+
         const nameInput = perfilForm.querySelector('input[name="name"]');
         if (nameInput && nameInput.value.length > 0) {
             nameInput.value = toTitleCase(nameInput.value);
@@ -155,4 +182,29 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input) return;
+
+        // Crea el mensaje de error si no existe
+        let errorMsg = document.getElementById(`${field.id}-error`);
+        if (!errorMsg) {
+            errorMsg = document.createElement('div');
+            errorMsg.className = 'text-red-500 text-xs mt-1 hidden';
+            errorMsg.id = `${field.id}-error`;
+            input.parentNode.appendChild(errorMsg);
+        }
+
+        // Validación en tiempo real para quitar error si el usuario corrige
+        input.addEventListener('input', () => {
+            setTimeout(() => {
+                if (field.validate(input.value)) {
+                    input.classList.remove('border-red-400');
+                    errorMsg.textContent = '';
+                    errorMsg.classList.add('hidden');
+                }
+            }, 100);
+        });
+    });
 });
