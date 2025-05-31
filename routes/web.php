@@ -33,7 +33,7 @@ Route::get('/datos', function () {
 Route::post('/datos', [UserDataController::class, 'guardarDatos'])->name('guardar.datos');
 
 // Rutas protegidas (RequireRegistration)
-Route::middleware(RequireRegistration::class)->group(function () {
+Route::middleware([RequireRegistration::class, CheckStreak::class])->group(function () {
 
     Route::get('/chat', function () {
         return view('pages.chat');
@@ -45,15 +45,15 @@ Route::middleware(RequireRegistration::class)->group(function () {
 
     Route::get('/perfil', function () {
         return view('perfil');
-    })->middleware(CheckStreak::class)->name('perfil');
+    })->name('perfil');
 
-    Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje'])->middleware(CheckStreak::class);
-    Route::post('/plan/generar', [PlanController::class, 'generar'])->middleware(CheckStreak::class)->name('plan.generar');
-    Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos'])->middleware(CheckStreak::class);
+    Route::post('/chat/enviar', [ChatController::class, 'enviarMensaje']);
+    Route::post('/plan/generar', [PlanController::class, 'generar'])->name('plan.generar');
+    Route::post('/plan/reemplazar-platos', [PlanController::class, 'reemplazarPlatos']);
 
     Route::get('/planes', [PlanController::class, 'index'])->name('planes');
-    Route::get('/chat/historial', [ChatController::class, 'historial'])->middleware(CheckStreak::class);
-    Route::get('/chat/plan-actual', [PlanController::class, 'planActual'])->middleware(CheckStreak::class);
+    Route::get('/chat/historial', [ChatController::class, 'historial']);
+    Route::get('/chat/plan-actual', [PlanController::class, 'planActual']);
 
     Route::put('/perfil/actualizar', [UserDataController::class, 'update'])->name('perfil.actualizar');
 

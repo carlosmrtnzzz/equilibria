@@ -17,42 +17,43 @@ class CheckStreak
         $hoy = Carbon::now()->startOfDay();
         $ayer = Carbon::yesterday()->startOfDay();
 
+        $actualizarStreak = false;
+
         if (!$user->last_login_date || $user->last_login_date < $hoy) {
             if ($user->last_login_date === $ayer) {
                 $user->streak_days++;
             } else {
                 $user->streak_days = 1;
             }
-
             $user->last_login_date = $hoy;
             $user->save();
+            $actualizarStreak = true;
+        }
 
-            $logros = Achievement::where('type', 'login_streak')->get();
+        $logros = Achievement::where('type', 'login_streak')->get();
 
-            foreach ($logros as $logro) {
-                $userLogro = UserAchievement::firstOrCreate(
-                    [
-                        'user_id' => $user->id,
-                        'achievement_id' => $logro->id,
-                    ],
-                    [
-                        'progress' => 0,
-                        'unlocked' => false,
-                    ]
-                );
+        foreach ($logros as $logro) {
+            $userLogro = UserAchievement::firstOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'achievement_id' => $logro->id,
+                ],
+                [
+                    'progress' => 0,
+                    'unlocked' => false,
+                ]
+            );
 
-                $userLogro->progress = $user->streak_days;
+            $userLogro->progress = $user->streak_days;
 
-                if (!$userLogro->unlocked && $user->streak_days >= $logro->target_value) {
-                    $userLogro->unlocked = true;
-                    $userLogro->unlocked_at = now();
+            if (!$userLogro->unlocked && $user->streak_days >= $logro->target_value) {
+                $userLogro->unlocked = true;
+                $userLogro->unlocked_at = now();
 
-                    session()->flash('success', '¡Has desbloqueado el logro: ' . $logro->name . '!');
-                }
-
-                $userLogro->save();
+                session()->flash('success', '¡Has desbloqueado el logro: ' . $logro->name . '!');
             }
 
+            $userLogro->save();
         }
 
         return $next ? $next($request) : null;
