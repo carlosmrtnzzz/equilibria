@@ -68,3 +68,8 @@ Route::middleware([RequireRegistration::class, CheckStreak::class])->group(funct
 // Google Auth
 Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
+// Manual
+Route::get('/manual', function () {
+    return view('manual');
+})->name('manual');

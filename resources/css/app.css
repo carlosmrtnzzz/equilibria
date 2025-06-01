@@ -513,3 +513,100 @@ a:active {
         display: none;
     }
 }
+
+.react-book-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.react-book-logo {
+    width: 50%;
+    max-width: 150px;
+    margin-bottom: 20px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.react-book-page {
+    background: linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-book-page-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.react-book-cover {
+    background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    color: white;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* centra verticalmente */
+    align-items: center;
+    /* centra horizontalmente */
+    height: 100%;
+    text-align: center;
+}
+
+.react-book-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Fija el título arriba */
+.manual-header {
+    width: 100%;
+    padding-left: 50px;
+    padding-top: 40px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.manual-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* Cuerpo de la página (debajo del título) */
+.manual-body {
+    margin-top: 80px;
+    padding: 0 20px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+
+.manual-description {
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    width: 100%;
+}
+
+.manual-image {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

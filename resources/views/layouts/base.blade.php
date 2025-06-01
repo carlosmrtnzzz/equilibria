@@ -145,10 +145,7 @@
             <div>
                 <h4 class="text-base font-semibold mb-2">Navegación</h4>
                 <ul class="space-y-1">
-                    <li><a href="{{ route('/') }}" class="hover:underline">Inicio</a></li>
-                    <li><a href="{{ route('planes') }}" class="hover:underline">Planes Semanales</a></li>
-                    <li><a href="{{ route('chat') }}" class="hover:underline">Chat</a></li>
-                    <li><a href="{{ route('logros') }}" class="hover:underline">Logros</a></li>
+                    <li><a href="{{ route('manual') }}" class="hover:underline">Manual de usuario</a></li>
                 </ul>
             </div>
 

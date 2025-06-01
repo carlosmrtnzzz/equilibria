@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
     plugins: [
@@ -13,7 +14,8 @@ export default defineConfig({
                 'resources/js/modal-handler.js',
                 'resources/js/preferencias.js',
                 'resources/js/toast-notification.js',
-                'resources/js/visual-password-validation.js'
+                'resources/js/visual-password-validation.js',
+                'resources/js/react/main.jsx'
             ], refresh: true,
         }),
         tailwindcss(),
