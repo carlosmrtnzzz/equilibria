@@ -3,12 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\WeeklyPlanResource\Pages;
+use Filament\Tables\Columns\TextColumn;
 use App\Models\WeeklyPlan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\Textarea;
 
 class WeeklyPlanResource extends Resource
 {
@@ -25,10 +27,11 @@ class WeeklyPlanResource extends Resource
                     ->searchable()
                     ->required(),
 
-                Forms\Components\Textarea::make('plan_json')
-                    ->rows(10)
-                    ->required()
-                    ->label('Contenido del plan (JSON)'),
+                Textarea::make('meals_json')
+                    ->label('Contenido del plan')
+                    ->rows(12)
+                    ->disabled() 
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -36,17 +39,27 @@ class WeeklyPlanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('user.name')->label('Usuario')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+                TextColumn::make('user.name')
+                    ->label('Usuario')
+                    ->searchable(),
+
+                TextColumn::make('created_at')
+                    ->label('Fecha de creación')
+                    ->dateTime(),
+
+                TextColumn::make('meals_json')
+                    ->label('Contenido del plan')
+                    ->limit(50) 
+                    ->tooltip(fn($record) => $record->plan_json),
             ])
-            ->defaultSort('created_at', 'desc')
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 

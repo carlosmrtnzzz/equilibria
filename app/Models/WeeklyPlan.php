@@ -14,5 +14,9 @@ class WeeklyPlan extends Model
         'pdf_url',
         'changes_left',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\CheckStreak;
-
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
+use App\Http\Responses\LogoutResponse as CustomLogoutResponse;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -15,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(LogoutResponse::class, CustomLogoutResponse::class);
+
     }
 
     /**
