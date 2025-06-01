@@ -27,14 +27,18 @@ class UserDataController extends Controller
         }
 
         // Evita duplicados por email o google_id
-        $user = \App\Models\User::where('email', $email)
-            ->orWhere('google_id', $google_id)
+        $user = \App\Models\User::when($email, fn($query) => $query->where('email', $email))
+            ->when($google_id, fn($query) => $query->orWhere('google_id', $google_id))
             ->first();
+
 
         if ($user) {
             Auth::login($user);
             session()->forget(['register_name', 'register_email', 'register_password', 'google_id']);
-            return redirect('/')->with('info', 'Ya tenías cuenta, has iniciado sesión.');
+
+            // Redirige dependiendo del tipo de usuario
+            return redirect($user->is_admin ? '/admin' : 'perfil')
+                ->with('info', 'Ya tenías cuenta, has iniciado sesión.');
         }
 
         $user = \App\Models\User::create([
@@ -46,12 +50,14 @@ class UserDataController extends Controller
             'gender' => $request->gender,
             'weight_kg' => $request->weight,
             'height_cm' => $request->height,
+            'is_admin' => false,
         ]);
 
         session()->forget(['register_name', 'register_email', 'register_password', 'google_id']);
         Auth::login($user);
         return redirect('perfil')->with('success', 'Bienvenido, a Equilibria ' . explode(' ', $user->name)[0] . '!');
     }
+
     public function update(Request $request)
     {
         $user = Auth::user();

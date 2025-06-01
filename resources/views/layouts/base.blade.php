@@ -39,6 +39,11 @@
                 <a href="{{ route('chat') }}" class="hover:text-emerald-600">Chat</a>
                 <a href="{{ route('planes') }}" class="hover:text-emerald-600">Planes Semanales</a>
                 <a href="{{ route('logros') }}" class="hover:text-emerald-600">Logros</a>
+                @auth
+                    @if(auth()->user()->is_admin)
+                        <a href="/admin" class="hover:text-emerald-600">Panel de administración</a>
+                    @endif
+                @endauth
             </nav>
 
             <div class="relative md:flex hidden"> @auth
@@ -69,13 +74,15 @@
                     <div class="space-x-3 hidden md:flex">
                         <a href="{{ route('login') }}"
                             class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20">
-                            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                             <span class="relative">Login</span>
                         </a>
                         <a href="{{ route('register') }}"
                             class="group relative overflow-hidden bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-2xl font-semibold shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300">
-                            <div class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div
+                                class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
                             <span class="relative">Registro</span>
                         </a>
@@ -91,6 +98,11 @@
             <a href="{{ route('chat') }}" class="block hover:text-emerald-600">Chat</a>
             <a href="{{ route('planes') }}" class="block hover:text-emerald-600">Planes Semanales</a>
             <a href="{{ route('logros') }}" class="block hover:text-emerald-600">Logros</a>
+            @auth
+                @if(auth()->user()->is_admin)
+                    <a href="/admin" class="block hover:text-emerald-600">Panel de administración</a>
+                @endif
+            @endauth
 
             @auth
                 <a href="{{ route('perfil') }}" class="block hover:text-emerald-600">Perfil</a>
@@ -102,13 +114,15 @@
             @else
                 <a href="{{ route('login') }}"
                     class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 w-full text-center">
-                    <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                     <span class="relative">Login</span>
                 </a>
                 <a href="{{ route('register') }}"
                     class="group relative overflow-hidden bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-2xl font-semibold shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 w-full text-center">
-                    <div class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div
+                        class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
                     <span class="relative">Registro</span>
                 </a>

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'height_cm',
         'google_id',
         'profile_photo',
+        'is_admin',
     ];
 
 
@@ -49,8 +50,10 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean', 
         ];
     }
+
     public function preference()
     {
         return $this->hasOne(Preference::class);
@@ -60,6 +63,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Achievement::class, 'user_achievements')
             ->withPivot('progress', 'unlocked', 'unlocked_at')
             ->withTimestamps();
+    }
+    public function canAccessFilament(): bool
+    {
+        return $this->is_admin ?? false;
     }
 
 }
