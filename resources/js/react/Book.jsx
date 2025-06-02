@@ -28,7 +28,6 @@ function Book() {
       description: "Aquí con tu correo y contraseña, o con tu cuenta de Google, puede acceder a tu perfil.",
       image: "/images/manual/login2.webp"
     },
-
     {
       title: "Editar perfil",
       description: "Una vez inciada la sesión, podrás editar tu perfil en el botón 'Editar perfil' de la pestaña 'Perfil'.",
@@ -45,44 +44,44 @@ function Book() {
       image: "/images/manual/perfilfoto.webp"
     },
     {
-      title: "Planes semanales",
+      title: "Planes semanales - Sin plan",
       description: "Al entrar en la página de planes semanales, veremos el siguiente botón si no tenemos plan o en el caso contrario veremos el plan generado.",
       image: "/images/manual/sinPlan.webp"
     },
     {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      title: "Chat equilibria - Generar plan",
+      description: "En la pestaña de chat podrás crear tus planes semanales, desde el botón 'Generar plan'.",
       image: "/images/manual/generar.webp"
     },
     {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
+      title: "Chat equilibria - Generar plan",
+      description: "Equilibria nos responderá con un plan generado según nuestras preferencias y restricciones. Este plan podremos descargarlo en PDF desde aquí o ir a la pestaá planes.",
+      image: "/images/manual/generar2.webp"
+    },
+    {
+      title: "Planes semanales - Ver plan",
+      description: "Si accedemos a la pestaña planes después de haber generado un plan, veremos el plan generado de cada dia de la semana. Aquí también podremos descargar el plan en PDF.",
+      image: "/images/manual/generar3.webp"
+    },
+    {
+      title: "Chat equilibria - Cambiar plato",
+      description: "En la pestaña de chat podrás cambiar tus platos, desde el botón 'Cambiar plato'.",
+      image: "/images/manual/cambiarplato.webp"
+    },
+    {
+      title: "Chat equilibria - Cambiar plato",
+      description: "Esto abrirá una ventana emergente donde podrás seleccionar el plato que quieres cambiar.",
+      image: "/images/manual/cambiarplato2.webp"
+    },
+    {
+      title: "Chat equilibria - Intolerancias",
+      description: "En la pestaña de chat podrás añadir o eliminar tus intolerancias alimentarias, desde el botón 'Intolerancias'.",
+      image: "/images/manual/intolerancias.webp"
     },
     {
       title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
-    },
-    {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
-    },
-    {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
-    },
-    {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
-    },
-    {
-      title: "Chat equilibria",
-      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/generar.webp"
+      description: "Aquí podrás añadir o eliminar tus intolerancias alimentarias. También podrás ver las intolerancias que ya tienes añadidas.",
+      image: "/images/manual/intolerancias2.webp"
     },
     {
       title: "",
