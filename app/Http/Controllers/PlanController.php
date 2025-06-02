@@ -120,9 +120,32 @@ PROMPT;
                 'content' => 'Generar un plan semanal personalizado',
             ]);
 
-            $mensajeIA = "Aquí tienes tu plan semanal.<br>" .
-                "<a href='" . asset($storagePath . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
-                "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
+            $mensajeIA = '<div class="bg-gradient-to-r from-emerald-50 to-green-50 p-4 rounded-lg border border-emerald-200 shadow-sm">' .
+                '<div class="space-y-3">' .
+                '<p class="text-gray-800 font-medium">' .
+                '¡Tu plan semanal está listo!' .
+                '</p>' .
+
+                '<div class="flex items-center gap-2">' .
+                '<a href="' . asset($storagePath . $path) . '" ' .
+                'target="_blank" ' .
+                'class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm rounded-lg transition-colors duration-200 shadow-sm hover:shadow-md">' .
+                '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">' .
+                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />' .
+                '</svg>' .
+                'Descargar PDF' .
+                '</a>' .
+                '</div>' .
+
+                '<p class="text-xs text-gray-500">' .
+                'También puedes consultar todos tus planes en ' .
+                '<a href="' . route('planes') . '" ' .
+                'class="text-emerald-600 hover:text-emerald-700 underline font-medium transition-colors duration-200">' .
+                'Mi Panel de Planes' .
+                '</a>' .
+                '</p>' .
+                '</div>' .
+                '</div>';
 
             ChatMessage::create([
                 'user_id' => $user->id,
@@ -236,13 +259,13 @@ PROMPT;
         }
 
         if ($plan->changes_left <= 0) {
-            return response()->json(['error' => 'Ya has usado todos tus intentos.'], 403);
+            return response()->json(['error' => 'Ya has usado todos tus cambios.'], 403);
         }
 
         $platosAReemplazar = $request->input('platos');
         if (count($platosAReemplazar) > $plan->changes_left) {
             return response()->json([
-                'error' => "Solo te quedan {$plan->changes_left} intento(s), pero intentas cambiar " . count($platosAReemplazar) . " plato(s)."
+                'error' => "Solo te quedan {$plan->changes_left} cambio(s), pero intentas cambiar " . count($platosAReemplazar) . " plato(s)."
             ], 403);
         }
 
@@ -274,9 +297,7 @@ PROMPT;
 
             $logrosDesbloqueados = $this->procesaLogrosChangeDish($user, $platosAReemplazar);
 
-            $mensajeIA = "He actualizado los platos seleccionados. Te quedan <strong>{$plan->changes_left}</strong> intento(s).<br>" .
-                "<a href='" . asset($storagePath . $path) . "' target='_blank' class='underline text-sm text-emerald-800 hover:text-emerald-900'>📄 Descargar Plan en PDF</a><br>" .
-                "<span class='text-sm text-gray-600'>También puedes verlo en <a href='" . route('planes') . "' class='underline'>Planes</a>.</span>";
+            $mensajeIA = "He actualizado los platos seleccionados. Te queda(n) <strong>{$plan->changes_left}</strong> cambio(s).<br>";
 
             ChatMessage::create([
                 'user_id' => $user->id,

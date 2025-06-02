@@ -37,7 +37,7 @@
 
             <div class="backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-6 mb-8">
                 <div id="chat-box"
-                    class="h-96 overflow-y-auto bg-gradient-to-br from-gray-50/50 to-white/50 rounded-2xl p-6 shadow-inner border border-gray-100/50 scroll-smooth">
+                    class="h-110 overflow-y-auto bg-gradient-to-br from-gray-50/50 to-white/50 rounded-2xl p-6 shadow-inner border border-gray-100/50 scroll-smooth">
                 </div>
             </div>
 

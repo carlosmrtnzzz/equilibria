@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const changesLeft = data.changes_left;
             if (changesLeft <= 0) {
-                mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 intentos.", "error");
+                mostrarToast("Ya no puedes cambiar más platos. Has agotado tus 3 cambios.", "error");
                 modal.classList.add('hidden');
                 return;
             }
@@ -145,10 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function manejarExito(data) {
         modal.classList.add('hidden');
-        chatBox.innerHTML += `
-            <div class="mb-2 text-left text-emerald-700">
-                <strong>Equilibria:</strong> He actualizado los platos seleccionados. Te quedan <strong>${data.changes_left}</strong> intento(s).
-            </div>`;
+
+        const div = document.createElement('div');
+        div.className = 'mb-2 text-left';
+        div.innerHTML = `
+        <div class="inline-block rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 p-4 text-white shadow-lg">
+            <strong class="text-emerald-50">Equilibria:</strong>
+            <p class="mt-1">He actualizado los platos seleccionados. Te queda(n) <strong>${data.changes_left}</strong> cambio(s).</p>
+        </div>
+    `;
+        chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
 
         if (data.changes_left <= 0) {
@@ -158,12 +164,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     function mostrarErrorServidor(desdeCatch = false) {
-        chatBox.innerHTML += `
-            <div class="mb-2 text-left text-red-600">
-                <strong>Equilibria:</strong> ${desdeCatch ? 'Error al contactar con el servidor.' : 'Hubo un error actualizando los platos.'}
-            </div>`;
+        const div = document.createElement('div');
+        div.className = 'mb-2 text-left';
+        div.innerHTML = `
+        <div class="inline-block rounded-lg bg-red-100 border border-red-300 p-4 text-red-800 shadow-lg">
+            <strong class="text-red-700">Equilibria:</strong>
+            <p class="mt-1">${desdeCatch ? 'Error al contactar con el servidor.' : 'Hubo un error actualizando los platos.'}</p>
+        </div>
+    `;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
     }
+
 
     function capitalize(str) {
         return str.charAt(0).toUpperCase() + str.slice(1);
