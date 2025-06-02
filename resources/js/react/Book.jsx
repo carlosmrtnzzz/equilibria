@@ -52,7 +52,42 @@ function Book() {
     {
       title: "Chat equilibria",
       description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
-      image: "/images/manual/chat.webp"
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "Chat equilibria",
+      description: "En la pestaña de chat podrás hablar con otros usuarios de Equilibria, así como con el equipo de soporte.",
+      image: "/images/manual/generar.webp"
+    },
+    {
+      title: "",
+      description: "",
+      image: "/images/logo.webp"
     }
   ];
 

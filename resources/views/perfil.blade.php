@@ -1,7 +1,7 @@
 @extends('layouts.base')
 
 @section('content')
-    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden pt-5">
+    <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden pt-4">
         <div
             class="absolute top-0 left-0 w-72 h-72 bg-gradient-to-r from-emerald-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse">
         </div>
@@ -11,7 +11,7 @@
 
         <div class="relative">
             <!-- Banner superior -->
-            <div class="relative w-full h-80 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 pb-20">
+            <div class="relative w-full h-50 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 pb-20">
                 <div class="absolute inset-0 opacity-20">
                     <div class="absolute top-10 left-10 w-32 h-32 bg-white/30 rounded-full blur-2xl"></div>
                     <div class="absolute top-20 right-20 w-24 h-24 bg-white/20 rounded-full blur-xl"></div>

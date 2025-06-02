@@ -128,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('edit-modal').classList.add('hidden');
             mostrarToast('Perfil actualizado correctamente', 'success');
-            
         } else {
             mostrarToast('Error al actualizar el perfil', 'error');
         }
@@ -160,26 +159,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Accept': 'application/json'
                 }
             })
-            .then(async response => {
-                if (!response.ok) {
-                    let data = await response.json().catch(() => ({}));
-                    let msg = data.errors && data.errors.profile_photo ? data.errors.profile_photo[0] : "Error al subir la foto";
-                    mostrarToast(msg, "error");
+                .then(async response => {
+                    if (!response.ok) {
+                        let data = await response.json().catch(() => ({}));
+                        let msg = data.errors && data.errors.profile_photo ? data.errors.profile_photo[0] : "Error al subir la foto";
+                        mostrarToast(msg, "error");
+                        photoInput.value = "";
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.profile_photo) {
+                        avatarImg.src = '/storage/' + data.profile_photo + '?t=' + Date.now();
+                        mostrarToast("Foto de perfil actualizada", "success");
+                    }
+                })
+                .catch(() => {
+                    mostrarToast("Error al subir la foto", "error");
                     photoInput.value = "";
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data && data.profile_photo) {
-                    avatarImg.src = '/storage/' + data.profile_photo + '?t=' + Date.now();
-                    mostrarToast("Foto de perfil actualizada", "success");
-                }
-            })
-            .catch(() => {
-                mostrarToast("Error al subir la foto", "error");
-                photoInput.value = "";
-            });
+                });
         });
     }
 

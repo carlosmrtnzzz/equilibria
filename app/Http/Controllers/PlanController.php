@@ -407,6 +407,10 @@ PROMPT;
                         if ($logro->reward_type && $logro->reward_amount) {
                             if ($logro->reward_type === 'extra_swap') {
                                 $user->increment('extra_swaps', $logro->reward_amount);
+
+                                $plan = WeeklyPlan::where('user_id', $user->id)->latest()->first();
+                                $plan->increment('changes_left', $logro->reward_amount);
+
                             }
                         }
                         $logrosDesbloqueados[] = '¡Has desbloqueado el logro: ' . $logro->name . '!';

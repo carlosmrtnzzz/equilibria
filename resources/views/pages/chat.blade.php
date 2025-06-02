@@ -125,7 +125,8 @@
 
     <div id="modalIntolerancias"
         class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm items-center justify-center p-4 animate-fadeIn mt-24 md:mt-20">
-        <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-white/20 transform animate-slideUp">
+        <div
+            class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-white/20 transform animate-slideUp">
             <!-- Header más compacto -->
             <div class="bg-gradient-to-r from-purple-500 to-indigo-500 p-4 text-center">
                 <div class="flex items-center justify-center gap-2 mb-1">
@@ -154,48 +155,56 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <!-- Ajustar el padding de las labels -->
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_celiac" name="is_celiac"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
-                                <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Celiaquía (Gluten)</span>
+                                <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Celiaquía
+                                    (Gluten)</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_lactose_intolerant" name="is_lactose_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia a la
                                     lactosa</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_fructose_intolerant" name="is_fructose_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia a la
                                     fructosa</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_histamine_intolerant" name="is_histamine_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia a la
                                     histamina</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_sorbitol_intolerant" name="is_sorbitol_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia al
                                     sorbitol</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_casein_intolerant" name="is_casein_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia a la
                                     caseína</span>
                             </label>
 
-                            <label class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
+                            <label
+                                class="group flex items-center gap-2 p-2 rounded-lg hover:bg-white/70 transition-all duration-200 cursor-pointer">
                                 <input type="checkbox" id="is_egg_intolerant" name="is_egg_intolerant"
                                     class="w-5 h-5 text-purple-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-purple-500 focus:ring-2 transition-all duration-200">
                                 <span class="text-gray-700 group-hover:text-gray-900 font-medium text-sm">Intolerancia al
