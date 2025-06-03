@@ -27,6 +27,8 @@ class User extends Authenticatable
         'google_id',
         'profile_photo',
         'is_admin',
+        'last_login_date',
+        'streak_days',
     ];
 
 

@@ -19,15 +19,14 @@ class CheckStreak
 
         $actualizarStreak = false;
 
-        if (!$user->last_login_date || $user->last_login_date < $hoy) {
-            if ($user->last_login_date === $ayer) {
+        if (!$user->last_login_date || $user->last_login_date < $hoy->toDateString()) {
+            if ($user->last_login_date == $ayer->toDateString()) {
                 $user->streak_days++;
             } else {
                 $user->streak_days = 1;
             }
-            $user->last_login_date = $hoy;
+            $user->last_login_date = $hoy->toDateString();
             $user->save();
-            $actualizarStreak = true;
         }
 
         $logros = Achievement::where('type', 'login_streak')->get();
