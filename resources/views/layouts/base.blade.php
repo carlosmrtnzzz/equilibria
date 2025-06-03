@@ -112,20 +112,22 @@
                         class="block w-full text-left hover:text-emerald-600 cursor-pointer">Logout</button>
                 </form>
             @else
-                <a href="{{ route('login') }}"
-                    class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 w-full text-center">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
-                    <span class="relative">Login</span>
-                </a>
-                <a href="{{ route('register') }}"
-                    class="group relative overflow-hidden bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-2xl font-semibold shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 w-full text-center">
-                    <div
-                        class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    </div>
-                    <span class="relative">Registro</span>
-                </a>
+                <div class="mt-10">
+                    <a href="{{ route('login') }}"
+                        class="group relative overflow-hidden bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 w-full text-center mr-5">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <span class="relative">Login</span>
+                    </a>
+                    <a href="{{ route('register') }}"
+                        class="group relative overflow-hidden bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-2xl font-semibold shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300 w-full text-center">
+                        <div
+                            class="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <span class="relative">Registro</span>
+                    </a>
+                </div>
             @endauth
         </div>
 

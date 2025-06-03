@@ -137,10 +137,11 @@
 
                                         @if($completed)
                                             <!-- Icono de regalo animado -->
-                                            <svg class="w-8 h-8 text-white animate-bounce" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2v-7m2-5h12l-1.5-4.5a1 1 0 00-1.5-.5l-2 1.5-2-1.5a1 1 0 00-1.5.5L6 7z" />
+                                            <svg class="w-8 h-8 text-white animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 32 32">
+                                              <rect x="6" y="12" width="20" height="20" rx="2" fill="#e5e5e5" stroke="currentColor"/>
+                                              <path d="M6 16h20" stroke="currentColor"/>
+                                              <path d="M16 12v14" stroke="currentColor"/>
+                                              <path d="M10 12c-2-2-2-5 1-5 2 0 3 2 5 5 2-3 3-5 5-5 3 0 3 3 1 5" stroke="currentColor" fill="none"/>
                                             </svg>
                                         @else
                                             <!-- Icono de candado -->
