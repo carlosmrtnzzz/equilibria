@@ -42,6 +42,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         const dataPlan = await resPlan.json();
 
         const cambios = dataPlan.changes_left;
+        const btnGenerar = document.getElementById('generarBtn');
+
+        if (dataPlan.es_plan_actual) {
+            btnGenerar.disabled = true;
+            btnGenerar.classList.add('opacity-50', 'cursor-not-allowed');
+            btnGenerar.title = "Ya has generado un plan para esta semana.";
+        }
 
         if (cambios <= 0) {
             const btnCambiar = document.getElementById('abrirModalBtn');
@@ -86,6 +93,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             const data = await res.json();
+
+            if (res.status === 403 && data.error) {
+                document.getElementById(tempId)?.remove();
+                chatBox.innerHTML += `<div class="mb-2 text-left text-red-600">${data.error}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+                return;
+            }
+
             if (data.logros && data.logros.length > 0) {
                 data.logros.forEach(msg => mostrarToast(msg));
             }

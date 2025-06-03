@@ -23,6 +23,22 @@ class PlanController extends Controller
         $storagePath = 'storage/';
         $user = Auth::user();
 
+        // Calcular inicio y fin de la semana actual
+        $inicioSemana = Carbon::now()->startOfWeek(\Carbon\CarbonInterface::MONDAY);
+        $finSemana = $inicioSemana->copy()->addDays(6);
+
+        // Comprobar si ya existe un plan para esta semana
+        $planExistente = WeeklyPlan::where('user_id', $user->id)
+            ->whereDate('start_date', $inicioSemana)
+            ->whereDate('end_date', $finSemana)
+            ->first();
+
+        if ($planExistente) {
+            return response()->json([
+                'error' => 'Ya has generado un plan para esta semana. Solo puedes crear uno por semana.'
+            ], 403);
+        }
+
         // Cargar preferencias del usuario
         $preferences = Preference::where('user_id', $user->id)->first();
         $textoIntolerancias = $this->getIntoleranciasPromptText($preferences);
@@ -230,9 +246,16 @@ PROMPT;
             return response()->json(['error' => 'No tienes un plan aún.'], 404);
         }
 
+        // Comprobar si el plan es de la semana actual
+        $inicioSemana = Carbon::now()->startOfWeek(\Carbon\CarbonInterface::MONDAY);
+        $finSemana = $inicioSemana->copy()->addDays(6);
+
+        $esPlanActual = $plan->start_date == $inicioSemana->toDateString() && $plan->end_date == $finSemana->toDateString();
+
         return response()->json([
             'meals' => json_decode($plan->meals_json, true),
             'changes_left' => $plan->changes_left,
+            'es_plan_actual' => $esPlanActual,
         ]);
     }
 
