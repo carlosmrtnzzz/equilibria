@@ -62,6 +62,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 
     document.getElementById('generarBtn')?.addEventListener('click', async function () {
+        // Deshabilitar el botón inmediatamente al hacer clic
+        const btnGenerar = document.getElementById('generarBtn');
+        btnGenerar.disabled = true;
+        btnGenerar.classList.add('opacity-50', 'cursor-not-allowed');
+        btnGenerar.title = "Ya has generado un plan para esta semana.";
+
         const texto = 'Generar un plan semanal personalizado';
         chatBox.innerHTML += `
             <div class="mb-2 text-right">
@@ -140,9 +146,19 @@ document.addEventListener('DOMContentLoaded', async function () {
             };
             chatBox.appendChild(renderMensaje(mensajeIA));
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Deshabilitar el botón después de generar el plan
+            const btnGenerar = document.getElementById('generarBtn');
+            btnGenerar.disabled = true;
+            btnGenerar.classList.add('opacity-50', 'cursor-not-allowed');
+            btnGenerar.title = "Ya has generado un plan para esta semana.";
         } catch (e) {
             document.getElementById(tempId)?.remove();
             chatBox.innerHTML += `<div class="mb-2 text-left text-red-600">❌ Error generando el plan.</div>`;
+            // Volver a habilitar el botón si hubo error
+            btnGenerar.disabled = false;
+            btnGenerar.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnGenerar.title = "";
         }
     });
 });
