@@ -32,14 +32,16 @@
                     <div class="">
                         <label for="name" class="block text-sm font-semibold text-gray-700 mb-0.5">Nombre</label>
                         <input type="text" name="name" id="name" autofocus
-                            class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
+                            class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70"
+                            value="{{ old('name') }}" />
                     </div>
 
                     <!-- Email field -->
                     <div class="">
                         <label for="email" class="block text-sm font-semibold text-gray-700 mb-0.5">Email</label>
                         <input type="email" name="email" id="email"
-                            class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
+                            class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70"
+                            value="{{ old('email') }}" />
                     </div>
 
                     <!-- Password field -->

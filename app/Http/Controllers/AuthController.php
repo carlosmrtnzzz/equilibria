@@ -16,10 +16,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => [
+                'required',
+                'regex:/[A-Z]/',      // Al menos una mayúscula
+                'regex:/[a-z]/',      // Al menos una minúscula
+                'regex:/[0-9]/',      // Al menos un número
+                'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/',
+
+            ],
+        ], [
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.regex' => 'La contraseña debe cumplir todos los requisitos.',
+            'password.min' => ' ',
         ]);
+
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -27,8 +40,8 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+            'email' => 'Las credenciales proporcionadas no son correctas.',
+        ])->withInput($request->only('email'));
     }
 
     public function logout(Request $request)
@@ -50,7 +63,15 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => [
+                'required',
+                'confirmed',
+                'regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/',
+            ],
+        ], [
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.regex' => 'La contraseña debe cumplir todos los requisitos.',
         ]);
 
         // Guardamos los datos en sesión (no en DB)
