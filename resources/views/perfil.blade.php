@@ -341,7 +341,6 @@
                         <label for="goal" class="block text-sm font-semibold text-gray-700 mb-2">Objetivo</label>
                         <select id="goal" name="goal"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
-                            <option value="">Selecciona un objetivo</option>
                             <option value="lose_weight" {{ Auth::user()->goal == 'lose_weight' ? 'selected' : '' }}>Perder
                                 peso</option>
                             <option value="maintain" {{ Auth::user()->goal == 'maintain' ? 'selected' : '' }}>Mantener peso
