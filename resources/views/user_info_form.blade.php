@@ -16,7 +16,7 @@
                     </h2>
                 </div>
 
-                <form method="POST" action="{{ route('guardar.datos') }}" class="space-y-4">
+                <form method="POST" action="{{ route('guardar.datos') }}" class="space-y-4" id="userForm">
                     @csrf
 
                     <!-- Fecha de nacimiento -->
@@ -25,6 +25,7 @@
                             nacimiento</label>
                         <input type="date" id="birth_date" name="birth_date"
                             class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
+                        <span class="text-red-500 text-xs hidden" id="error_birth_date"></span>
                     </div>
 
                     <!-- Sexo -->
@@ -42,6 +43,7 @@
                                 <span class="ml-2 text-gray-700">Mujer</span>
                             </label>
                         </div>
+                        <span class="text-red-500 text-xs hidden" id="error_gender"></span>
                     </div>
 
                     <!-- Peso -->
@@ -49,6 +51,7 @@
                         <label for="weight" class="block text-sm font-semibold text-gray-700 mb-0.5">Peso (kg)</label>
                         <input type="number" name="weight" id="weight"
                             class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
+                        <span class="text-red-500 text-xs hidden" id="error_weight"></span>
                     </div>
 
                     <!-- Altura -->
@@ -56,6 +59,7 @@
                         <label for="height" class="block text-sm font-semibold text-gray-700 mb-0.5">Altura (cm)</label>
                         <input type="number" name="height" id="height"
                             class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70" />
+                        <span class="text-red-500 text-xs hidden" id="error_height"></span>
                     </div>
 
                     <!-- Botón de envío -->
@@ -69,4 +73,7 @@
             </div>
         </div>
     </div>
+
+    @vite('resources/js/validacion_usuario.js')
+
 @endsection

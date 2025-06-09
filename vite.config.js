@@ -14,7 +14,8 @@ export default defineConfig({
                 'resources/js/preferencias.js',
                 'resources/js/toast-notification.js',
                 'resources/js/visual-password-validation.js',
-                'resources/js/react/main.jsx'
+                'resources/js/react/main.jsx',
+                'resources/js/validacion_usuario.js',
             ], refresh: true,
         }),
         tailwindcss(),
