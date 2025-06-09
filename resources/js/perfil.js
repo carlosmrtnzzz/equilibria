@@ -206,4 +206,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 100);
         });
     });
+
+    // Actualizar objetivo en tiempo real
+    const goalSelect = document.getElementById('goal');
+    if (goalSelect) {
+        goalSelect.addEventListener('change', function () {
+            const goalText = this.options[this.selectedIndex].text;
+            document.querySelector('.objetivo-usuario').textContent = goalText;
+        });
+    }
+
 });

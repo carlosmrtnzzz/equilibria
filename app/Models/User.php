@@ -29,6 +29,7 @@ class User extends Authenticatable
         'is_admin',
         'last_login_date',
         'streak_days',
+        'goal', 
     ];
 
 

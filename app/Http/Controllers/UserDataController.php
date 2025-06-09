@@ -15,6 +15,8 @@ class UserDataController extends Controller
             'gender' => 'required|in:male,female,other',
             'weight' => 'required|numeric|min:1',
             'height' => 'required|numeric|min:30',
+            'goal' => 'required|in:lose_weight,maintain,gain_weight',
+
         ]);
 
         $name = session('register_name');
@@ -50,6 +52,7 @@ class UserDataController extends Controller
             'gender' => $request->gender,
             'weight_kg' => $request->weight,
             'height_cm' => $request->height,
+            'goal' => $request->goal,
             'is_admin' => false,
         ]);
 
@@ -82,6 +85,7 @@ class UserDataController extends Controller
             'gender' => 'in:male,female',
             'weight_kg' => 'nullable|numeric|min:1',
             'height_cm' => 'nullable|numeric|min:1',
+            'goal' => 'nullable|in:lose_weight,maintain,gain_weight',
         ]);
 
         $user->update([
@@ -90,6 +94,7 @@ class UserDataController extends Controller
             'gender' => $request->input('gender'),
             'weight_kg' => $request->input('weight_kg'),
             'height_cm' => $request->input('height_cm'),
+            'goal' => $request->input('goal'),
         ]);
 
         if ($request->wantsJson()) {

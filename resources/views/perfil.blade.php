@@ -212,6 +212,33 @@
                                 </div>
                             </div>
                         @endif
+
+                        <!-- Objetivo -->
+                        <div
+                            class="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200/50 transform hover:scale-105 transition-all duration-300">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-rose-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-rose-700">Objetivo</h3>
+                                    <p class="objetivo-usuario text-rose-600 font-medium">
+                                        @php
+                                            $goalText = [
+                                                'lose_weight' => 'Perder peso',
+                                                'maintain' => 'Mantener peso',
+                                                'gain_weight' => 'Ganar peso'
+                                            ][Auth::user()->goal ?? ''] ?? 'No especificado';
+                                        @endphp
+                                        {{ $goalText }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -308,6 +335,19 @@
                                 min="1" max="300" autocomplete="off"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
                         </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-gray-50 to-white rounded-2xl p-3 border border-gray-200/50">
+                        <label for="goal" class="block text-sm font-semibold text-gray-700 mb-2">Objetivo</label>
+                        <select id="goal" name="goal"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
+                            <option value="">Selecciona un objetivo</option>
+                            <option value="lose_weight" {{ Auth::user()->goal == 'lose_weight' ? 'selected' : '' }}>Perder
+                                peso</option>
+                            <option value="maintain" {{ Auth::user()->goal == 'maintain' ? 'selected' : '' }}>Mantener peso
+                            </option>
+                            <option value="gain_weight" {{ Auth::user()->goal == 'gain_weight' ? 'selected' : '' }}>Ganar peso
+                            </option>
+                        </select>
                     </div>
                 </form>
             </div>

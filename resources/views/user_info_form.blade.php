@@ -62,6 +62,21 @@
                         <span class="text-red-500 text-xs hidden" id="error_height"></span>
                     </div>
 
+                    <!-- Objetivo -->
+                    <div class="">
+                        <label for="goal" class="block text-sm font-semibold text-gray-700 mb-0.5">
+                            ¿Cuál es tu objetivo?
+                        </label>
+                        <select id="goal" name="goal" required
+                            class="w-full px-3 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-white/70">
+                            <option value="" disabled selected>Selecciona tu objetivo</option>
+                            <option value="lose_weight">Perder peso</option>
+                            <option value="maintain">Mantener peso</option>
+                            <option value="gain_weight">Ganar peso/masa muscular</option>
+                        </select>
+                        <span class="text-red-500 text-xs hidden" id="error_goal"></span>
+                    </div>
+                    
                     <!-- Botón de envío -->
                     <button type="submit"
                         class="w-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl transform hover:scale-105 hover:shadow-2xl transition-all duration-300 border border-emerald-400/20 cursor-pointer">

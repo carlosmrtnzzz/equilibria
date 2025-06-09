@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->unsignedSmallInteger('height_cm')->nullable();
             $table->decimal('weight_kg', 5, 2)->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
+            $table->enum('goal', ['lose_weight', 'maintain', 'gain_weight'])->nullable();
             $table->date('last_login_date')->nullable();
             $table->unsignedSmallInteger('streak_days')->default(0);
             $table->timestamps();

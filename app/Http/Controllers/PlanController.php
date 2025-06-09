@@ -17,6 +17,25 @@ use App\Models\Preference;
 
 class PlanController extends Controller
 {
+    private function getCalorieAdjustment($user)
+    {
+        // Cálculo base del BMR (Basal Metabolic Rate) usando la fórmula de Harris-Benedict
+        $bmr = $user->gender === 'male'
+            ? (88.362 + (13.397 * $user->weight_kg) + (4.799 * $user->height_cm) - (5.677 * $user->age))
+            : (447.593 + (9.247 * $user->weight_kg) + (3.098 * $user->height_cm) - (4.330 * $user->age));
+
+        // Ajuste según el objetivo
+        switch ($user->goal) {
+            case 'lose_weight':
+                return $bmr * 0.85; // Déficit calórico del 15%
+            case 'gain_weight':
+                return $bmr * 1.15; // Superávit calórico del 15%
+            case 'maintain':
+            default:
+                return $bmr; // Mantenimiento
+        }
+    }
+
     public function generar()
     {
         $dateFormat = 'd/m/Y';
@@ -43,6 +62,12 @@ class PlanController extends Controller
         $preferences = Preference::where('user_id', $user->id)->first();
         $textoIntolerancias = $this->getIntoleranciasPromptText($preferences);
 
+        $objetivo = [
+            'lose_weight' => 'enfocado en pérdida de peso saludable',
+            'maintain' => 'enfocado en mantener el peso actual',
+            'gain_weight' => 'enfocado en ganancia de peso saludable'
+        ][$user->goal] ?? '';
+
         $prompt = <<<PROMPT
 Actúa como un nutricionista clínico especializado en intolerancias alimentarias. Tu tarea es generar un plan de comidas semanal completamente adaptado al siguiente perfil del usuario:
 
@@ -52,6 +77,8 @@ Altura: {$user->height_cm} cm
 Género: {$user->gender}
 
 {$textoIntolerancias}
+
+Este plan debe estar {$objetivo}.
 
 Solo debes aplicar restricciones si han sido indicadas por el usuario. NO apliques restricciones como “sin lactosa” o “sin gluten” si no se han marcado.
 
