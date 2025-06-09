@@ -1,4 +1,5 @@
 @extends('layouts.base')
+@section('title', 'Logros | ')
 
 @section('content')
     <!-- Fondo con gradiente animado -->

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Equilibria</title>
+    <title>@yield('title')Equilibria</title>
     <link rel="shortcut icon" href="{{ asset('images/favicon.webp') }}">
 
     @vite('resources/css/app.css')
@@ -65,7 +65,7 @@
                             @csrf
                             <button type="submit"
                                 class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-emerald-100 cursor-pointer">
-                                Logout
+                                Cerrar sesión
                             </button>
                         </form>
                     </div>

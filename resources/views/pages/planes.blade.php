@@ -1,4 +1,5 @@
 @extends('layouts.base')
+@section('title', 'Planes | ')
 
 @section('content')
     <div class="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">

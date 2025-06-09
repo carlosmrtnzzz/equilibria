@@ -1,4 +1,6 @@
 @extends('layouts.base')
+@section('title', 'Registro | ')
+
 @section('content')
     <div
         class="relative min-h-screen flex items-center bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 overflow-hidden">

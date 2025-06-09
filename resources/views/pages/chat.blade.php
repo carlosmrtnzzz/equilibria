@@ -1,4 +1,5 @@
 @extends('layouts.base')
+@section('title', 'Chat con Equilibria | ')
 
 @section('content')
 

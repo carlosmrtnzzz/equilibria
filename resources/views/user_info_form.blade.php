@@ -1,4 +1,5 @@
 @extends('layouts.base')
+@section('title', 'Completa tu perfil | ')
 
 @section('content')
     <div
