@@ -77,7 +77,7 @@
                             <div
                                 class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             </div>
-                            <span class="relative">Login</span>
+                            <span class="relative">Inicio de sesión</span>
                         </a>
                         <a href="{{ route('register') }}"
                             class="group relative overflow-hidden bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-2xl font-semibold shadow-lg transform hover:scale-105 hover:shadow-xl transition-all duration-300">
