@@ -200,7 +200,6 @@
                         </a>
                         <div class="tooltip">YouTube</div>
                     </li>
-                    <!-- Puedes agregar más redes sociales aquí -->
                 </ul>
             </div>
         </div>

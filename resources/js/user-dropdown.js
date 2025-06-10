@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.addEventListener('mouseleave', () => dropdown.classList.add('hidden'));
     }
 
-    // Menú responsive
     const toggle = document.getElementById('mobile-menu-toggle');
     const mobileNav = document.getElementById('mobile-nav');
 

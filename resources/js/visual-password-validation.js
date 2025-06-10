@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Añade esto al final del bloque DOMContentLoaded:
     document.querySelectorAll('form').forEach(form => {
         form.addEventListener('submit', function (event) {
             let hasError = false;
