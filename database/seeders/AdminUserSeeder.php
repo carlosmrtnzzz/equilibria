@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
         $admin = new User();
         $admin->name = 'Admin';
         $admin->email = 'admin@equilibria.com';
-        $admin->password = bcrypt('admin123');
+        $admin->password = bcrypt('Admin123');
         $admin->is_admin = true;
         $admin->age = 30;
         $admin->gender = 'male';
